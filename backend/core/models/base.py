@@ -13,4 +13,6 @@ class Base(DeclarativeBase):
 
 
 class BaseEnum(Base):
+    __abstract__ = True
+
     title: Mapped[str] = mapped_column(String(16), unique=True)

@@ -2,4 +2,4 @@ from .base import BaseEnum
 
 
 class Priority(BaseEnum):
-    pass
+    __tablename__ = "priorities"
