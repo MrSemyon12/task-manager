@@ -1,8 +1,8 @@
 """Create notices table
 
-Revision ID: 098aaa24185a
+Revision ID: 563ad68ad159
 Revises: 906e866f88e4
-Create Date: 2023-10-04 23:11:03.794809
+Create Date: 2023-10-04 23:31:02.194081
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = "098aaa24185a"
+revision: str = "563ad68ad159"
 down_revision: Union[str, None] = "906e866f88e4"
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -25,7 +25,12 @@ def upgrade() -> None:
         sa.Column("title", sa.String(length=32), nullable=False),
         sa.Column("description", sa.Text(), server_default="", nullable=False),
         sa.Column("had_seen", sa.Boolean(), server_default="0", nullable=False),
+        sa.Column("user_id", sa.Integer(), nullable=False),
         sa.Column("id", sa.Integer(), nullable=False),
+        sa.ForeignKeyConstraint(
+            ["user_id"],
+            ["users.id"],
+        ),
         sa.PrimaryKeyConstraint("id"),
     )
     # ### end Alembic commands ###
