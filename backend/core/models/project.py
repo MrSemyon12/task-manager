@@ -7,6 +7,7 @@ from .base import Base
 
 if TYPE_CHECKING:
     from .user_project import UserProject
+    from .task import Task
 
 
 class Project(Base):
@@ -19,3 +20,4 @@ class Project(Base):
     is_private: Mapped[bool]
 
     users: Mapped[list["UserProject"]] = relationship(back_populates="project")
+    tasks: Mapped[list["Task"]] = relationship(back_populates="project")
