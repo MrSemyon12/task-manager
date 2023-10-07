@@ -7,6 +7,7 @@ from .base import Base
 
 if TYPE_CHECKING:
     from .notice import Notice
+    from .user_project import UserProject
 
 
 class User(Base):
@@ -14,3 +15,4 @@ class User(Base):
     hashed_password: Mapped[str]
 
     notices: Mapped[list["Notice"]] = relationship(back_populates="user")
+    projects: Mapped[list["UserProject"]] = relationship(back_populates="user")
