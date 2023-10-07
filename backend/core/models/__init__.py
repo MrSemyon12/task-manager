@@ -9,6 +9,7 @@ __all__ = (
     "Priority",
     "Project",
     "Notice",
+    "UserProject",
 )
 
 from .db_helper import DatabaseHelper, db_helper
@@ -19,3 +20,4 @@ from .state import State
 from .priority import Priority
 from .project import Project
 from .notice import Notice
+from .user_project import UserProject

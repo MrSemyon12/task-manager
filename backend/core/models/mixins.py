@@ -11,6 +11,7 @@ if TYPE_CHECKING:
 class UserRelationMixin:
     _user_id_unique: bool = False
     _user_id_nullable: bool = False
+    _user_id_primary_key: bool = False
     _user_back_populates: str | None = None
 
     @declared_attr
@@ -19,6 +20,7 @@ class UserRelationMixin:
             ForeignKey("users.id"),
             unique=cls._user_id_unique,
             nullable=cls._user_id_nullable,
+            primary_key=cls._user_id_primary_key,
         )
 
     @declared_attr
@@ -32,6 +34,7 @@ class UserRelationMixin:
 class ProjectRelationMixin:
     _project_id_unique: bool = False
     _project_id_nullable: bool = False
+    _project_id_primary_key: bool = False
     _project_back_populates: str | None = None
 
     @declared_attr
@@ -40,6 +43,7 @@ class ProjectRelationMixin:
             ForeignKey("projects.id"),
             unique=cls._project_id_unique,
             nullable=cls._project_id_nullable,
+            primary_key=cls._project_id_primary_key,
         )
 
     @declared_attr
