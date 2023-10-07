@@ -1,8 +1,8 @@
 """Create tasks table
 
-Revision ID: 108682672737
+Revision ID: 12ed2e48e026
 Revises: 33d4d60987bc
-Create Date: 2023-10-08 00:33:40.697218
+Create Date: 2023-10-08 01:37:53.342082
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = "108682672737"
+revision: str = "12ed2e48e026"
 down_revision: Union[str, None] = "33d4d60987bc"
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -27,8 +27,13 @@ def upgrade() -> None:
         sa.Column("deadline", sa.DateTime(), nullable=True),
         sa.Column("state_id", sa.Integer(), nullable=False),
         sa.Column("priority_id", sa.Integer(), nullable=False),
+        sa.Column("parent_id", sa.Integer(), nullable=True),
         sa.Column("id", sa.Integer(), nullable=False),
         sa.Column("project_id", sa.Integer(), nullable=False),
+        sa.ForeignKeyConstraint(
+            ["parent_id"],
+            ["tasks.id"],
+        ),
         sa.ForeignKeyConstraint(
             ["priority_id"],
             ["priorities.id"],
