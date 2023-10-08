@@ -3,7 +3,7 @@ from sqlalchemy.engine import Result
 from sqlalchemy.ext.asyncio import AsyncSession
 from core.models import User
 
-from .schemas import UserCreate
+from .schemas import UserInDB
 
 
 async def get_users(session: AsyncSession) -> list[User]:
@@ -24,9 +24,8 @@ async def get_user_by_username(session: AsyncSession, username: str) -> User | N
     return user
 
 
-async def create_user(session: AsyncSession, user_create: UserCreate) -> User:
-    user = User(**user_create.model_dump())
+async def create_user(session: AsyncSession, user_db: UserInDB) -> User:
+    user = User(**user_db.model_dump())
     session.add(user)
     await session.commit()
-    # await session.refresh(product)
     return user
