@@ -14,8 +14,8 @@ class DbSettings(BaseModel):
 
 class AuthSettings(BaseModel):
     algorithm: str = "HS256"
-    access_token_expire_minutes = 30
-    secret_key = "key"
+    access_token_expire_minutes: int = 30
+    secret_key: str = "key"
 
 
 class Settings(BaseSettings):
