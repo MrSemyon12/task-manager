@@ -29,7 +29,7 @@ class Task(Base, ProjectRelationMixin):
     priority_id: Mapped[int] = mapped_column(ForeignKey("priorities.id"))
     priority: Mapped["Priority"] = relationship(back_populates="tasks")
 
-    parent_id: Mapped[int | None] = mapped_column(ForeignKey("tasks.id"))
-    parent: Mapped["Task"] = relationship(back_populates="subtasks")
-
-    subtasks: Mapped[list["Task"]] = relationship(back_populates="parent")
+    # parent_id: Mapped[int | None] = mapped_column(ForeignKey("tasks.id"))
+    # parent: Mapped["Task"] = relationship(back_populates="subtasks")
+    #
+    # subtasks: Mapped[list["Task"]] = relationship(back_populates="parent")
