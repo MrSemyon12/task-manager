@@ -4,13 +4,14 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from jose import JWTError
 
 from core.models import db_helper, User
+from core.config import settings
 
 from .utils import decode_access_token, get_password_hash
 from .schemas import UserCreate, UserInDB
 from . import crud
 
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl=settings.auth.token_url)
 
 
 async def authenticate_user(

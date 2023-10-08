@@ -2,11 +2,16 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.models import db_helper
+from api_v1.auth.dependencies import get_current_user
+
 from .dependencies import role_by_id
 from .schemas import Role
 from . import crud
 
-router = APIRouter(tags=["Roles"])
+router = APIRouter(
+    tags=["Roles"],
+    dependencies=[Depends(get_current_user)],
+)
 
 
 @router.get("/", response_model=list[Role])
