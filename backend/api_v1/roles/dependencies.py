@@ -18,5 +18,5 @@ async def role_by_id(
 
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND,
-        detail=f"Role {role_id} not found!",
+        detail=f"Role {role_id} not found",
     )

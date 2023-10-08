@@ -18,5 +18,5 @@ async def priority_by_id(
 
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND,
-        detail=f"Priority {priority_id} not found!",
+        detail=f"Priority {priority_id} not found",
     )
