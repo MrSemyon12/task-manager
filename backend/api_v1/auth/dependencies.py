@@ -74,6 +74,7 @@ async def create_user(
 
     user_db = UserInDB(
         username=user_create.username,
+        email=user_create.email,
         hashed_password=get_password_hash(user_create.password),
     )
     user = await crud.create_user(
