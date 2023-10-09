@@ -9,7 +9,7 @@ from . import crud
 
 
 async def state_by_id(
-    state_id: Annotated[int, Path],
+    state_id: Annotated[int, Path(ge=1)],
     session: AsyncSession = Depends(db_helper.scoped_session_dependency),
 ) -> State:
     state = await crud.get_state(session=session, state_id=state_id)

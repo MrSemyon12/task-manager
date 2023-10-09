@@ -9,7 +9,7 @@ from . import crud
 
 
 async def priority_by_id(
-    priority_id: Annotated[int, Path],
+    priority_id: Annotated[int, Path(ge=1)],
     session: AsyncSession = Depends(db_helper.scoped_session_dependency),
 ) -> Priority:
     priority = await crud.get_priority(session=session, priority_id=priority_id)
