@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends
+from starlette import status
 
 from .dependencies import authenticate_user, create_user
 from .utils import create_access_token
@@ -14,6 +15,10 @@ async def login_for_access_token(user: User = Depends(authenticate_user)):
     return {"access_token": access_token, "token_type": "bearer"}
 
 
-@router.post("/register", response_model=User)
+@router.post(
+    "/register",
+    response_model=User,
+    status_code=status.HTTP_201_CREATED,
+)
 def register_user(user: User = Depends(create_user)):
     return user

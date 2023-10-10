@@ -17,6 +17,8 @@ class UserInDB(UserBase):
 class User(UserBase):
     model_config = ConfigDict(from_attributes=True)
 
+    id: int
+
 
 class Token(BaseModel):
     access_token: str

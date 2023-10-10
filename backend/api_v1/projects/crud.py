@@ -1,9 +1,35 @@
 from sqlalchemy import select
 from sqlalchemy.engine import Result
 from sqlalchemy.ext.asyncio import AsyncSession
-from core.models import Project
+from core.models import Project, UserProject
 
-from .schemas import ProjectCreate
+from .schemas import ProjectCreate, UserProjectCreate
+
+
+async def get_projects_by_user_id(
+    session: AsyncSession,
+    user_id: int,
+) -> list[Project]:
+    stmt = (
+        select(Project)
+        .join(UserProject)
+        .where(UserProject.user_id == user_id)
+        .order_by(Project.id)
+    )
+    result: Result = await session.execute(stmt)
+    projects = result.scalars().all()
+    return list(projects)
+
+
+async def get_project(session: AsyncSession, project_id: int) -> Project | None:
+    return await session.get(Project, project_id)
+
+
+async def get_projects(session: AsyncSession) -> list[Project]:
+    stmt = select(Project).order_by(Project.id)
+    result: Result = await session.execute(stmt)
+    projects = result.scalars().all()
+    return list(projects)
 
 
 async def create_project(
@@ -14,3 +40,21 @@ async def create_project(
     session.add(project)
     await session.commit()
     return project
+
+
+async def add_user_to_project(
+    session: AsyncSession,
+    user_project_create: UserProjectCreate,
+) -> UserProject:
+    user_project = UserProject(**user_project_create.model_dump())
+    session.add(user_project)
+    await session.commit()
+    return user_project
+
+
+async def delete_project(
+    session: AsyncSession,
+    project: Project,
+) -> None:
+    await session.delete(project)
+    await session.commit()

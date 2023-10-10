@@ -15,3 +15,9 @@ class Project(ProjectBase):
     model_config = ConfigDict(from_attributes=True)
 
     id: int
+
+
+class UserProjectCreate(BaseModel):
+    user_id: int
+    project_id: int
+    role_id: int
