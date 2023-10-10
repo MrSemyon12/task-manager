@@ -1,10 +1,11 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 
 from core.models import db_helper
 from api_v1.auth.dependencies import get_current_user
 from api_v1.auth.schemas import User
+from api_v1.roles.schemas import Role
 
 from .schemas import Project
 from .dependencies import create_project, project_by_id
@@ -50,3 +51,23 @@ async def delete_project(
     session: AsyncSession = Depends(db_helper.scoped_session_dependency),
 ) -> None:
     await crud.delete_project(session=session, project=project)
+
+
+@router.get("/{project_id}/my_role", response_model=Role)
+async def get_user_role(
+    project: Project = Depends(project_by_id),
+    current_user: User = Depends(get_current_user),
+    session: AsyncSession = Depends(db_helper.scoped_session_dependency),
+) -> Role:
+    role = await crud.get_user_role(
+        session=session,
+        project=project,
+        user=current_user,
+    )
+    if role is not None:
+        return role
+
+    raise HTTPException(
+        status_code=status.HTTP_404_NOT_FOUND,
+        detail=f"Project {project.id} not available",
+    )
