@@ -23,6 +23,7 @@ class AuthSettings(BaseSettings):
 
 class Settings(BaseSettings):
     api_v1_prefix: str = "/api/v1"
+    manager_role_id: int = 1
 
     db: DbSettings = DbSettings()
     auth: AuthSettings = AuthSettings()

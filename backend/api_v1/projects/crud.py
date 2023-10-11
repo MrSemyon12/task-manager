@@ -4,7 +4,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.models import Project, UserProject, Role
 
-from api_v1.auth.schemas import User
 from .schemas import ProjectCreate, UserProjectCreate
 
 
@@ -67,15 +66,15 @@ async def delete_project(
 
 async def get_user_role(
     session: AsyncSession,
-    project: Project,
-    user: User,
+    project_id: int,
+    user_id: int,
 ) -> Role | None:
     stmt = (
         select(Role)
         .join(UserProject)
         .where(
-            UserProject.project_id == project.id,
-            UserProject.user_id == user.id,
+            UserProject.project_id == project_id,
+            UserProject.user_id == user_id,
         )
     )
     result: Result = await session.execute(stmt)
