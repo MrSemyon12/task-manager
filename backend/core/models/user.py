@@ -7,6 +7,7 @@ from .base import Base
 
 if TYPE_CHECKING:
     from .notice import Notice
+    from .project import Project
     from .user_project import UserProject
 
 
@@ -15,5 +16,16 @@ class User(Base):
     hashed_password: Mapped[str]
     email: Mapped[str | None]
 
-    notices: Mapped[list["Notice"]] = relationship(back_populates="user")
-    projects: Mapped[list["UserProject"]] = relationship(back_populates="user")
+    projects: Mapped[list["Project"]] = relationship(
+        secondary="users_projects",
+        back_populates="users",
+    )
+    project_associations: Mapped[list["UserProject"]] = relationship(
+        back_populates="user",
+        cascade="all, delete",
+    )
+
+    notices: Mapped[list["Notice"]] = relationship(
+        back_populates="user",
+        cascade="all, delete",
+    )

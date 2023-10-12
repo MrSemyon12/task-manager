@@ -6,8 +6,9 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from .base import Base
 
 if TYPE_CHECKING:
-    from .user_project import UserProject
     from .task import Task
+    from .user import User
+    from .user_project import UserProject
 
 
 class Project(Base):
@@ -19,10 +20,15 @@ class Project(Base):
     )
     is_private: Mapped[bool]
 
-    users: Mapped[list["UserProject"]] = relationship(
+    users: Mapped[list["User"]] = relationship(
+        secondary="users_projects",
+        back_populates="projects",
+    )
+    user_associations: Mapped[list["UserProject"]] = relationship(
         back_populates="project",
         cascade="all, delete",
     )
+
     tasks: Mapped[list["Task"]] = relationship(
         back_populates="project",
         cascade="all, delete",

@@ -22,4 +22,4 @@ class UserProject(Base, UserRelationMixin, ProjectRelationMixin):
     _project_back_populates = "users"
 
     role_id: Mapped[int] = mapped_column(ForeignKey("roles.id"))
-    role: Mapped["Role"] = relationship(back_populates="projects")
+    role: Mapped["Role"] = relationship(back_populates="users_projects")

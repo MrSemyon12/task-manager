@@ -9,4 +9,4 @@ if TYPE_CHECKING:
 
 
 class Role(BaseEnum):
-    projects: Mapped[list["UserProject"]] = relationship(back_populates="role")
+    users_projects: Mapped[list["UserProject"]] = relationship(back_populates="role")
