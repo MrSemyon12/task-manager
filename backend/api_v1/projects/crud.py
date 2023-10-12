@@ -7,6 +7,23 @@ from core.models import Project, UserProject, Role
 from .schemas import ProjectCreate, UserProjectCreate
 
 
+async def create_project(
+    session: AsyncSession,
+    project_create: ProjectCreate,
+) -> Project:
+    project = Project(**project_create.model_dump())
+    session.add(project)
+    await session.commit()
+    return project
+
+
+async def get_project(
+    session: AsyncSession,
+    project_id: int,
+) -> Project | None:
+    return await session.get(Project, project_id)
+
+
 async def get_projects_by_user_id(
     session: AsyncSession,
     user_id: int,
@@ -22,38 +39,11 @@ async def get_projects_by_user_id(
     return list(projects)
 
 
-async def get_project(
-    session: AsyncSession,
-    project_id: int,
-) -> Project | None:
-    return await session.get(Project, project_id)
-
-
 async def get_projects(session: AsyncSession) -> list[Project]:
     stmt = select(Project).order_by(Project.id)
     result: Result = await session.execute(stmt)
     projects = result.scalars().all()
     return list(projects)
-
-
-async def create_project(
-    session: AsyncSession,
-    project_create: ProjectCreate,
-) -> Project:
-    project = Project(**project_create.model_dump())
-    session.add(project)
-    await session.commit()
-    return project
-
-
-async def add_user_to_project(
-    session: AsyncSession,
-    user_project_create: UserProjectCreate,
-) -> UserProject:
-    user_project = UserProject(**user_project_create.model_dump())
-    session.add(user_project)
-    await session.commit()
-    return user_project
 
 
 async def delete_project(
@@ -64,10 +54,18 @@ async def delete_project(
     await session.commit()
 
 
-async def get_user_role(
+async def create_user_project(
     session: AsyncSession,
-    project_id: int,
-    user_id: int,
+    user_project_create: UserProjectCreate,
+) -> UserProject:
+    user_project = UserProject(**user_project_create.model_dump())
+    session.add(user_project)
+    await session.commit()
+    return user_project
+
+
+async def get_user_role(
+    session: AsyncSession, project_id: int, user_id: int
 ) -> Role | None:
     stmt = (
         select(Role)

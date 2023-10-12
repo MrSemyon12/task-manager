@@ -19,10 +19,3 @@ async def get_roles(
     session: AsyncSession = Depends(db_helper.scoped_session_dependency),
 ):
     return await crud.get_roles(session=session)
-
-
-@router.get("/{role_id}/", response_model=Role)
-async def get_role(
-    role: Role = Depends(role_by_id),
-):
-    return role

@@ -1,4 +1,6 @@
-from fastapi import Depends, HTTPException, status
+from typing import Annotated
+
+from fastapi import Body, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from sqlalchemy.ext.asyncio import AsyncSession
 from jose import JWTError
@@ -71,7 +73,6 @@ async def create_user(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Username already registered",
         )
-
     user_db = UserInDB(
         username=user_create.username,
         email=user_create.email,
@@ -82,3 +83,17 @@ async def create_user(
         user_db=user_db,
     )
     return user
+
+
+async def user_by_id(
+    user_id: Annotated[int, Body(ge=1)],
+    session: AsyncSession = Depends(db_helper.scoped_session_dependency),
+) -> User:
+    user = await crud.get_user(session=session, user_id=user_id)
+    if user is not None:
+        return user
+
+    raise HTTPException(
+        status_code=status.HTTP_404_NOT_FOUND,
+        detail=f"User {user_id} not found",
+    )

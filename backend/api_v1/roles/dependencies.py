@@ -1,6 +1,6 @@
 from typing import Annotated
 
-from fastapi import Path, Depends, HTTPException, status
+from fastapi import Depends, HTTPException, status, Body
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.models import db_helper, Role
@@ -9,7 +9,7 @@ from . import crud
 
 
 async def role_by_id(
-    role_id: Annotated[int, Path(ge=1)],
+    role_id: Annotated[int, Body(ge=1)],
     session: AsyncSession = Depends(db_helper.scoped_session_dependency),
 ) -> Role:
     role = await crud.get_role(session=session, role_id=role_id)
