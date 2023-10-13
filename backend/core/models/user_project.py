@@ -4,22 +4,37 @@ from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from .base import Base
-from .mixins import UserRelationMixin, ProjectRelationMixin
 
 if TYPE_CHECKING:
+    from .user import User
+    from .project import Project
     from .role import Role
 
 
-class UserProject(Base, UserRelationMixin, ProjectRelationMixin):
-    __tablename__ = "users_projects"
+class UserProject(Base):
+    __tablename__ = "user_projects"
 
     id = None
 
-    _user_id_primary_key = True
-    _user_back_populates = "projects"
+    user_id: Mapped[int] = mapped_column(
+        ForeignKey("users.id"),
+        primary_key=True,
+    )
+    user: Mapped["User"] = relationship(
+        back_populates="project_associations",
+    )
 
-    _project_id_primary_key = True
-    _project_back_populates = "users"
+    project_id: Mapped[int] = mapped_column(
+        ForeignKey("projects.id"),
+        primary_key=True,
+    )
+    project: Mapped["Project"] = relationship(
+        back_populates="user_associations",
+    )
 
-    role_id: Mapped[int] = mapped_column(ForeignKey("roles.id"))
-    role: Mapped["Role"] = relationship(back_populates="users_projects")
+    role_id: Mapped[int] = mapped_column(
+        ForeignKey("roles.id"),
+        default="1",
+        server_default="1",
+    )
+    role: Mapped["Role"] = relationship(back_populates="user_projects")

@@ -7,8 +7,13 @@ from core.models import db_helper
 from api_v1.auth.dependencies import get_current_user
 from api_v1.auth.schemas import User
 
-from .dependencies import create_project, delete_project, create_user_project
-from .schemas import Project, UserProject
+from .dependencies import (
+    create_project,
+    delete_project,
+    add_user_to_project,
+    delete_user_from_project,
+)
+from .schemas import Project
 from . import crud
 
 
@@ -39,7 +44,7 @@ async def get_current_user_projects(
     current_user: User = Depends(get_current_user),
     session: AsyncSession = Depends(db_helper.scoped_session_dependency),
 ):
-    return await crud.get_projects_by_user_id(
+    return await crud.get_user_projects(
         session=session,
         user_id=current_user.id,
     )
@@ -50,12 +55,11 @@ async def delete_project(_=Depends(delete_project)) -> None:
     pass
 
 
-@router.post(
-    "/{project_id}/users",
-    response_model=UserProject,
-    status_code=status.HTTP_201_CREATED,
-)
-async def create_user_project(
-    user_project: UserProject = Depends(create_user_project),
-) -> UserProject:
-    return user_project
+@router.post("/{project_id}/users", status_code=status.HTTP_201_CREATED)
+async def add_user_to_project(_=Depends(add_user_to_project)) -> None:
+    pass
+
+
+@router.delete("/{project_id}/users", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_user_from_project(_=Depends(delete_user_from_project)) -> None:
+    pass

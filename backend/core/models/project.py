@@ -21,7 +21,7 @@ class Project(Base):
     is_private: Mapped[bool]
 
     users: Mapped[list["User"]] = relationship(
-        secondary="users_projects",
+        secondary="user_projects",
         back_populates="projects",
     )
     user_associations: Mapped[list["UserProject"]] = relationship(

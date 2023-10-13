@@ -17,7 +17,7 @@ class User(Base):
     email: Mapped[str | None]
 
     projects: Mapped[list["Project"]] = relationship(
-        secondary="users_projects",
+        secondary="user_projects",
         back_populates="users",
     )
     project_associations: Mapped[list["UserProject"]] = relationship(
