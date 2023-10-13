@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
 from core.models import Task, Project, Priority, State
-from .schemas import TaskCreate
+from .schemas import TaskCreate, TaskUpdate, TaskUpdatePartial
 
 
 async def create_task(
@@ -24,6 +24,21 @@ async def create_task(
     return task
 
 
+async def get_task(
+    session: AsyncSession,
+    task_id: int,
+) -> Task | None:
+    stmt = (
+        select(Task)
+        .options(selectinload(Task.state))
+        .options(selectinload(Task.priority))
+        .where(Task.id == task_id)
+    )
+    result: Result = await session.execute(stmt)
+    task = result.scalar_one_or_none()
+    return task
+
+
 async def get_tasks(
     session: AsyncSession,
     project: Project,
@@ -38,3 +53,43 @@ async def get_tasks(
     result: Result = await session.execute(stmt)
     tasks = result.scalars().all()
     return list(tasks)
+
+
+async def update_task_info(
+    session: AsyncSession,
+    task: Task,
+    task_update: TaskUpdate | TaskUpdatePartial,
+    partial: bool = False,
+) -> Task:
+    for name, value in task_update.model_dump(exclude_unset=partial).items():
+        setattr(task, name, value)
+    await session.commit()
+    return task
+
+
+async def update_task_state(
+    session: AsyncSession,
+    task: Task,
+    state: State,
+) -> Task:
+    task.state = state
+    await session.commit()
+    return task
+
+
+async def update_task_priority(
+    session: AsyncSession,
+    task: Task,
+    priority: Priority,
+) -> Task:
+    task.priority = priority
+    await session.commit()
+    return task
+
+
+async def delete_task(
+    session: AsyncSession,
+    task: Task,
+) -> None:
+    await session.delete(task)
+    await session.commit()

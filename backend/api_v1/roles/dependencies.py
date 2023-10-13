@@ -3,7 +3,7 @@ from typing import Annotated
 from fastapi import Depends, HTTPException, status, Body
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from core.models import db_helper, Role
+from core.models import Role, db_helper
 
 from . import crud
 
@@ -20,3 +20,9 @@ async def role_by_id(
         status_code=status.HTTP_404_NOT_FOUND,
         detail=f"Role {role_id} not found",
     )
+
+
+async def get_roles(
+    session: AsyncSession = Depends(db_helper.scoped_session_dependency),
+) -> list[Role]:
+    return await crud.get_roles(session=session)

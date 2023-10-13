@@ -66,6 +66,6 @@ async def delete_user_from_project(_=Depends(delete_user_from_project)) -> None:
     pass
 
 
-@router.patch("/{project_id}/users", status_code=status.HTTP_200_OK)
+@router.patch("/{project_id}/users")
 async def update_user_role(_=Depends(update_user_role)) -> None:
     pass

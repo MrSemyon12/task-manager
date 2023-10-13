@@ -1,6 +1,7 @@
 from sqlalchemy import select
 from sqlalchemy.engine import Result
 from sqlalchemy.ext.asyncio import AsyncSession
+
 from core.models import User
 
 from .schemas import UserInDB

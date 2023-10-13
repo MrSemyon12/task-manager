@@ -1,11 +1,10 @@
 from fastapi import APIRouter, Depends
-from sqlalchemy.ext.asyncio import AsyncSession
 
-from core.models import db_helper
 from api_v1.auth.dependencies import get_current_user
 
+from .dependencies import get_priorities
 from .schemas import Priority
-from . import crud
+
 
 router = APIRouter(
     tags=["Priorities"],
@@ -14,7 +13,5 @@ router = APIRouter(
 
 
 @router.get("/", response_model=list[Priority])
-async def get_priorities(
-    session: AsyncSession = Depends(db_helper.scoped_session_dependency),
-):
-    return await crud.get_priorities(session=session)
+async def get_priorities(priorities=Depends(get_priorities)):
+    return priorities

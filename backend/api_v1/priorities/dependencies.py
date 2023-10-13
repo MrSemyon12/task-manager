@@ -3,7 +3,8 @@ from typing import Annotated
 from fastapi import Depends, HTTPException, status, Body
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from core.models import db_helper, Priority
+from core.models import Priority, db_helper
+
 from . import crud
 
 
@@ -19,3 +20,9 @@ async def priority_by_id(
         status_code=status.HTTP_404_NOT_FOUND,
         detail=f"Priority {priority_id} not found",
     )
+
+
+async def get_priorities(
+    session: AsyncSession = Depends(db_helper.scoped_session_dependency),
+) -> list[Priority]:
+    return await crud.get_priorities(session=session)

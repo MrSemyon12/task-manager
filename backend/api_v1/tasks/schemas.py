@@ -16,6 +16,16 @@ class TaskCreate(TaskBase):
     pass
 
 
+class TaskUpdate(TaskCreate):
+    pass
+
+
+class TaskUpdatePartial(TaskCreate):
+    title: str | None = None
+    description: str | None = None
+    deadline: datetime | None = None
+
+
 class Task(TaskBase):
     model_config = ConfigDict(from_attributes=True)
 
