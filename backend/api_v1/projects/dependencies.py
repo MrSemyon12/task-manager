@@ -144,3 +144,27 @@ async def delete_user_from_project(
         session=session,
         user_project=user_project,
     )
+
+
+async def update_user_role(
+    user: User = Depends(user_by_id),
+    project: Project = Depends(project_by_id),
+    role: Role = Depends(role_by_id),
+    _=Depends(manager_access_required),
+    session: AsyncSession = Depends(db_helper.scoped_session_dependency),
+) -> None:
+    user_project: UserProject | None = await crud.get_user_project(
+        session=session,
+        project_id=project.id,
+        user_id=user.id,
+    )
+    if user_project is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"User {user.id} not in project {project.id}",
+        )
+    await crud.update_user_role(
+        session=session,
+        user_project=user_project,
+        role=role,
+    )

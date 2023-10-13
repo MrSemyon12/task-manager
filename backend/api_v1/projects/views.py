@@ -12,6 +12,7 @@ from .dependencies import (
     delete_project,
     add_user_to_project,
     delete_user_from_project,
+    update_user_role,
 )
 from .schemas import Project
 from . import crud
@@ -62,4 +63,9 @@ async def add_user_to_project(_=Depends(add_user_to_project)) -> None:
 
 @router.delete("/{project_id}/users", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_user_from_project(_=Depends(delete_user_from_project)) -> None:
+    pass
+
+
+@router.patch("/{project_id}/users", status_code=status.HTTP_200_OK)
+async def update_user_role(_=Depends(update_user_role)) -> None:
     pass
