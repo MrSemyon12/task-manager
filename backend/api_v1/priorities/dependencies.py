@@ -1,15 +1,14 @@
 from typing import Annotated
 
-from fastapi import Path, Depends, HTTPException, status
+from fastapi import Depends, HTTPException, status, Body
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.models import db_helper, Priority
-
 from . import crud
 
 
 async def priority_by_id(
-    priority_id: Annotated[int, Path(ge=1)],
+    priority_id: Annotated[int, Body(ge=1)],
     session: AsyncSession = Depends(db_helper.scoped_session_dependency),
 ) -> Priority:
     priority = await crud.get_priority(session=session, priority_id=priority_id)

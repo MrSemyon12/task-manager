@@ -20,5 +20,5 @@ class Task(TaskBase):
     model_config = ConfigDict(from_attributes=True)
 
     id: int
-    priority: Priority
     state: State
+    priority: Priority

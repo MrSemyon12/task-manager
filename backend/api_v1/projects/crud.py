@@ -27,6 +27,7 @@ async def get_project(
     stmt = (
         select(Project)
         .options(selectinload(Project.users))
+        .options(selectinload(Project.tasks))
         .where(Project.id == project_id)
     )
     result: Result = await session.execute(stmt)
