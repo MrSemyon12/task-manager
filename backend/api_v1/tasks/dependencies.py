@@ -7,7 +7,11 @@ from starlette import status
 from core.models import Task, State, Priority, Project, db_helper
 
 from api_v1.priorities.dependencies import priority_by_id
-from api_v1.projects.dependencies import project_by_id, manager_access_required
+from api_v1.projects.dependencies import (
+    project_by_id,
+    manager_access_required,
+    worker_access_required,
+)
 from api_v1.states.dependencies import state_by_id
 
 from .schemas import TaskCreate, TaskUpdatePartial
@@ -58,6 +62,7 @@ async def get_tasks(
 async def update_task_info(
     task_update: TaskUpdatePartial,
     task: Task = Depends(task_by_id),
+    _=Depends(manager_access_required),
     session: AsyncSession = Depends(db_helper.scoped_session_dependency),
 ) -> Task:
     return await crud.update_task_info(
@@ -71,6 +76,7 @@ async def update_task_info(
 async def update_task_state(
     state: State = Depends(state_by_id),
     task: Task = Depends(task_by_id),
+    _=Depends(worker_access_required),
     session: AsyncSession = Depends(db_helper.scoped_session_dependency),
 ):
     return await crud.update_task_state(
@@ -83,6 +89,7 @@ async def update_task_state(
 async def update_task_priority(
     priority: Priority = Depends(priority_by_id),
     task: Task = Depends(task_by_id),
+    _=Depends(manager_access_required),
     session: AsyncSession = Depends(db_helper.scoped_session_dependency),
 ):
     return await crud.update_task_priority(

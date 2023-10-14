@@ -73,6 +73,17 @@ async def manager_access_required(
     return role
 
 
+async def worker_access_required(
+    role: Role = Depends(current_user_role),
+) -> Role:
+    if role.id not in [settings.manager_role_id, settings.worker_role_id]:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=f"Access denied",
+        )
+    return role
+
+
 async def delete_project(
     project: Project = Depends(project_by_id),
     _=Depends(manager_access_required),
