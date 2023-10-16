@@ -1,0 +1,12 @@
+.header {
+  box-shadow: var(--shadow);
+  background-color: var(--colors-ui-base);
+  margin-top: 40px;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 0;
+}

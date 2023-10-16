@@ -1,11 +1,13 @@
-import './App.css';
+import { Header } from '../Header';
+import { Main } from '../Main';
 
 export const App: React.FC = () => {
   return (
-    <div className='App'>
-      <header className='App-header'>
+    <>
+      <Header />
+      <Main>
         <h1>Hello world!</h1>
-      </header>
-    </div>
+      </Main>
+    </>
   );
 };
