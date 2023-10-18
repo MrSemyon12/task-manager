@@ -1,15 +1,12 @@
-import styles from './Header.module.css';
+import React from 'react';
+import { Layout } from 'antd';
 
-import { Container } from '../Container';
+const { Header: AntdHeader } = Layout;
 
 export const Header: React.FC = () => {
   return (
-    <header className={styles.header}>
-      <Container>
-        <div className={styles.wrapper}>
-          <h1>Task Manager</h1>
-        </div>
-      </Container>
-    </header>
+    <AntdHeader style={{ display: 'flex', alignItems: 'center' }}>
+      <h1 style={{ color: 'white' }}>Task Manager</h1>
+    </AntdHeader>
   );
 };
