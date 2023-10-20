@@ -36,11 +36,11 @@ export const Sider: React.FC = () => {
       width={284}
       style={{
         overflow: 'auto',
-        height: 'calc(100vh - 125px)',
+        height: 'calc(100vh - 108px)',
         backgroundColor: '#f5f5f5',
         padding: 10,
         justifyContent: 'center',
-        // background: 'blue',
+        background: 'blue',
       }}
     >
       <Space direction='vertical' style={{ width: '100%', paddingBottom: 10 }}>

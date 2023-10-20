@@ -12,7 +12,7 @@ export const Footer: React.FC = () => {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'lavender',
+        backgroundColor: 'burlywood',
       }}
     >
       Footer

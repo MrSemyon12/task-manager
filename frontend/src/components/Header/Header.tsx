@@ -8,7 +8,7 @@ export const Header: React.FC = () => {
   return (
     <AntdHeader
       style={{
-        height: '75px',
+        height: '60px',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -26,7 +26,7 @@ export const Header: React.FC = () => {
         }
       >
         <Avatar
-          size={48}
+          size={42}
           style={{
             backgroundColor: '#f56a00',
             cursor: 'pointer',
