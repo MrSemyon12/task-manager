@@ -5,5 +5,17 @@ import { Layout } from 'antd';
 const { Footer: AntdFooter } = Layout;
 
 export const Footer: React.FC = () => {
-  return <AntdFooter>Footer</AntdFooter>;
+  return (
+    <AntdFooter
+      style={{
+        height: '40px',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'lavender',
+      }}
+    >
+      Footer
+    </AntdFooter>
+  );
 };

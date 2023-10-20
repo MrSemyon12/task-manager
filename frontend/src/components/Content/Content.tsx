@@ -8,7 +8,11 @@ export const Content: React.FC = () => {
   return (
     <AntdContent
       style={{
-        padding: 24,
+        overflow: 'auto',
+        height: 'calc(100vh - 125px)',
+        // backgroundColor: '#f5f5f5',
+        padding: 10,
+        backgroundColor: 'coral',
       }}
     >
       Content
