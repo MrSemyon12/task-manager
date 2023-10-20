@@ -5,6 +5,7 @@ import { Layout } from 'antd';
 import { Header } from '../components/Header';
 import { Sider } from '../components/Sider';
 import { Content } from '../components/Content';
+import { Footer } from '../components/Footer';
 
 export const Main: React.FC = () => {
   return (
@@ -12,10 +13,9 @@ export const Main: React.FC = () => {
       <Header />
       <Layout hasSider>
         <Sider />
-        <Layout style={{ padding: '24px 24px' }}>
-          <Content />
-        </Layout>
+        <Content />
       </Layout>
+      <Footer />
     </Layout>
   );
 };
