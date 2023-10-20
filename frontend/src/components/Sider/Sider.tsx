@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 
 import { Layout, Card, Space, Button } from 'antd';
 
+import { PlusOutlined } from '@ant-design/icons';
+
 const { Sider: AntdSider } = Layout;
 const { Meta } = Card;
 
@@ -20,7 +22,7 @@ const item = (
   </Card>
 );
 
-const cards = [...Array(2)].map((_) => item);
+const cards = [...Array(0)].map((_) => item);
 
 export const Sider: React.FC = () => {
   const [items, setItems] = useState(cards);
@@ -34,14 +36,18 @@ export const Sider: React.FC = () => {
       width={284}
       style={{
         overflow: 'auto',
-        height: '85vh',
+        height: 'calc(100vh - 125px)',
         backgroundColor: '#f5f5f5',
-        padding: '10px',
+        padding: 10,
         justifyContent: 'center',
+        // background: 'blue',
       }}
     >
-      <Space direction='vertical' style={{ width: '100%' }}>
-        <Button onClick={add}>add</Button>
+      <Space direction='vertical' style={{ width: '100%', paddingBottom: 10 }}>
+        <Button type='primary' onClick={add} style={{ width: '100%' }}>
+          <PlusOutlined />
+          Create Project
+        </Button>
         {items}
       </Space>
     </AntdSider>

@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { Button, Layout } from 'antd';
-import { Avatar, Popover } from 'antd';
+import { Button, Layout, Avatar, Popover } from 'antd';
 
 const { Header: AntdHeader } = Layout;
 
@@ -13,7 +12,8 @@ export const Header: React.FC = () => {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        background: 'purple',
+        backgroundColor: 'purple',
+        // boxShadow: 'inset -4px -4px 10px 2px #B0C4DE',
       }}
     >
       <h1 style={{ color: 'white' }}>Task Manager</h1>
