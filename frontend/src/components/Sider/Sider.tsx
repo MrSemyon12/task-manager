@@ -1,62 +1,49 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import { Layout, Menu, MenuProps, theme } from 'antd';
-import {
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-  BarChartOutlined,
-  CloudOutlined,
-  AppstoreOutlined,
-  TeamOutlined,
-  ShopOutlined,
-} from '@ant-design/icons';
+import { Layout, Card, Space, Button } from 'antd';
 
 const { Sider: AntdSider } = Layout;
+const { Meta } = Card;
 
-const items: MenuProps['items'] = [
-  UserOutlined,
-  VideoCameraOutlined,
-  UploadOutlined,
-  BarChartOutlined,
-  CloudOutlined,
-  AppstoreOutlined,
-  TeamOutlined,
-  ShopOutlined,
-].map((icon, index) => ({
-  key: String(index + 1),
-  icon: React.createElement(icon),
-  label: `nav ${index + 1}`,
-}));
+const item = (
+  <Card
+    hoverable
+    style={{ width: '100%' }}
+    // cover={
+    //   <img
+    //     alt='example'
+    //     src='https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png'
+    //   />
+    // }
+  >
+    <Meta title='Europe Street beat' description='www.instagram.com' />
+  </Card>
+);
+
+const cards = [...Array(2)].map((_) => item);
 
 export const Sider: React.FC = () => {
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken();
+  const [items, setItems] = useState(cards);
+
+  const add = () => {
+    setItems([...items, item]);
+  };
 
   return (
     <AntdSider
-      width={300}
+      width={284}
       style={{
         overflow: 'auto',
-        height: '90vh',
-        // position: 'fixed',
-        // // left: 0,
-        // // top: 0,
-        // bottom: 0,
-        // margin: 0,
-        background: colorBgContainer,
+        height: '85vh',
+        backgroundColor: '#f5f5f5',
+        padding: '10px',
+        justifyContent: 'center',
       }}
     >
-      <Menu
-        mode='inline'
-        defaultSelectedKeys={['1']}
-        defaultOpenKeys={['sub1']}
-        style={{ height: '100%', borderRight: 0 }}
-        items={items}
-      />
+      <Space direction='vertical' style={{ width: '100%' }}>
+        <Button onClick={add}>add</Button>
+        {items}
+      </Space>
     </AntdSider>
   );
 };
