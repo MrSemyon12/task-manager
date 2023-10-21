@@ -1,0 +1,15 @@
+.task {
+  background-color: white;
+  border: thin solid black;
+  height: 40px;
+}
+
+.draggable {
+  cursor: move;
+}
+
+.placeholder {
+  background-color: white;
+  border: 1px solid brown;
+  height: 40px;
+}

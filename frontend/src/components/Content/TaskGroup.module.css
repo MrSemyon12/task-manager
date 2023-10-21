@@ -1,0 +1,16 @@
+.container {
+  background-color: darkcyan;
+  min-height: calc(100vh - 228px);
+  width: 100%;
+}
+
+.container_header {
+  text-align: center;
+}
+
+.droppable {
+  background-color: white;
+  border: medium solid black;
+  min-height: calc(100vh - 275px);
+  margin: 10px;
+}
