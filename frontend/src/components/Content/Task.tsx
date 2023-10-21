@@ -1,21 +1,24 @@
 import { ReactNode } from 'react';
 
+import { Draggable } from 'react-beautiful-dnd';
+
 import style from './Task.module.css';
 
-type ChildrenProps = { children?: ReactNode; title?: string };
+type ChildrenProps = { task: any; index: any };
 
-const Draggable: React.FC<ChildrenProps> = ({ children }) => {
+export const Task: React.FC<ChildrenProps> = ({ task, index }) => {
   return (
-    <div className={style.draggable} draggable>
-      {children}
-    </div>
-  );
-};
-
-export const Task: React.FC = () => {
-  return (
-    <Draggable>
-      <div className={style.task}>Task</div>
+    <Draggable key={task.id} draggableId={task.id} index={index}>
+      {(provided, snapshot) => (
+        <div
+          className={style.task}
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+        >
+          {task.name}
+        </div>
+      )}
     </Draggable>
   );
 };
