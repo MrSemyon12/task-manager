@@ -9,7 +9,7 @@ import { Sider } from '../components/Sider';
 import { Content } from '../components/Content';
 import { Footer } from '../components/Footer';
 
-export const Main: React.FC = () => {
+export const MainPage: React.FC = () => {
   return (
     <ProjectProvider>
       <Layout>
