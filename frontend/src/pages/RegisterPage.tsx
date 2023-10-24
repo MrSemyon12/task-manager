@@ -1,5 +1,11 @@
 import React from 'react';
 
+import { Container, Register } from '../components';
+
 export const RegisterPage: React.FC = () => {
-  return <div>RegisterPage</div>;
+  return (
+    <Container>
+      <Register />
+    </Container>
+  );
 };
