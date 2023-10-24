@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { Container, Login } from '../components';
+import { Center, Login } from '../components';
 
 export const LoginPage: React.FC = () => {
   return (
-    <Container>
+    <Center>
       <Login />
-    </Container>
+    </Center>
   );
 };

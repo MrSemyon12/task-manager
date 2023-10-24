@@ -9,14 +9,18 @@
 
   --sider-width: 300px;
 
+  --background-color: rgb(194, 228, 250);
   --colors-text: hsl(200, 15%, 8%);
 
   --radii: 0.5rem;
   --shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+
+  --font-family: monospace;
 }
 
 body {
   margin: 0;
+  padding: 0;
   user-select: none;
 }
 
@@ -24,4 +28,5 @@ h1,
 h2,
 h3 {
   margin: 0;
+  font-family: var(--font-family);
 }

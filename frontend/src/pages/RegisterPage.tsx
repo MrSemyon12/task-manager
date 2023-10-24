@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { Container, Register } from '../components';
+import { Center, Register } from '../components';
 
 export const RegisterPage: React.FC = () => {
   return (
-    <Container>
+    <Center>
       <Register />
-    </Container>
+    </Center>
   );
 };
