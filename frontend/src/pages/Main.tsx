@@ -2,6 +2,8 @@ import React from 'react';
 
 import { Layout } from 'antd';
 
+import { ProjectProvider } from '../contexts/ProjectContext';
+
 import { Header } from '../components/Header';
 import { Sider } from '../components/Sider';
 import { Content } from '../components/Content';
@@ -9,13 +11,15 @@ import { Footer } from '../components/Footer';
 
 export const Main: React.FC = () => {
   return (
-    <Layout>
-      <Header />
-      <Layout hasSider style={{ height: 'var(--content-height)' }}>
-        <Sider />
-        <Content />
+    <ProjectProvider>
+      <Layout>
+        <Header />
+        <Layout hasSider style={{ height: 'var(--content-height)' }}>
+          <Sider />
+          <Content />
+        </Layout>
+        <Footer />
       </Layout>
-      <Footer />
-    </Layout>
+    </ProjectProvider>
   );
 };
