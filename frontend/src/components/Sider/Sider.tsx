@@ -9,14 +9,12 @@ const { Meta } = Card;
 
 const item = (
   <Card
-    hoverable
-    style={{ width: '100%' }}
-    // cover={
-    //   <img
-    //     alt='example'
-    //     src='https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png'
-    //   />
-    // }
+  // cover={
+  //   <img
+  //     alt='example'
+  //     src='https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png'
+  //   />
+  // }
   >
     <Meta title='Europe Street beat' description='www.instagram.com' />
   </Card>
@@ -33,10 +31,9 @@ export const Sider: React.FC = () => {
 
   return (
     <AntdSider
-      width={284}
+      width='var(--sider-width)'
       style={{
         overflow: 'auto',
-        height: 'calc(100vh - 108px)',
         backgroundColor: '#f5f5f5',
         padding: 10,
         justifyContent: 'center',

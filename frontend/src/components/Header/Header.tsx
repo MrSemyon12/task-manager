@@ -8,7 +8,7 @@ export const Header: React.FC = () => {
   return (
     <AntdHeader
       style={{
-        height: '60px',
+        height: 'var(--header-height)',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',

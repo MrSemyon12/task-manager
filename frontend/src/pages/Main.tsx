@@ -11,7 +11,7 @@ export const Main: React.FC = () => {
   return (
     <Layout>
       <Header />
-      <Layout hasSider>
+      <Layout hasSider style={{ height: 'var(--content-height)' }}>
         <Sider />
         <Content />
       </Layout>

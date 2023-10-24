@@ -8,14 +8,14 @@ export const Footer: React.FC = () => {
   return (
     <AntdFooter
       style={{
-        height: '40px',
+        height: 'var(--footer-height)',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'burlywood',
       }}
     >
-      Footer
+      footer
     </AntdFooter>
   );
 };
