@@ -1,5 +1,11 @@
 import React from 'react';
 
+import { Container, Login } from '../components';
+
 export const LoginPage: React.FC = () => {
-  return <div>LoginPage</div>;
+  return (
+    <Container>
+      <Login />
+    </Container>
+  );
 };
