@@ -17,7 +17,7 @@ export const Content: React.FC = () => {
       }}
     >
       <Card>
-        <input onChange={(e) => setName(e.target.value)} />
+        <input onChange={(e) => setName(e.target.value)} value={name} />
       </Card>
     </AntdContent>
   );
