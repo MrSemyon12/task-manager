@@ -7,9 +7,9 @@ import { Main, Auth, NotFound } from './pages';
 const App: React.FC = () => {
   return (
     <Routes>
-      <Route index path='/' element={<Main />}></Route>
-      <Route path='/auth' element={<Auth />}></Route>
-      <Route path='*' element={<NotFound />}></Route>
+      <Route index path='/' element={<Main />} />
+      <Route path='/auth' element={<Auth />} />
+      <Route path='*' element={<NotFound />} />
     </Routes>
   );
 };
