@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Tooltip, message } from 'antd';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
@@ -22,6 +22,9 @@ function filterObject(obj: User) {
 }
 
 export const Register: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [messageApi, contextHolder] = message.useMessage();
+
   const {
     register,
     formState: { errors },
@@ -36,21 +39,32 @@ export const Register: React.FC = () => {
   });
 
   const onSubmit = async (data: User) => {
+    setIsLoading(true);
+    messageApi.open({
+      type: 'loading',
+      content: 'Pending result...',
+      duration: 0,
+    });
     try {
       await api.post(REGISTER_URL, filterObject(data));
+      messageApi.destroy();
       message.success('Account created', 5);
     } catch (error) {
+      messageApi.destroy();
       if (axios.isAxiosError(error) && error.response?.status === 400) {
-        message.error('Username registered', 5);
+        message.error(`Username \"${data.username}\" already exists`, 5);
       } else {
-        message.error('Registration failed', 5);
+        message.error('Service is not available', 5);
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <div className={styles.auth_form}>
       <h1>Register</h1>
+      {contextHolder}
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className={styles.form_group}>
           <Tooltip
@@ -60,7 +74,10 @@ export const Register: React.FC = () => {
             <input
               {...register('username', {
                 required: { value: true, message: 'Required field' },
-                minLength: { value: 4, message: 'Min length is 4 characters' },
+                minLength: {
+                  value: 4,
+                  message: 'Min length is 4 characters',
+                },
                 maxLength: {
                   value: 16,
                   message: 'Max length is 16 characters',
@@ -102,7 +119,10 @@ export const Register: React.FC = () => {
             <input
               {...register('password', {
                 required: { value: true, message: 'Required field' },
-                minLength: { value: 4, message: 'Min length is 4 characters' },
+                minLength: {
+                  value: 4,
+                  message: 'Min length is 4 characters',
+                },
                 maxLength: {
                   value: 16,
                   message: 'Max length is 16 characters',
@@ -116,7 +136,7 @@ export const Register: React.FC = () => {
           <label>Password</label>
         </div>
 
-        <input type='submit' value='Register' />
+        <input type='submit' value='Register' disabled={isLoading} />
 
         <div className={styles.form_link}>
           Have account? <Link to='/login'>Login</Link>
