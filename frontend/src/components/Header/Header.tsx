@@ -12,7 +12,6 @@ export const Header: React.FC = () => {
         justifyContent: 'space-between',
         alignItems: 'center',
         backgroundColor: 'purple',
-        // boxShadow: 'inset -4px -4px 10px 2px #B0C4DE',
       }}
     >
       <h1 style={{ color: 'white' }}>Task Manager</h1>

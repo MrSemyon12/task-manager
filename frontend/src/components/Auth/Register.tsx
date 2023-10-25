@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
 import styles from './Auth.module.css';
@@ -18,15 +19,22 @@ export const Register: React.FC = () => {
       <form>
         <div className={styles.form_group}>
           <input type='text' />
+          <span></span>
           <label>Username</label>
         </div>
         <div className={styles.form_group}>
-          <input type='text' />
+          <input type='password' />
+          <span></span>
           <label>Password</label>
         </div>
         <div className={styles.form_group}>
-          <input type='text' />
+          <input type='password' />
+          <span></span>
           <label>Confirm password</label>
+        </div>
+        <input type='submit' value='Register' />
+        <div className={styles.form_link}>
+          Have account? <Link to='/login'>Login</Link>
         </div>
       </form>
     </div>

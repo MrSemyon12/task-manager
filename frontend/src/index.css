@@ -9,26 +9,19 @@
 
   --sider-width: 300px;
 
-  --background-color: rgb(194, 228, 250);
-  --form-color: rgb(236, 245, 251);
+  --background-color: #7db9e1;
 
-  --colors-text: hsl(200, 15%, 8%);
+  --color-text: hsl(200, 15%, 8%);
+  --color-primary: #1677ff;
 
   --radii: 0.5rem;
   --shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 
-  --font-family: monospace;
+  --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
   margin: 0;
   padding: 0;
   user-select: none;
-}
-
-h1,
-h2,
-h3 {
-  margin: 0;
-  font-family: var(--font-family);
 }
