@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tooltip } from 'antd';
+import { Tooltip, message } from 'antd';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
@@ -27,6 +27,7 @@ export const Register: React.FC = () => {
 
   const onSubmit = async (data: User) => {
     console.log(data);
+    message.success('Account created', 5);
   };
 
   return (
