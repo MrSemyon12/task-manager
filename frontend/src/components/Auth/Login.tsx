@@ -18,12 +18,12 @@ export const Login: React.FC = () => {
       <h1>Login</h1>
       <form>
         <div className={styles.form_group}>
-          <input type='text' />
+          <input type='text' placeholder='' />
           <span></span>
           <label>Username</label>
         </div>
         <div className={styles.form_group}>
-          <input type='password' />
+          <input type='password' placeholder='' />
           <span></span>
           <label>Password</label>
         </div>

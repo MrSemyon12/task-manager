@@ -58,12 +58,14 @@
   transition: 0.5s;
 }
 
-.form_group input:focus ~ label {
+.form_group input:focus ~ label,
+.form_group input:not(:placeholder-shown) ~ label {
   top: -5px;
   color: var(--color-primary);
 }
 
-.form_group input:focus ~ span::before {
+.form_group input:focus ~ span::before,
+.form_group input:not(:placeholder-shown) ~ span::before {
   width: 100%;
 }
 
