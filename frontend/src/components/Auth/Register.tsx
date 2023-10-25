@@ -23,6 +23,11 @@ export const Register: React.FC = () => {
           <label>Username</label>
         </div>
         <div className={styles.form_group}>
+          <input type='text' />
+          <span></span>
+          <label>Email</label>
+        </div>
+        <div className={styles.form_group}>
           <input type='password' />
           <span></span>
           <label>Password</label>
