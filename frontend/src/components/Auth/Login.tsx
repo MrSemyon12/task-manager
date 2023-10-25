@@ -16,7 +16,7 @@ export const Login: React.FC = () => {
   return (
     <div className={styles.auth_form}>
       <h1>Login</h1>
-      <form>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className={styles.form_group}>
           <input type='text' placeholder='' />
           <span></span>
