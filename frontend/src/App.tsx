@@ -2,14 +2,21 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import { LoginPage, RegisterPage, MainPage, NotFoundPage } from './pages';
+import { RequireAuth } from './components/Auth';
 
 const App: React.FC = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<MainPage />} />
+        {/* Public routes */}
         <Route path='/login' element={<LoginPage />} />
         <Route path='/register' element={<RegisterPage />} />
+
+        {/* Protected routes */}
+        <Route element={<RequireAuth />}>
+          <Route path='/' element={<MainPage />} />
+        </Route>
+
         <Route path='*' element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
