@@ -12,7 +12,7 @@ router = APIRouter(tags=["Auth"])
 @router.post("/login", response_model=Token)
 async def login_for_access_token(user: User = Depends(authenticate_user)):
     access_token = create_access_token(data={"sub": user.username})
-    return {"accessToken": access_token, "tokenType": "bearer"}
+    return {"access_token": access_token, "token_type": "bearer"}
 
 
 @router.post(
