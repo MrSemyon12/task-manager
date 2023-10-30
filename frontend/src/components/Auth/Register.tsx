@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Tooltip, message } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 
@@ -18,6 +18,10 @@ function filterObject(obj: UserRegister) {
 }
 
 export const Register: React.FC = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || '/login';
+
   const [isLoading, setIsLoading] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
 
@@ -45,6 +49,7 @@ export const Register: React.FC = () => {
       await api.post(REGISTER_URL, filterObject(data));
       messageApi.destroy();
       message.success('Account created', 5);
+      navigate(from, { replace: true });
     } catch (error) {
       messageApi.destroy();
       if (axios.isAxiosError(error) && error.response?.status === 400) {
@@ -58,7 +63,7 @@ export const Register: React.FC = () => {
   };
 
   return (
-    <div className={styles.auth_form}>
+    <section className={styles.auth_form}>
       <h1>Register</h1>
       {contextHolder}
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -138,6 +143,6 @@ export const Register: React.FC = () => {
           Have account? <Link to='/login'>Login</Link>
         </div>
       </form>
-    </div>
+    </section>
   );
 };
