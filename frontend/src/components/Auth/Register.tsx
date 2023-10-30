@@ -2,20 +2,16 @@ import React, { useState } from 'react';
 import { Tooltip, message } from 'antd';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import api from '../../api/axios';
 import axios from 'axios';
+
+import { UserRegister } from './types';
+import api from '../../api/axios';
 
 import styles from './Auth.module.css';
 
 const REGISTER_URL = '/auth/register';
 
-type User = {
-  username: string;
-  email: string;
-  password: string;
-};
-
-function filterObject(obj: User) {
+function filterObject(obj: UserRegister) {
   return Object.fromEntries(
     Object.entries(obj).filter(([_, val]) => val !== '')
   );
@@ -38,7 +34,7 @@ export const Register: React.FC = () => {
     mode: 'onSubmit',
   });
 
-  const onSubmit = async (data: User) => {
+  const onSubmit = async (data: UserRegister) => {
     setIsLoading(true);
     messageApi.open({
       type: 'loading',
