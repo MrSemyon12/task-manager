@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import { LoginPage, RegisterPage, MainPage, NotFoundPage } from './pages';
-import { RequireAuth } from './components/Auth';
+import { PersistLogin, RequireAuth } from './components/Auth';
 
 const App: React.FC = () => {
   return (
@@ -13,8 +13,10 @@ const App: React.FC = () => {
         <Route path='/register' element={<RegisterPage />} />
 
         {/* Protected routes */}
-        <Route element={<RequireAuth />}>
-          <Route path='/' element={<MainPage />} />
+        <Route element={<PersistLogin />}>
+          <Route element={<RequireAuth />}>
+            <Route path='/' element={<MainPage />} />
+          </Route>
         </Route>
 
         <Route path='*' element={<NotFoundPage />} />
