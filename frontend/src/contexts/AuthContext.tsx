@@ -6,26 +6,26 @@ import {
   useState,
 } from 'react';
 
-export type Auth = {
-  accessToken: string;
-  tokenType: string;
-};
+export type Auth =
+  | {
+      accessToken: string;
+      tokenType: string;
+    }
+  | undefined;
 
 interface IAuthContext {
-  auth: Auth | {};
+  auth: Auth;
   setAuth: Dispatch<SetStateAction<Auth>>;
 }
 
-const defaultState = {
-  auth: {},
-} as IAuthContext;
+const defaultState = {} as IAuthContext;
 
 const AuthContext = createContext(defaultState);
 
 type AuthProviderProps = { children: ReactNode };
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [auth, setAuth] = useState<Auth | {}>({});
+  const [auth, setAuth] = useState<Auth>();
 
   return (
     <AuthContext.Provider value={{ auth, setAuth }}>
