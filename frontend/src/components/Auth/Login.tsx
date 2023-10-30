@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Tooltip, message } from 'antd';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 
+import AuthContext from '../../contexts/AuthContext';
 import { UserLogin } from './types';
 import api from '../../api/axios';
 
@@ -12,6 +13,8 @@ import styles from './Auth.module.css';
 const LOGIN_URL = '/auth/login';
 
 export const Login: React.FC = () => {
+  const { setAuth } = useContext(AuthContext);
+
   const [isLoading, setIsLoading] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
 
@@ -39,6 +42,7 @@ export const Login: React.FC = () => {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         withCredentials: true,
       });
+      setAuth(response.data);
       messageApi.destroy();
       message.success('Successful login', 5);
     } catch (error) {
