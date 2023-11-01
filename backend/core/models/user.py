@@ -17,7 +17,7 @@ class User(Base):
     hashed_password: Mapped[str]
     email: Mapped[str | None]
 
-    session: Mapped["Session"] = relationship(back_populates="users")
+    session: Mapped["Session"] = relationship(back_populates="user")
 
     projects: Mapped[list["Project"]] = relationship(
         secondary="user_projects",
