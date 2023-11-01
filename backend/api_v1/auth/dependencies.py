@@ -8,7 +8,7 @@ from jose import JWTError
 from core.models import db_helper, User
 from core.config import settings
 
-from .utils import decode_access_token, get_password_hash
+from .utils import decode_access_token, get_password_hash, verify_password
 from .schemas import UserCreate, UserInDB
 from . import crud
 
@@ -20,16 +20,21 @@ async def authenticate_user(
     form_data: OAuth2PasswordRequestForm = Depends(),
     session: AsyncSession = Depends(db_helper.scoped_session_dependency),
 ) -> User:
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Incorrect username or password",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
     user = await crud.get_user_by_username(
         session=session,
         username=form_data.username,
     )
     if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect username or password",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
+        raise credentials_exception
+
+    if not verify_password(form_data.password, user.hashed_password):
+        raise credentials_exception
+
     return user
 
 
