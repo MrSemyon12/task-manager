@@ -11,6 +11,7 @@ __all__ = (
     "Notice",
     "UserProject",
     "Task",
+    "Session",
 )
 
 from .db_helper import DatabaseHelper, db_helper
@@ -23,3 +24,4 @@ from .project import Project
 from .notice import Notice
 from .user_project import UserProject
 from .task import Task
+from .session import Session
