@@ -3,7 +3,12 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 
 from core.models import db_helper
-from .dependencies import authenticate_user, create_user
+from .dependencies import (
+    authenticate_user,
+    create_user,
+    get_current_user,
+    refresh_access_token,
+)
 from .services import update_refresh_token
 from .utils import create_token
 from .schemas import Token, User
@@ -38,3 +43,15 @@ async def login_for_access_token(
 )
 def register_user(user: User = Depends(create_user)):
     return user
+
+
+@router.get("/refresh", response_model=Token)
+def refresh_access_token(access_token: str = Depends(refresh_access_token)):
+    return Token(access_token=access_token)
+
+
+@router.get("/logout", status_code=status.HTTP_204_NO_CONTENT)
+def logout(
+    current_user: User = Depends(get_current_user),
+):
+    pass

@@ -38,9 +38,12 @@ def create_token(data: dict, refresh: bool = False) -> str:
     return encoded_jwt
 
 
-def decode_access_token(access_token: str) -> dict:
+def decode_token(token: str, refresh: bool = False) -> dict:
+    secret_key = (
+        settings.auth.refresh_secret_key if refresh else settings.auth.access_secret_key
+    )
     return jwt.decode(
-        token=access_token,
-        key=settings.auth.secret_key,
+        token=token,
+        key=secret_key,
         algorithms=[settings.auth.algorithm],
     )

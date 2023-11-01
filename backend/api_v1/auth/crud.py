@@ -1,6 +1,7 @@
 from sqlalchemy import select
 from sqlalchemy.engine import Result
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
 
 from core.models import User, Session
 
@@ -26,7 +27,11 @@ async def get_user_session(session: AsyncSession, user_id: int) -> Session | Non
 
 
 async def get_user_by_username(session: AsyncSession, username: str) -> User | None:
-    stmt = select(User).where(User.username == username)
+    stmt = (
+        select(User)
+        .where(User.username == username)
+        .options(selectinload(User.session))
+    )
     result: Result = await session.execute(stmt)
     user: User | None = result.scalar_one_or_none()
     return user

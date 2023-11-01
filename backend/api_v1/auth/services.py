@@ -1,6 +1,10 @@
+from fastapi import HTTPException
+from jose import JWTError
 from sqlalchemy.ext.asyncio import AsyncSession
+from starlette import status
 
 from core.models import User
+from .utils import decode_token
 from . import crud
 
 
@@ -23,3 +27,38 @@ async def update_refresh_token(
             user=user,
             refresh_token=refresh_token,
         )
+
+
+async def validate_token(
+    session: AsyncSession,
+    token: str,
+    refresh: bool = False,
+) -> User:
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+    try:
+        payload = decode_token(token, refresh=refresh)
+        username: str = payload.get("sub")
+        if username is None:
+            raise credentials_exception
+    except JWTError:
+        raise credentials_exception
+
+    user = await crud.get_user_by_username(
+        session=session,
+        username=username,
+    )
+    if user is None:
+        raise credentials_exception
+
+    if refresh:
+        if user.session is None:
+            raise credentials_exception
+
+        if user.session.refresh_token != token:
+            raise credentials_exception
+
+    return user

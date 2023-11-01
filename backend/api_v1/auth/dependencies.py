@@ -1,6 +1,6 @@
 from typing import Annotated
 
-from fastapi import Body, Depends, HTTPException, status
+from fastapi import Body, Depends, HTTPException, status, Header
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from sqlalchemy.ext.asyncio import AsyncSession
 from jose import JWTError
@@ -8,7 +8,8 @@ from jose import JWTError
 from core.models import db_helper, User
 from core.config import settings
 
-from .utils import decode_access_token, get_password_hash, verify_password
+from .utils import decode_token, get_password_hash, verify_password, create_token
+from .services import validate_token
 from .schemas import UserCreate, UserInDB
 from . import crud
 
@@ -22,7 +23,7 @@ async def authenticate_user(
 ) -> User:
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Incorrect username or password",
+        detail="Could not validate credentials",
         headers={"WWW-Authenticate": "Bearer"},
     )
     user = await crud.get_user_by_username(
@@ -42,27 +43,18 @@ async def get_current_user(
     access_token: str = Depends(oauth2_scheme),
     session: AsyncSession = Depends(db_helper.scoped_session_dependency),
 ) -> User:
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
-    try:
-        payload = decode_access_token(access_token)
-        username: str = payload.get("sub")
-        if username is None:
-            raise credentials_exception
+    return await validate_token(session=session, token=access_token)
 
-    except JWTError:
-        raise credentials_exception
 
-    user = await crud.get_user_by_username(
-        session=session,
-        username=username,
+async def refresh_access_token(
+    refresh_token: str | None = Header(),
+    session: AsyncSession = Depends(db_helper.scoped_session_dependency),
+) -> str:
+    user: User = await validate_token(
+        session=session, token=refresh_token, refresh=True
     )
-    if user is None:
-        raise credentials_exception
-    return user
+    access_token = create_token(data={"sub": user.username})
+    return access_token
 
 
 async def create_user(
