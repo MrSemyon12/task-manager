@@ -1,14 +1,13 @@
 from typing import Annotated
 
-from fastapi import Body, Depends, HTTPException, status, Header
+from fastapi import Body, Depends, HTTPException, status, Cookie
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from sqlalchemy.ext.asyncio import AsyncSession
-from jose import JWTError
 
 from core.models import db_helper, User
 from core.config import settings
 
-from .utils import decode_token, get_password_hash, verify_password, create_token
+from .utils import get_password_hash, verify_password, create_token
 from .services import validate_token
 from .schemas import UserCreate, UserInDB
 from . import crud
@@ -47,7 +46,7 @@ async def get_current_user(
 
 
 async def refresh_access_token(
-    refresh_token: str | None = Header(),
+    refresh_token: str | None = Cookie(),
     session: AsyncSession = Depends(db_helper.scoped_session_dependency),
 ) -> str:
     user: User = await validate_token(
