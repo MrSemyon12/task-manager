@@ -63,3 +63,11 @@ async def update_user_session(
     setattr(user_session, "refresh_token", refresh_token)
     await session.commit()
     return user_session
+
+
+async def delete_user_session(
+    session: AsyncSession,
+    user_session: Session,
+) -> None:
+    await session.delete(user_session)
+    await session.commit()

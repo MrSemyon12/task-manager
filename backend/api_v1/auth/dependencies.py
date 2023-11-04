@@ -49,11 +49,36 @@ async def refresh_access_token(
     refresh_token: str | None = Cookie(),
     session: AsyncSession = Depends(db_helper.scoped_session_dependency),
 ) -> str:
+    if refresh_token is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Could not validate credentials",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
     user: User = await validate_token(
         session=session, token=refresh_token, refresh=True
     )
     access_token = create_token(data={"sub": user.username})
     return access_token
+
+
+async def logout_user(
+    refresh_token: str | None = Cookie(),
+    session: AsyncSession = Depends(db_helper.scoped_session_dependency),
+) -> None:
+    if refresh_token is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Could not validate credentials",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    user: User = await validate_token(
+        session=session, token=refresh_token, refresh=True
+    )
+    await crud.delete_user_session(
+        session=session,
+        user_session=user.session,
+    )
 
 
 async def create_user(

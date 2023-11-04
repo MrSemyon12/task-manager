@@ -8,6 +8,7 @@ from .dependencies import (
     create_user,
     get_current_user,
     refresh_access_token,
+    logout_user,
 )
 from .services import update_refresh_token
 from .utils import create_token
@@ -51,7 +52,5 @@ def refresh_access_token(access_token: str = Depends(refresh_access_token)):
 
 
 @router.get("/logout", status_code=status.HTTP_204_NO_CONTENT)
-def logout(
-    current_user: User = Depends(get_current_user),
-):
+async def logout(_=Depends(logout_user)):
     pass
