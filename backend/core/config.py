@@ -15,7 +15,7 @@ class AuthSettings(BaseSettings):
     token_url: str = "/api/v1/auth/login"
 
     algorithm: str = "HS256"
-    access_token_expire_minutes: int = 30
+    access_token_expire_minutes: int = 15
     refresh_token_expire_minutes: int = 60 * 24
     access_secret_key: str = "secret_key"
     refresh_secret_key: str = "secret_key"

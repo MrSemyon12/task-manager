@@ -24,7 +24,7 @@ def create_token(data: dict, refresh: bool = False) -> str:
         if refresh
         else settings.auth.access_token_expire_minutes
     )
-    expire = datetime.utcnow() + timedelta(delta)
+    expire = datetime.utcnow() + timedelta(minutes=delta)
 
     to_encode.update({"exp": expire})
     secret_key = (

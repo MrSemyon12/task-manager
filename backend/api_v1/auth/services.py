@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from fastapi import HTTPException
 from jose import JWTError
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -42,9 +44,13 @@ async def validate_token(
     try:
         payload = decode_token(token, refresh=refresh)
         username: str = payload.get("sub")
-        if username is None:
+        expire: int = payload.get("exp")
+        if username is None or expire is None:
             raise credentials_exception
     except JWTError:
+        raise credentials_exception
+
+    if datetime.fromtimestamp(expire) < datetime.utcnow():
         raise credentials_exception
 
     user = await crud.get_user_by_username(
