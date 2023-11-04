@@ -17,23 +17,33 @@ def get_password_hash(password: str) -> str:
     return pwd_context.hash(password)
 
 
-def create_access_token(data: dict) -> str:
+def create_token(data: dict, refresh: bool = False) -> str:
     to_encode = data.copy()
-    expire = datetime.utcnow() + timedelta(settings.auth.access_token_expire_minutes)
+    delta = (
+        settings.auth.refresh_token_expire_minutes
+        if refresh
+        else settings.auth.access_token_expire_minutes
+    )
+    expire = datetime.utcnow() + timedelta(minutes=delta)
 
     to_encode.update({"exp": expire})
-
+    secret_key = (
+        settings.auth.refresh_secret_key if refresh else settings.auth.access_secret_key
+    )
     encoded_jwt = jwt.encode(
         claims=to_encode,
-        key=settings.auth.secret_key,
+        key=secret_key,
         algorithm=settings.auth.algorithm,
     )
     return encoded_jwt
 
 
-def decode_access_token(access_token: str) -> dict:
+def decode_token(token: str, refresh: bool = False) -> dict:
+    secret_key = (
+        settings.auth.refresh_secret_key if refresh else settings.auth.access_secret_key
+    )
     return jwt.decode(
-        token=access_token,
-        key=settings.auth.secret_key,
+        token=token,
+        key=secret_key,
         algorithms=[settings.auth.algorithm],
     )

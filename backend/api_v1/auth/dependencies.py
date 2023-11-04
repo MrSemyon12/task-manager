@@ -1,14 +1,14 @@
 from typing import Annotated
 
-from fastapi import Body, Depends, HTTPException, status
+from fastapi import Body, Depends, HTTPException, status, Cookie
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from sqlalchemy.ext.asyncio import AsyncSession
-from jose import JWTError
 
 from core.models import db_helper, User
 from core.config import settings
 
-from .utils import decode_access_token, get_password_hash, verify_password
+from .utils import get_password_hash, verify_password, create_token
+from .services import validate_token
 from .schemas import UserCreate, UserInDB
 from . import crud
 
@@ -22,7 +22,7 @@ async def authenticate_user(
 ) -> User:
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Incorrect username or password",
+        detail="Could not validate credentials",
         headers={"WWW-Authenticate": "Bearer"},
     )
     user = await crud.get_user_by_username(
@@ -42,27 +42,43 @@ async def get_current_user(
     access_token: str = Depends(oauth2_scheme),
     session: AsyncSession = Depends(db_helper.scoped_session_dependency),
 ) -> User:
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
-        headers={"WWW-Authenticate": "Bearer"},
+    return await validate_token(session=session, token=access_token)
+
+
+async def refresh_access_token(
+    refresh_token: str | None = Cookie(),
+    session: AsyncSession = Depends(db_helper.scoped_session_dependency),
+) -> str:
+    if refresh_token is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Could not validate credentials",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    user: User = await validate_token(
+        session=session, token=refresh_token, refresh=True
     )
-    try:
-        payload = decode_access_token(access_token)
-        username: str = payload.get("sub")
-        if username is None:
-            raise credentials_exception
+    access_token = create_token(data={"sub": user.username})
+    return access_token
 
-    except JWTError:
-        raise credentials_exception
 
-    user = await crud.get_user_by_username(
+async def logout_user(
+    refresh_token: str | None = Cookie(),
+    session: AsyncSession = Depends(db_helper.scoped_session_dependency),
+) -> None:
+    if refresh_token is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Could not validate credentials",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    user: User = await validate_token(
+        session=session, token=refresh_token, refresh=True
+    )
+    await crud.delete_user_session(
         session=session,
-        username=username,
+        user_session=user.session,
     )
-    if user is None:
-        raise credentials_exception
-    return user
 
 
 async def create_user(
