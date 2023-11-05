@@ -3,7 +3,7 @@ from sqlalchemy.orm import selectinload
 from sqlalchemy.engine import Result
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from core.models import Project, User, UserProject, Role
+from core.models import Project, User, UserProjectAssociation, Role
 
 from .schemas import ProjectCreate
 
@@ -41,8 +41,8 @@ async def get_user_projects(
 ) -> list[Project]:
     stmt = (
         select(Project)
-        .join(UserProject)
-        .where(UserProject.user_id == user_id)
+        .join(UserProjectAssociation)
+        .where(UserProjectAssociation.user_id == user_id)
         .order_by(Project.id)
     )
     result: Result = await session.execute(stmt)
@@ -78,7 +78,7 @@ async def create_user_project(
 
 async def delete_user_project(
     session: AsyncSession,
-    user_project: UserProject,
+    user_project: UserProjectAssociation,
 ) -> None:
     await session.delete(user_project)
     await session.commit()
@@ -86,7 +86,7 @@ async def delete_user_project(
 
 async def update_user_role(
     session: AsyncSession,
-    user_project: UserProject,
+    user_project: UserProjectAssociation,
     role: Role,
 ) -> None:
     user_project.role = role
@@ -98,10 +98,10 @@ async def get_user_role(
 ) -> Role | None:
     stmt = (
         select(Role)
-        .join(UserProject)
+        .join(UserProjectAssociation)
         .where(
-            UserProject.project_id == project_id,
-            UserProject.user_id == user_id,
+            UserProjectAssociation.project_id == project_id,
+            UserProjectAssociation.user_id == user_id,
         )
     )
     result: Result = await session.execute(stmt)
@@ -111,10 +111,10 @@ async def get_user_role(
 
 async def get_user_project(
     session: AsyncSession, project_id: int, user_id: int
-) -> UserProject | None:
-    stmt = select(UserProject).where(
-        UserProject.project_id == project_id,
-        UserProject.user_id == user_id,
+) -> UserProjectAssociation | None:
+    stmt = select(UserProjectAssociation).where(
+        UserProjectAssociation.project_id == project_id,
+        UserProjectAssociation.user_id == user_id,
     )
     result: Result = await session.execute(stmt)
     user_project = result.scalar_one_or_none()

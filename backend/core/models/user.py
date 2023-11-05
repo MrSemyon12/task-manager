@@ -8,7 +8,6 @@ from .base import Base
 if TYPE_CHECKING:
     from .notice import Notice
     from .project import Project
-    from .user_project import UserProject
     from .session import Session
 
 
@@ -20,12 +19,8 @@ class User(Base):
     session: Mapped["Session"] = relationship(back_populates="user")
 
     projects: Mapped[list["Project"]] = relationship(
-        secondary="user_projects",
+        secondary="user_project_association",
         back_populates="users",
-    )
-    project_associations: Mapped[list["UserProject"]] = relationship(
-        back_populates="user",
-        cascade="all, delete",
     )
 
     notices: Mapped[list["Notice"]] = relationship(

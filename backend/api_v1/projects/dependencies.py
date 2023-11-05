@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 
 from core.config import settings
-from core.models import User, Project, UserProject, Role, db_helper
+from core.models import User, Project, UserProjectAssociation, Role, db_helper
 
 from api_v1.auth.dependencies import get_current_user, user_by_id
 from api_v1.roles.dependencies import role_by_id
@@ -123,7 +123,7 @@ async def add_user_to_project(
     project: Project = Depends(create_user_project),
     session: AsyncSession = Depends(db_helper.scoped_session_dependency),
 ) -> None:
-    user_project: UserProject | None = await crud.get_user_project(
+    user_project: UserProjectAssociation | None = await crud.get_user_project(
         session=session,
         project_id=project.id,
         user_id=user.id,
@@ -141,7 +141,7 @@ async def delete_user_from_project(
     _=Depends(manager_access_required),
     session: AsyncSession = Depends(db_helper.scoped_session_dependency),
 ) -> None:
-    user_project: UserProject | None = await crud.get_user_project(
+    user_project: UserProjectAssociation | None = await crud.get_user_project(
         session=session,
         project_id=project.id,
         user_id=user.id,
@@ -164,7 +164,7 @@ async def update_user_role(
     _=Depends(manager_access_required),
     session: AsyncSession = Depends(db_helper.scoped_session_dependency),
 ) -> None:
-    user_project: UserProject | None = await crud.get_user_project(
+    user_project: UserProjectAssociation | None = await crud.get_user_project(
         session=session,
         project_id=project.id,
         user_id=user.id,

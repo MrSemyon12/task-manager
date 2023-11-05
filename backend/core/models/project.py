@@ -1,6 +1,7 @@
+from datetime import datetime
 from typing import TYPE_CHECKING
 
-from sqlalchemy import String, Text
+from sqlalchemy import String, Text, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from .base import Base
@@ -8,7 +9,6 @@ from .base import Base
 if TYPE_CHECKING:
     from .task import Task
     from .user import User
-    from .user_project import UserProject
 
 
 class Project(Base):
@@ -18,15 +18,15 @@ class Project(Base):
         default="",
         server_default="",
     )
+    created_at: Mapped[datetime] = mapped_column(
+        server_default=func.mow(),
+        default=datetime.utcnow,
+    )
     is_private: Mapped[bool]
 
     users: Mapped[list["User"]] = relationship(
-        secondary="user_projects",
+        secondary="user_project_association",
         back_populates="projects",
-    )
-    user_associations: Mapped[list["UserProject"]] = relationship(
-        back_populates="project",
-        cascade="all, delete",
     )
 
     tasks: Mapped[list["Task"]] = relationship(

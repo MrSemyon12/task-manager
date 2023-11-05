@@ -5,8 +5,10 @@ from sqlalchemy.orm import Mapped, relationship
 from .base import BaseEnum
 
 if TYPE_CHECKING:
-    from .user_project import UserProject
+    from .user_project_association import UserProjectAssociation
 
 
 class Role(BaseEnum):
-    user_projects: Mapped[list["UserProject"]] = relationship(back_populates="role")
+    user_project_associations: Mapped[list["UserProjectAssociation"]] = relationship(
+        back_populates="role"
+    )
