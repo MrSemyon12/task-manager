@@ -4,12 +4,10 @@ from fastapi import Depends, Path, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 
-from core.config import settings
-from core.models import User, Project, UserProject, Role, db_helper
-
 from api_v1.auth.dependencies import get_current_user, user_by_id
 from api_v1.roles.dependencies import role_by_id
-
+from core.config import settings
+from core.models import User, Project, UserProjectAssociation, Role, db_helper
 from .schemas import ProjectCreate
 from . import crud
 
@@ -92,45 +90,16 @@ async def delete_project(
     await crud.delete_project(session=session, project=project)
 
 
-async def create_user_project(
-    user: User = Depends(user_by_id),
-    _=Depends(manager_access_required),
-    project: Project = Depends(project_by_id),
-    session: AsyncSession = Depends(db_helper.scoped_session_dependency),
-) -> Project:
-    user_role: Role | None = await crud.get_user_role(
-        session=session,
-        project_id=project.id,
-        user_id=user.id,
-    )
-
-    if user_role is not None:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail=f"User {user.id} already in project {project.id}",
-        )
-
-    return await crud.create_user_project(
-        session=session,
-        project=project,
-        user=user,
-    )
-
-
 async def add_user_to_project(
     user: User = Depends(user_by_id),
     role: Role = Depends(role_by_id),
-    project: Project = Depends(create_user_project),
+    project: Project = Depends(project_by_id),
     session: AsyncSession = Depends(db_helper.scoped_session_dependency),
 ) -> None:
-    user_project: UserProject | None = await crud.get_user_project(
+    await crud.add_user_to_project(
         session=session,
-        project_id=project.id,
-        user_id=user.id,
-    )
-    await crud.update_user_role(
-        session=session,
-        user_project=user_project,
+        project=project,
+        user=user,
         role=role,
     )
 
@@ -141,19 +110,21 @@ async def delete_user_from_project(
     _=Depends(manager_access_required),
     session: AsyncSession = Depends(db_helper.scoped_session_dependency),
 ) -> None:
-    user_project: UserProject | None = await crud.get_user_project(
-        session=session,
-        project_id=project.id,
-        user_id=user.id,
+    user_project_association: UserProjectAssociation | None = (
+        await crud.get_user_project_association(
+            session=session,
+            project_id=project.id,
+            user_id=user.id,
+        )
     )
-    if user_project is None:
+    if user_project_association is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"User {user.id} not in project {project.id}",
         )
-    await crud.delete_user_project(
+    await crud.delete_user_from_project(
         session=session,
-        user_project=user_project,
+        user_project_association=user_project_association,
     )
 
 
@@ -164,18 +135,20 @@ async def update_user_role(
     _=Depends(manager_access_required),
     session: AsyncSession = Depends(db_helper.scoped_session_dependency),
 ) -> None:
-    user_project: UserProject | None = await crud.get_user_project(
-        session=session,
-        project_id=project.id,
-        user_id=user.id,
+    user_project_association: UserProjectAssociation | None = (
+        await crud.get_user_project_association(
+            session=session,
+            project_id=project.id,
+            user_id=user.id,
+        )
     )
-    if user_project is None:
+    if user_project_association is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"User {user.id} not in project {project.id}",
         )
     await crud.update_user_role(
         session=session,
-        user_project=user_project,
+        user_project_association=user_project_association,
         role=role,
     )

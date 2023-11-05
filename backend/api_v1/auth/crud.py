@@ -3,7 +3,7 @@ from sqlalchemy.engine import Result
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
-from core.models import User, Session
+from core.models import User, Session, UserProjectAssociation
 
 from .schemas import UserInDB
 
@@ -16,7 +16,15 @@ async def get_users(session: AsyncSession) -> list[User]:
 
 
 async def get_user(session: AsyncSession, user_id: int) -> User | None:
-    return await session.get(User, user_id)
+    return await session.get(
+        User,
+        user_id,
+        options=[
+            selectinload(User.projects_details).joinedload(
+                UserProjectAssociation.project
+            ),
+        ],
+    )
 
 
 async def get_user_session(session: AsyncSession, user_id: int) -> Session | None:
@@ -30,7 +38,12 @@ async def get_user_by_username(session: AsyncSession, username: str) -> User | N
     stmt = (
         select(User)
         .where(User.username == username)
-        .options(selectinload(User.session))
+        .options(
+            selectinload(User.projects_details).joinedload(
+                UserProjectAssociation.project
+            ),
+            selectinload(User.session),
+        )
     )
     result: Result = await session.execute(stmt)
     user: User | None = result.scalar_one_or_none()

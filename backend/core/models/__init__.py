@@ -9,7 +9,7 @@ __all__ = (
     "Priority",
     "Project",
     "Notice",
-    "UserProject",
+    "UserProjectAssociation",
     "Task",
     "Session",
 )
@@ -22,6 +22,6 @@ from .state import State
 from .priority import Priority
 from .project import Project
 from .notice import Notice
-from .user_project import UserProject
+from .user_project_association import UserProjectAssociation
 from .task import Task
 from .session import Session

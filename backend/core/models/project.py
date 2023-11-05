@@ -1,14 +1,14 @@
+from datetime import datetime
 from typing import TYPE_CHECKING
 
-from sqlalchemy import String, Text
+from sqlalchemy import String, Text, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from .base import Base
 
 if TYPE_CHECKING:
     from .task import Task
-    from .user import User
-    from .user_project import UserProject
+    from .user_project_association import UserProjectAssociation
 
 
 class Project(Base):
@@ -18,15 +18,14 @@ class Project(Base):
         default="",
         server_default="",
     )
+    created_at: Mapped[datetime] = mapped_column(
+        server_default=func.now(),
+        default=datetime.utcnow,
+    )
     is_private: Mapped[bool]
 
-    users: Mapped[list["User"]] = relationship(
-        secondary="user_projects",
-        back_populates="projects",
-    )
-    user_associations: Mapped[list["UserProject"]] = relationship(
+    users_details: Mapped[list["UserProjectAssociation"]] = relationship(
         back_populates="project",
-        cascade="all, delete",
     )
 
     tasks: Mapped[list["Task"]] = relationship(
