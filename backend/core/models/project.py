@@ -18,10 +18,10 @@ class Project(Base):
         default="",
         server_default="",
     )
-    created_at: Mapped[datetime] = mapped_column(
-        server_default=func.mow(),
-        default=datetime.utcnow,
-    )
+    # created_at: Mapped[datetime] = mapped_column(
+    #     server_default=func.mow(),
+    #     default=datetime.utcnow,
+    # )
     is_private: Mapped[bool]
 
     users: Mapped[list["User"]] = relationship(
