@@ -4,8 +4,15 @@ from sqlalchemy.engine import Result
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.models import Project, User, UserProjectAssociation, Role
-
+from api_v1.roles.crud import get_role
 from .schemas import ProjectCreate
+
+
+async def get_projects(session: AsyncSession) -> list[Project]:
+    stmt = select(Project).order_by(Project.id)
+    result: Result = await session.execute(stmt)
+    projects = result.scalars().all()
+    return list(projects)
 
 
 async def create_project(
@@ -14,7 +21,15 @@ async def create_project(
     user: User,
 ) -> Project:
     project = Project(**project_create.model_dump())
-    project.users.append(user)
+    role = await get_role(session=session, role_id=1)
+
+    user.projects_details.append(
+        UserProjectAssociation(
+            project=project,
+            role=role,
+        )
+    )
+
     session.add(project)
     await session.commit()
     return project
@@ -26,7 +41,9 @@ async def get_project(
 ) -> Project | None:
     stmt = (
         select(Project)
-        .options(selectinload(Project.users))
+        .options(
+            selectinload(Project.users_details).joinedload(UserProjectAssociation.user),
+        )
         .options(selectinload(Project.tasks))
         .where(Project.id == project_id)
     )
@@ -41,17 +58,12 @@ async def get_user_projects(
 ) -> list[Project]:
     stmt = (
         select(Project)
-        .join(UserProjectAssociation)
-        .where(UserProjectAssociation.user_id == user_id)
+        .options(
+            selectinload(Project.users_details).joinedload(UserProjectAssociation.user),
+        )
+        .where(User.id == user_id)
         .order_by(Project.id)
     )
-    result: Result = await session.execute(stmt)
-    projects = result.scalars().all()
-    return list(projects)
-
-
-async def get_projects(session: AsyncSession) -> list[Project]:
-    stmt = select(Project).order_by(Project.id)
     result: Result = await session.execute(stmt)
     projects = result.scalars().all()
     return list(projects)
@@ -65,31 +77,36 @@ async def delete_project(
     await session.commit()
 
 
-async def create_user_project(
+async def add_user_to_project(
     session: AsyncSession,
     project: Project,
     user: User,
+    role: Role,
 ) -> Project:
-    project.users.append(user)
-    session.add(project)
+    user.projects_details.append(
+        UserProjectAssociation(
+            project=project,
+            role=role,
+        )
+    )
     await session.commit()
     return project
 
 
-async def delete_user_project(
+async def delete_user_from_project(
     session: AsyncSession,
-    user_project: UserProjectAssociation,
+    user_project_association: UserProjectAssociation,
 ) -> None:
-    await session.delete(user_project)
+    await session.delete(user_project_association)
     await session.commit()
 
 
 async def update_user_role(
     session: AsyncSession,
-    user_project: UserProjectAssociation,
+    user_project_association: UserProjectAssociation,
     role: Role,
 ) -> None:
-    user_project.role = role
+    user_project_association.role = role
     await session.commit()
 
 
@@ -109,7 +126,7 @@ async def get_user_role(
     return role
 
 
-async def get_user_project(
+async def get_user_project_association(
     session: AsyncSession, project_id: int, user_id: int
 ) -> UserProjectAssociation | None:
     stmt = select(UserProjectAssociation).where(
@@ -117,5 +134,5 @@ async def get_user_project(
         UserProjectAssociation.user_id == user_id,
     )
     result: Result = await session.execute(stmt)
-    user_project = result.scalar_one_or_none()
-    return user_project
+    user_project_association = result.scalar_one_or_none()
+    return user_project_association
