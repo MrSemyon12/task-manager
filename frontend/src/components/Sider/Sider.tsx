@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Layout, Card, Space, Button } from 'antd';
+import { Layout, Space, Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 
 import { useApiPrivate, useProjects } from '../../hooks';
+import { Card } from '../Card';
 
 const { Sider: AntdSider } = Layout;
-const PROJECTS_URL = '/projects/';
+const PROJECTS_URL = '/projects/my';
 
 export const Sider: React.FC = () => {
   const { projects, setProjects } = useProjects();
