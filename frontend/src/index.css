@@ -26,3 +26,8 @@ body {
   padding: 0;
   user-select: none;
 }
+
+p {
+  margin: 0;
+  padding: 0;
+}

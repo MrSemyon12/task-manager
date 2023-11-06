@@ -6,9 +6,7 @@ import {
   useState,
 } from 'react';
 
-type Auth = {
-  access_token: string;
-};
+import { Auth } from '../types';
 
 type AuthContext = {
   auth: Auth | null;

@@ -6,16 +6,11 @@ import {
   useState,
 } from 'react';
 
-type Project = {
-  id: number;
-  title: string;
-  description: string;
-  isPrivate: boolean;
-};
+import { Project } from '../types';
 
 type ProjectContext = {
-  projects: Project[];
-  setProjects: Dispatch<SetStateAction<Project[]>>;
+  project: Project | null;
+  setProject: Dispatch<SetStateAction<Project | null>>;
 };
 
 export const ProjectContext = createContext<ProjectContext | null>(null);
@@ -25,13 +20,13 @@ type ProjectProviderProps = { children: ReactNode };
 export const ProjectProvider: React.FC<ProjectProviderProps> = ({
   children,
 }) => {
-  const [projects, setProjects] = useState<Project[]>([]);
+  const [project, setProject] = useState<Project | null>(null);
 
   return (
     <ProjectContext.Provider
       value={{
-        projects,
-        setProjects,
+        project,
+        setProject,
       }}
     >
       {children}

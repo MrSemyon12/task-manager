@@ -1,12 +1,10 @@
 import React from 'react';
-import { Layout, Card } from 'antd';
+import { Layout, Card, Flex } from 'antd';
 import { useLocalStorage } from '../../hooks';
 
 const { Content: AntdContent } = Layout;
 
 export const Content: React.FC = () => {
-  const [name, setName] = useLocalStorage('name', 'Semyon');
-
   return (
     <AntdContent
       style={{
@@ -15,9 +13,12 @@ export const Content: React.FC = () => {
         backgroundColor: 'coral',
       }}
     >
-      <Card>
-        <input onChange={(e) => setName(e.target.value)} value={name} />
-      </Card>
+      <Card>Project Info</Card>
+      <Flex>
+        <Card>To Do</Card>
+        <Card>Doing</Card>
+        <Card>Done</Card>
+      </Flex>
     </AntdContent>
   );
 };

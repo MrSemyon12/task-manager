@@ -1,15 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import { Layout, Space, Button } from 'antd';
+import { Layout, Space, Card, Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 
-import { useApiPrivate, useProjects } from '../../hooks';
-import { Card } from '../Card';
+import { useApiPrivate, useProject } from '../../hooks';
+import { Project } from '../../types';
 
 const { Sider: AntdSider } = Layout;
 const PROJECTS_URL = '/projects/my';
 
+const gridStyle: React.CSSProperties = {
+  width: '100%',
+  textAlign: 'center',
+};
+
+const pickedStyle: React.CSSProperties = {
+  width: '100%',
+  textAlign: 'center',
+  backgroundColor: 'coral',
+  boxShadow: 'none',
+};
+
 export const Sider: React.FC = () => {
-  const { projects, setProjects } = useProjects();
+  const { project: cur, setProject } = useProject();
+  const [projects, setProjects] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const apiPrivate = useApiPrivate();
 
@@ -28,24 +41,29 @@ export const Sider: React.FC = () => {
       width='var(--sider-width)'
       style={{
         overflow: 'auto',
-        backgroundColor: '#f5f5f5',
-        padding: 10,
-        justifyContent: 'center',
         background: 'blue',
+        direction: 'rtl',
+        // padding: 10,
+        // justifyContent: 'center',
       }}
     >
-      <Space direction='vertical' style={{ width: '100%', paddingBottom: 10 }}>
-        <Button type='primary' style={{ width: '100%' }}>
-          <PlusOutlined />
-          Create Project
-        </Button>
+      {/* <Space direction='vertical' style={{ width: '100%', paddingBottom: 10 }}> */}
+      {/* <Button type='primary' style={{ width: '100%' }}>
+        <PlusOutlined />
+        Create Project
+      </Button> */}
+      <Card style={{ border: 0, borderRadius: 0 }}>
         {projects.map((project) => (
-          <Card key={project.id}>
-            <p>{project.title}</p>
-            <p>{project.description}</p>
-          </Card>
+          <Card.Grid
+            key={project.id}
+            onClick={() => setProject(project)}
+            style={cur?.id == project.id ? pickedStyle : gridStyle}
+            hoverable={cur?.id != project.id}
+          >
+            {project.id}-{project.title}
+          </Card.Grid>
         ))}
-      </Space>
+      </Card>
     </AntdSider>
   );
 };
