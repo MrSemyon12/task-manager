@@ -1,31 +1,26 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Layout, Card, Space, Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 
+import { useApiPrivate, useProjects } from '../../hooks';
+
 const { Sider: AntdSider } = Layout;
-const { Meta } = Card;
-
-const item = (
-  <Card
-  // cover={
-  //   <img
-  //     alt='example'
-  //     src='https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png'
-  //   />
-  // }
-  >
-    <Meta title='Europe Street beat' description='www.instagram.com' />
-  </Card>
-);
-
-const cards = [...Array(0)].map((_) => item);
+const PROJECTS_URL = '/projects/';
 
 export const Sider: React.FC = () => {
-  const [items, setItems] = useState(cards);
+  const { projects, setProjects } = useProjects();
+  const [isLoading, setIsLoading] = useState(false);
+  const apiPrivate = useApiPrivate();
 
-  const add = () => {
-    setItems([...items, item]);
-  };
+  useEffect(() => {
+    setIsLoading(true);
+
+    apiPrivate
+      .get(PROJECTS_URL)
+      .then((response) => setProjects(response.data))
+      .catch((error) => console.log(error))
+      .finally(() => setIsLoading(false));
+  }, []);
 
   return (
     <AntdSider
@@ -39,11 +34,16 @@ export const Sider: React.FC = () => {
       }}
     >
       <Space direction='vertical' style={{ width: '100%', paddingBottom: 10 }}>
-        <Button type='primary' onClick={add} style={{ width: '100%' }}>
+        <Button type='primary' style={{ width: '100%' }}>
           <PlusOutlined />
           Create Project
         </Button>
-        {items}
+        {projects.map((project) => (
+          <Card key={project.id}>
+            <p>{project.title}</p>
+            <p>{project.description}</p>
+          </Card>
+        ))}
       </Space>
     </AntdSider>
   );
