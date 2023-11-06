@@ -6,23 +6,19 @@ import {
   useState,
 } from 'react';
 
-export type Project = {
+type Project = {
   id: number;
   title: string;
   description: string;
   isPrivate: boolean;
 };
 
-interface IProjectContext {
-  projects: Project[] | [];
+type ProjectContext = {
+  projects: Project[];
   setProjects: Dispatch<SetStateAction<Project[]>>;
-}
+};
 
-const defaultState = {
-  projects: [],
-} as IProjectContext;
-
-export const ProjectContext = createContext(defaultState);
+export const ProjectContext = createContext<ProjectContext | null>(null);
 
 type ProjectProviderProps = { children: ReactNode };
 
