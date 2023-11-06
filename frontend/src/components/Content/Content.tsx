@@ -1,10 +1,13 @@
 import React from 'react';
-import { Layout, Card, Flex } from 'antd';
-import { useLocalStorage } from '../../hooks';
+import { Layout, Card } from 'antd';
+
+import { useProject } from '../../hooks';
 
 const { Content: AntdContent } = Layout;
 
 export const Content: React.FC = () => {
+  const { project } = useProject();
+
   return (
     <AntdContent
       style={{
@@ -13,12 +16,7 @@ export const Content: React.FC = () => {
         backgroundColor: 'coral',
       }}
     >
-      <Card>Project Info</Card>
-      <Flex>
-        <Card>To Do</Card>
-        <Card>Doing</Card>
-        <Card>Done</Card>
-      </Flex>
+      <Card>{project?.description}</Card>
     </AntdContent>
   );
 };
