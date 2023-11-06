@@ -21,4 +21,4 @@ class User(UserBase):
 
 
 class Token(BaseModel):
-    accessToken: str
+    access_token: str

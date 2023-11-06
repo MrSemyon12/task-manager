@@ -7,8 +7,7 @@ import {
 } from 'react';
 
 type Auth = {
-  accessToken: string;
-  tokenType: string;
+  access_token: string;
 };
 
 type AuthContext = {

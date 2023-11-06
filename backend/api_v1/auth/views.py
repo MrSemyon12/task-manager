@@ -33,7 +33,7 @@ async def login_for_access_token(
     )
     response.set_cookie(key="refresh_token", value=refresh_token, httponly=True)
 
-    return Token(accessToken=access_token)
+    return Token(access_token=access_token)
 
 
 @router.post(
@@ -47,7 +47,7 @@ def register_user(user: User = Depends(create_user)):
 
 @router.get("/refresh", response_model=Token)
 def refresh_access_token(access_token: str = Depends(refresh_access_token)):
-    return Token(accessToken=access_token)
+    return Token(access_token=access_token)
 
 
 @router.get("/logout", status_code=status.HTTP_204_NO_CONTENT)
