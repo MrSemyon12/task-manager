@@ -11,6 +11,7 @@ const PROJECTS_URL = '/projects/my';
 const gridStyle: React.CSSProperties = {
   width: '100%',
   textAlign: 'center',
+  padding: 10,
 };
 
 const pickedStyle: React.CSSProperties = {
@@ -52,7 +53,14 @@ export const Sider: React.FC = () => {
         <PlusOutlined />
         Create Project
       </Button> */}
-      <Card style={{ border: 0, borderRadius: 0 }}>
+      <Card
+        style={{
+          border: 0,
+          borderRadius: 0,
+          direction: 'ltr',
+          overflow: 'hidden',
+        }}
+      >
         {projects.map((project) => (
           <Card.Grid
             key={project.id}
