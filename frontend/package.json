@@ -46,6 +46,7 @@
     ]
   },
   "devDependencies": {
+    "@types/react-beautiful-dnd": "^13.1.6",
     "typescript-plugin-css-modules": "^5.0.2"
   }
 }
