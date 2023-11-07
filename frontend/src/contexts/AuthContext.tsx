@@ -8,12 +8,12 @@ import {
 
 import { Auth } from '../types';
 
-type AuthContext = {
+type AuthContextProp = {
   auth: Auth | null;
   setAuth: Dispatch<SetStateAction<Auth | null>>;
 };
 
-export const AuthContext = createContext<AuthContext | null>(null);
+export const AuthContext = createContext<AuthContextProp | null>(null);
 
 type AuthProviderProps = { children: ReactNode };
 

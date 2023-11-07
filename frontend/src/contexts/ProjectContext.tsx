@@ -8,12 +8,12 @@ import {
 
 import { Project } from '../types';
 
-type ProjectContext = {
+type ProjectContextProp = {
   project: Project | null;
   setProject: Dispatch<SetStateAction<Project | null>>;
 };
 
-export const ProjectContext = createContext<ProjectContext | null>(null);
+export const ProjectContext = createContext<ProjectContextProp | null>(null);
 
 type ProjectProviderProps = { children: ReactNode };
 

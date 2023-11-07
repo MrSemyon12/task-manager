@@ -53,7 +53,7 @@ export const Register: React.FC = () => {
     } catch (error) {
       messageApi.destroy();
       if (axios.isAxiosError(error) && error.response?.status === 400) {
-        message.error(`Username \"${data.username}\" already exists`, 5);
+        message.error(`Username "${data.username}" already exists`, 5);
       } else {
         message.error('Service is not available', 5);
       }

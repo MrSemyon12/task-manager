@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Layout, Space, Card, Button } from 'antd';
+import { Layout, Card } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 
 import { useApiPrivate, useProject } from '../../hooks';
@@ -32,18 +32,14 @@ const buttonStyle: React.CSSProperties = {
 export const Sider: React.FC = () => {
   const { project: cur, setProject } = useProject();
   const [projects, setProjects] = useState<Project[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
   const apiPrivate = useApiPrivate();
 
   useEffect(() => {
-    setIsLoading(true);
-
     apiPrivate
       .get(PROJECTS_URL)
       .then((response) => setProjects(response.data))
-      .catch((error) => console.log(error))
-      .finally(() => setIsLoading(false));
-  }, []);
+      .catch((error) => console.log(error));
+  }, [apiPrivate]);
 
   return (
     <AntdSider
@@ -76,8 +72,8 @@ export const Sider: React.FC = () => {
           <Card.Grid
             key={project.id}
             onClick={() => setProject(project)}
-            style={cur?.id == project.id ? pickedStyle : gridStyle}
-            hoverable={cur?.id != project.id}
+            style={cur?.id === project.id ? pickedStyle : gridStyle}
+            hoverable={cur?.id !== project.id}
           >
             {project.id}-{project.title}
           </Card.Grid>

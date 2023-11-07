@@ -20,7 +20,7 @@ export const PersistLogin: React.FC = () => {
     };
 
     !auth?.access_token ? verifyRefreshToken() : setIsLoading(false);
-  }, []);
+  }, [auth?.access_token, refresh]);
 
   return <>{isLoading ? <></> : <Outlet />}</>;
 };
