@@ -17,8 +17,16 @@ const gridStyle: React.CSSProperties = {
 const pickedStyle: React.CSSProperties = {
   width: '100%',
   textAlign: 'center',
-  backgroundColor: 'coral',
+  backgroundColor: 'var(--color-background)',
   boxShadow: 'none',
+};
+
+const buttonStyle: React.CSSProperties = {
+  width: '100%',
+  textAlign: 'center',
+  backgroundColor: 'coral',
+  padding: 10,
+  color: '#ffffff',
 };
 
 export const Sider: React.FC = () => {
@@ -42,7 +50,7 @@ export const Sider: React.FC = () => {
       width='var(--sider-width)'
       style={{
         overflow: 'auto',
-        background: 'blue',
+        background: 'var(--color-secondary)',
         direction: 'rtl',
         // padding: 10,
         // justifyContent: 'center',
@@ -61,6 +69,9 @@ export const Sider: React.FC = () => {
           overflow: 'hidden',
         }}
       >
+        <Card.Grid style={buttonStyle}>
+          <PlusOutlined style={{ fontSize: 24 }} />
+        </Card.Grid>
         {projects.map((project) => (
           <Card.Grid
             key={project.id}

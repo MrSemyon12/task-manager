@@ -11,7 +11,7 @@ export const Footer: React.FC = () => {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'burlywood',
+        backgroundColor: 'var(--color-secondary)',
       }}
     >
       footer

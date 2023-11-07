@@ -13,7 +13,7 @@ export const Content: React.FC = () => {
       style={{
         overflow: 'auto',
         padding: 10,
-        backgroundColor: 'coral',
+        backgroundColor: 'var(--color-background)',
       }}
     >
       <Card>{project?.description}</Card>

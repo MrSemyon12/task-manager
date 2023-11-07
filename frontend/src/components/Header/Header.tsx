@@ -22,7 +22,7 @@ export const Header: React.FC = () => {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        backgroundColor: 'purple',
+        backgroundColor: 'var(--color-secondary)',
       }}
     >
       <h1 style={{ color: 'white' }}>Task Manager</h1>

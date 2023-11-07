@@ -9,10 +9,11 @@
 
   --sider-width: 300px;
 
-  --background-color: #7db9e1;
+  --color-background: #7db9e1;
+  --color-primary: #1677ff;
+  --color-secondary: #1390e3;
 
   --color-text: hsl(200, 15%, 8%);
-  --color-primary: #1677ff;
 
   --radii: 0.5rem;
   --shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 3px 6px -4px rgba(0, 0, 0, 0.12),
