@@ -13,11 +13,11 @@ export const DroppableContainer: React.FC<DroppableContainerProps> = ({
 }) => {
   return (
     <Card title={header} style={style} bodyStyle={{ padding: 5 }}>
-      <StrictModeDroppable droppableId={header}>
+      <StrictModeDroppable droppableId={header.toLowerCase()}>
         {(provided) => (
           <div ref={provided.innerRef} {...provided.droppableProps}>
-            {tasks.map((mon, index) => (
-              <Draggable key={mon.id} draggableId={mon.title} index={index}>
+            {tasks.map((task, index) => (
+              <Draggable key={task.id} draggableId={task.title} index={index}>
                 {(provided) => (
                   <div
                     ref={provided.innerRef}
@@ -25,14 +25,14 @@ export const DroppableContainer: React.FC<DroppableContainerProps> = ({
                     {...provided.dragHandleProps}
                   >
                     <Card
-                      title={mon.title}
+                      title={task.title}
                       style={{ backgroundColor: 'coral' }}
                     ></Card>
                   </div>
                 )}
               </Draggable>
             ))}
-            {provided.placeholder}
+            {provided.placeholder && <Placeholder />}
           </div>
         )}
       </StrictModeDroppable>
@@ -40,7 +40,10 @@ export const DroppableContainer: React.FC<DroppableContainerProps> = ({
   );
 };
 
+const Placeholder = () => {
+  return <div style={{ height: '200px' }}></div>;
+};
+
 const style: React.CSSProperties = {
-  width: '390px',
-  height: '710px',
+  width: '100%',
 };
