@@ -14,10 +14,16 @@ export type Task = {
   title: string;
   description: string;
   deadline: string;
-  stateId: number;
+  state: State;
+  priority: Priority;
 };
 
 export type State = {
+  id: number;
+  title: string;
+};
+
+export type Priority = {
   id: number;
   title: string;
 };

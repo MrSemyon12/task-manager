@@ -15,46 +15,88 @@ const BOARDS = {
       title: 'sstring',
       description: 'ssdasd',
       deadline: 'string',
-      stateId: 1,
+      state: {
+        id: 1,
+        title: 'sdasdas'
+      },
+      priority: {
+        id: 1,
+        title: 'hight'
+      }
     },
     {
       id: 5,
       title: 'dumau',
       description: 'abcdefg',
       deadline: 'string',
-      stateId: 1,
+      state: {
+        id: 1,
+        title: 'sdasdas'
+      },
+      priority: {
+        id: 1,
+        title: 'hight'
+      }
     },
     {
       id: 6,
       title: 'dumaueeeeeeeeeeeeee',
       description: 'abcdefg',
       deadline: 'string',
-      stateId: 1,
+      state: {
+        id: 1,
+        title: 'sdasdas'
+      },
+      priority: {
+        id: 1,
+        title: 'hight'
+      }
     },
   ],
   progress: [
     {
       id: 3,
       title: 'aaaaaa',
-      description: 'ssdasd',
+      description: 'ssdasdaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
       deadline: 'string',
-      stateId: 2,
+      state: {
+        id: 1,
+        title: 'sdasdas'
+      },
+      priority: {
+        id: 3,
+        title: 'low'
+      }
     },
     {
       id: 4,
       title: 'bbbbbbbb',
-      description: 'ssdasd',
+      description: 'ssdasdaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
       deadline: 'string',
-      stateId: 2,
+      state: {
+        id: 1,
+        title: 'sdasdas'
+      },
+      priority: {
+        id: 1,
+        title: 'hight'
+      }
     },
   ],
   done: [
     {
       id: 2,
       title: 'asdasd',
-      description: 'ssdasd',
+      description: 'ssdasdaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
       deadline: 'string',
-      stateId: 3,
+      state: {
+        id: 1,
+        title: 'sdasdas'
+      },
+      priority: {
+        id: 2,
+        title: 'medium'
+      }
     },
   ],
   close: [],

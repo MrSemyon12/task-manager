@@ -3,6 +3,7 @@ import { Card } from 'antd';
 import { StrictModeDroppable } from './StrictModeDroppable';
 
 import { Task } from '../../types';
+import { TaskCard } from '../TaskCard';
 import { Draggable } from 'react-beautiful-dnd';
 
 type DroppableContainerProps = { header: string; tasks: Task[] };
@@ -24,10 +25,7 @@ export const DroppableContainer: React.FC<DroppableContainerProps> = ({
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
                   >
-                    <Card
-                      title={task.title}
-                      style={{ backgroundColor: 'coral' }}
-                    ></Card>
+                    <TaskCard task={task} />
                   </div>
                 )}
               </Draggable>
@@ -45,5 +43,5 @@ const Placeholder = () => {
 };
 
 const style: React.CSSProperties = {
-  width: '100%',
+  width: 'calc((100vw - var(--sider-width) - 50px) / 4)',
 };
