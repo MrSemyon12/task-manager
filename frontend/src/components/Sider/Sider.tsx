@@ -60,7 +60,7 @@ export const Sider: React.FC = () => {
         }}
       >
         <Card.Grid style={buttonStyle}>
-          <PlusOutlined style={{ fontSize: 28 }} />
+          <PlusOutlined style={{ fontSize: 28, color: 'var(--color-main)' }} />
         </Card.Grid>
         {projects.map((project) => (
           <Card.Grid

@@ -99,7 +99,7 @@ const BOARDS = {
       }
     },
   ],
-  close: [],
+  closed: [],
 };
 
 export const Content = () => {
@@ -158,7 +158,7 @@ export const Content = () => {
           <DroppableContainer header='Open' tasks={boards.open} />
           <DroppableContainer header='Progress' tasks={boards.progress} />
           <DroppableContainer header='Done' tasks={boards.done} />
-          <DroppableContainer header='Close' tasks={boards.close} />
+          <DroppableContainer header='Closed' tasks={boards.closed} />
         </Flex>
       </DragDropContext>
     </AntdContent>

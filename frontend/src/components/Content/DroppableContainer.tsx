@@ -13,7 +13,12 @@ export const DroppableContainer: React.FC<DroppableContainerProps> = ({
   tasks,
 }) => {
   return (
-    <Card title={header} style={style} bodyStyle={{ padding: 5 }}>
+    <Card
+      title={header}
+      style={style}
+      headStyle={{ fontSize: 20 }}
+      bodyStyle={{ padding: 5 }}
+    >
       <StrictModeDroppable droppableId={header.toLowerCase()}>
         {(provided) => (
           <div ref={provided.innerRef} {...provided.droppableProps}>
@@ -31,6 +36,7 @@ export const DroppableContainer: React.FC<DroppableContainerProps> = ({
               </Draggable>
             ))}
             {provided.placeholder && <Placeholder />}
+            {provided.placeholder}
           </div>
         )}
       </StrictModeDroppable>
