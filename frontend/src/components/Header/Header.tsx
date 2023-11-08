@@ -25,7 +25,15 @@ export const Header: React.FC = () => {
         backgroundColor: 'var(--color-secondary)',
       }}
     >
-      <h1 style={{ color: 'white' }}>Task Manager</h1>
+      <h1
+        style={{
+          color: 'var(--color-main)',
+          marginLeft: '10px',
+          textShadow: '5px 5px #558ABB',
+        }}
+      >
+        Task Manager
+      </h1>
       <Popover
         trigger='hover'
         content={
@@ -40,7 +48,6 @@ export const Header: React.FC = () => {
             backgroundColor: '#f56a00',
             cursor: 'pointer',
           }}
-          // src='https://xsgames.co/randomusers/avatar.php?g=pixel&key=1'
         >
           W
         </Avatar>

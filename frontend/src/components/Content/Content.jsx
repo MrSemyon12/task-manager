@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Layout, Card, Flex, Space } from 'antd';
-import { DragDropContext, DropResult } from 'react-beautiful-dnd';
+import { Layout, Card, Flex } from 'antd';
+import { DragDropContext } from 'react-beautiful-dnd';
 
 import { useProject } from '../../hooks';
 import { DroppableContainer } from './DroppableContainer';
@@ -152,7 +152,7 @@ export const Content = () => {
         backgroundColor: 'var(--color-background)',
       }}
     >
-      <Card>{project?.description}</Card>
+      <Card style={{backgroundColor: 'var(--color-main)', boxShadow: 'var(--shadow)'}}>{project?.description}</Card>
       <DragDropContext onDragEnd={handleDragEnd}>
         <Flex style={{ width: '100%', marginTop: 10, alignItems: 'start', gap: 10 }}>
           <DroppableContainer header='Open' tasks={boards.open} />

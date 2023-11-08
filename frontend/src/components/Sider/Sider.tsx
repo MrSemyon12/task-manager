@@ -12,21 +12,22 @@ const gridStyle: React.CSSProperties = {
   width: '100%',
   textAlign: 'center',
   padding: 10,
+  backgroundColor: 'var(--color-main)',
 };
 
 const pickedStyle: React.CSSProperties = {
   width: '100%',
   textAlign: 'center',
   backgroundColor: 'var(--color-background)',
-  boxShadow: 'none',
+  boxShadow: 'inset 5px 5px 5px 0 rgba(0, 0, 0, 0.12)',
 };
 
 const buttonStyle: React.CSSProperties = {
   width: '100%',
   textAlign: 'center',
-  backgroundColor: 'coral',
+  backgroundColor: 'var(--color-accent)',
   padding: 10,
-  color: '#ffffff',
+  color: 'var(--color-main)',
 };
 
 export const Sider: React.FC = () => {
@@ -46,17 +47,10 @@ export const Sider: React.FC = () => {
       width='var(--sider-width)'
       style={{
         overflow: 'auto',
-        background: 'var(--color-secondary)',
+        background: 'var(--color-accent)',
         direction: 'rtl',
-        // padding: 10,
-        // justifyContent: 'center',
       }}
     >
-      {/* <Space direction='vertical' style={{ width: '100%', paddingBottom: 10 }}> */}
-      {/* <Button type='primary' style={{ width: '100%' }}>
-        <PlusOutlined />
-        Create Project
-      </Button> */}
       <Card
         style={{
           border: 0,
@@ -66,7 +60,7 @@ export const Sider: React.FC = () => {
         }}
       >
         <Card.Grid style={buttonStyle}>
-          <PlusOutlined style={{ fontSize: 24 }} />
+          <PlusOutlined style={{ fontSize: 28 }} />
         </Card.Grid>
         {projects.map((project) => (
           <Card.Grid
@@ -75,7 +69,7 @@ export const Sider: React.FC = () => {
             style={cur?.id === project.id ? pickedStyle : gridStyle}
             hoverable={cur?.id !== project.id}
           >
-            {project.id}-{project.title}
+            <h3>{project.title}</h3>
           </Card.Grid>
         ))}
       </Card>

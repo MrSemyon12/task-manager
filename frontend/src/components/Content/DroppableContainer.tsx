@@ -44,4 +44,6 @@ const Placeholder = () => {
 
 const style: React.CSSProperties = {
   width: 'calc((100vw - var(--sider-width) - 50px) / 4)',
+  backgroundColor: 'var(--color-main)',
+  boxShadow: 'var(--shadow)',
 };
