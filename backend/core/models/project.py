@@ -26,6 +26,7 @@ class Project(Base):
 
     users_details: Mapped[list["UserProjectAssociation"]] = relationship(
         back_populates="project",
+        cascade="all, delete",
     )
 
     tasks: Mapped[list["Task"]] = relationship(
