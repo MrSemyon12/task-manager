@@ -3,36 +3,16 @@ import { Layout, Card } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 
 import { useApiPrivate, useProject } from '../../hooks';
+import { ProjectForm } from '../CreationForm';
 import { Project } from '../../types';
 
 const { Sider: AntdSider } = Layout;
 const PROJECTS_URL = '/projects/my';
 
-const gridStyle: React.CSSProperties = {
-  width: '100%',
-  textAlign: 'center',
-  padding: 10,
-  backgroundColor: 'var(--color-main)',
-};
-
-const pickedStyle: React.CSSProperties = {
-  width: '100%',
-  textAlign: 'center',
-  backgroundColor: 'var(--color-background)',
-  boxShadow: 'inset 5px 5px 5px 0 rgba(0, 0, 0, 0.12)',
-};
-
-const buttonStyle: React.CSSProperties = {
-  width: '100%',
-  textAlign: 'center',
-  backgroundColor: 'var(--color-accent)',
-  padding: 10,
-  color: 'var(--color-main)',
-};
-
 export const Sider: React.FC = () => {
   const { project: cur, setProject } = useProject();
   const [projects, setProjects] = useState<Project[]>([]);
+  const [isFormOpen, setIsFormOpen] = useState(false);
   const apiPrivate = useApiPrivate();
 
   useEffect(() => {
@@ -59,7 +39,7 @@ export const Sider: React.FC = () => {
           overflow: 'hidden',
         }}
       >
-        <Card.Grid style={buttonStyle}>
+        <Card.Grid style={buttonStyle} onClick={() => setIsFormOpen(true)}>
           <PlusOutlined style={{ fontSize: 28, color: 'var(--color-main)' }} />
         </Card.Grid>
         {projects.map((project) => (
@@ -73,6 +53,29 @@ export const Sider: React.FC = () => {
           </Card.Grid>
         ))}
       </Card>
+      <ProjectForm open={isFormOpen} closeForm={() => setIsFormOpen(false)} />
     </AntdSider>
   );
+};
+
+const gridStyle: React.CSSProperties = {
+  width: '100%',
+  textAlign: 'center',
+  padding: 10,
+  backgroundColor: 'var(--color-main)',
+};
+
+const pickedStyle: React.CSSProperties = {
+  width: '100%',
+  textAlign: 'center',
+  backgroundColor: 'var(--color-background)',
+  boxShadow: 'inset 5px 5px 5px 0 rgba(0, 0, 0, 0.12)',
+};
+
+const buttonStyle: React.CSSProperties = {
+  width: '100%',
+  textAlign: 'center',
+  backgroundColor: 'var(--color-accent)',
+  padding: 10,
+  color: 'var(--color-main)',
 };

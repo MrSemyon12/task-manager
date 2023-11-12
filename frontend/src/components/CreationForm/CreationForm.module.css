@@ -1,0 +1,33 @@
+.form_group {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.form_group input,
+textarea {
+  padding: 4px 11px;
+  font-size: 14px;
+  line-height: 1.5;
+  width: 100%;
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.form_group textarea {
+  height: 200px;
+}
+
+.form_group label {
+  font-size: 14px;
+}
+
+.form_group input:focus,
+textarea:focus {
+  border-color: #1677ff;
+  box-shadow: 0 0 0 2px rgba(5, 145, 255, 0.1);
+  outline: 0;
+}
