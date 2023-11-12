@@ -3,11 +3,11 @@ import { Layout, Card } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 
 import { useApiPrivate, useProject } from '../../hooks';
-import { ProjectForm } from '../CreationForm';
+import { USER_PROJECTS_URL } from '../../api/urls';
+import { ProjectForm } from './ProjectForm';
 import { Project } from '../../types';
 
 const { Sider: AntdSider } = Layout;
-const PROJECTS_URL = '/projects/my';
 
 export const Sider: React.FC = () => {
   const { project: cur, setProject } = useProject();
@@ -17,7 +17,7 @@ export const Sider: React.FC = () => {
 
   useEffect(() => {
     apiPrivate
-      .get(PROJECTS_URL)
+      .get(USER_PROJECTS_URL)
       .then((response) => setProjects(response.data))
       .catch((error) => console.log(error));
   }, [apiPrivate]);
