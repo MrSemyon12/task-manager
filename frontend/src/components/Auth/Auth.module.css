@@ -55,14 +55,14 @@
   left: 0;
   width: 0%;
   height: 2px;
-  background: var(--color-primary);
+  background: var(--color-secondary);
   transition: 0.5s;
 }
 
 .form_group input:focus ~ label,
 .form_group input:not(:placeholder-shown) ~ label {
   top: -5px;
-  color: var(--color-primary);
+  color: var(--color-secondary);
 }
 
 .form_group input:focus ~ span::before,
@@ -97,7 +97,7 @@ input[type='submit']:hover {
 }
 
 .form_link a {
-  color: var(--color-primary);
+  color: var(--color-secondary);
   text-decoration: none;
 }
 

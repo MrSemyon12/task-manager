@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import { LoginPage, RegisterPage, MainPage, NotFoundPage } from './pages';
-import { PersistLogin, RequireAuth } from './components/Auth';
+import { PersistLogin, RequireAuth } from './components';
 
 const App: React.FC = () => {
   return (

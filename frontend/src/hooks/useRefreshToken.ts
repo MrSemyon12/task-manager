@@ -11,7 +11,7 @@ export const useRefreshToken = () => {
       withCredentials: true,
     });
     setAuth(response.data);
-    return response.data.accessToken;
+    return response.data.access_token;
   };
 
   return refresh;
