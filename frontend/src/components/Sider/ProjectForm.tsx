@@ -87,11 +87,7 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({
           <Input />
         </Form.Item>
 
-        <Form.Item
-          name='description'
-          label='Description'
-          rules={[{ required: true, message: 'Please fill in description' }]}
-        >
+        <Form.Item name='description' label='Description'>
           <Input.TextArea showCount maxLength={200} style={{ height: 150 }} />
         </Form.Item>
 
