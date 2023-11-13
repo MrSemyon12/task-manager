@@ -10,7 +10,7 @@ import { Project } from '../../types';
 const { Sider: AntdSider } = Layout;
 
 export const Sider: React.FC = () => {
-  const { project: cur, setProject } = useProject();
+  const { project: curProject, setProject } = useProject();
   const [projects, setProjects] = useState<Project[]>([]);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const apiPrivate = useApiPrivate();
@@ -46,14 +46,19 @@ export const Sider: React.FC = () => {
           <Card.Grid
             key={project.id}
             onClick={() => setProject(project)}
-            style={cur?.id === project.id ? pickedStyle : gridStyle}
-            hoverable={cur?.id !== project.id}
+            style={curProject?.id === project.id ? pickedStyle : gridStyle}
+            hoverable={curProject?.id !== project.id}
           >
             <h3>{project.title}</h3>
           </Card.Grid>
         ))}
       </Card>
-      <ProjectForm open={isFormOpen} closeForm={() => setIsFormOpen(false)} />
+      <ProjectForm
+        open={isFormOpen}
+        closeForm={() => setIsFormOpen(false)}
+        projects={projects}
+        setProjects={setProjects}
+      />
     </AntdSider>
   );
 };

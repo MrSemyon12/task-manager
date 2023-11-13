@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import { Modal, Switch, Form, Input, message } from 'antd';
 
 import { BASE_PROJECTS_URL } from '../../api/urls';
+import { Project } from '../../types';
 import { useApiPrivate } from '../../hooks';
 
 type ProjectFormProps = {
   open: boolean;
   closeForm: Function;
+  projects: Project[];
+  setProjects: Dispatch<SetStateAction<Project[]>>;
 };
 
 type ProjectCreate = {
@@ -18,6 +21,8 @@ type ProjectCreate = {
 export const ProjectForm: React.FC<ProjectFormProps> = ({
   open,
   closeForm,
+  projects,
+  setProjects,
 }) => {
   const [confirmLoading, setConfirmLoading] = useState(false);
   const apiPrivate = useApiPrivate();
@@ -35,7 +40,8 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({
     setConfirmLoading(true);
 
     try {
-      await apiPrivate.post(BASE_PROJECTS_URL, data);
+      const response = await apiPrivate.post(BASE_PROJECTS_URL, data);
+      setProjects([response.data, ...projects]);
       message.success('Project created', 5);
       closeForm();
     } catch (error) {
