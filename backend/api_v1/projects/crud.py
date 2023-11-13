@@ -9,7 +9,7 @@ from .schemas import ProjectCreate
 
 
 async def get_projects(session: AsyncSession) -> list[Project]:
-    stmt = select(Project).order_by(Project.id)
+    stmt = select(Project).order_by(Project.created_at.desc())
     result: Result = await session.execute(stmt)
     projects = result.scalars().all()
     return list(projects)
@@ -62,7 +62,7 @@ async def get_user_projects(
             selectinload(Project.users_details).joinedload(UserProjectAssociation.user),
         )
         .where(User.id == user_id)
-        .order_by(Project.id)
+        .order_by(Project.created_at.desc())
     )
     result: Result = await session.execute(stmt)
     projects = result.scalars().all()
