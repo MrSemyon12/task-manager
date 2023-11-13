@@ -1,7 +1,6 @@
 import api from '../api/axios';
+import { REFRESH_URL } from '../api/urls';
 import { useAuth } from './useAuth';
-
-const REFRESH_URL = '/auth/refresh';
 
 export const useRefreshToken = () => {
   const { setAuth } = useAuth();

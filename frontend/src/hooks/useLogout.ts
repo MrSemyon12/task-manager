@@ -1,7 +1,6 @@
 import api from '../api/axios';
+import { LOGOUT_URL } from '../api/urls';
 import { useAuth } from './useAuth';
-
-const LOGOUT_URL = '/auth/logout';
 
 export const useLogout = () => {
   const { setAuth } = useAuth();

@@ -4,12 +4,11 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 
+import { REGISTER_URL } from '../../api/urls';
 import { UserRegister } from './types';
 import api from '../../api/axios';
 
 import styles from './Auth.module.css';
-
-const REGISTER_URL = '/auth/register';
 
 function filterObject(obj: UserRegister) {
   return Object.fromEntries(

@@ -4,13 +4,12 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 
+import { LOGIN_URL } from '../../api/urls';
 import { useAuth } from '../../hooks';
 import { UserLogin } from './types';
 import api from '../../api/axios';
 
 import styles from './Auth.module.css';
-
-const LOGIN_URL = '/auth/login';
 
 export const Login: React.FC = () => {
   const { setAuth } = useAuth();
