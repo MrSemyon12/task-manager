@@ -19,3 +19,12 @@ export const appendAt = (list: Task[], index: number, pokemon: Task) => {
   result.splice(index, 0, pokemon);
   return result;
 };
+
+export const makeBoards = (tasks: Task[]) => {
+  return {
+    open: tasks.filter((t) => t.state.id == 1),
+    progress: tasks.filter((t) => t.state.id == 2),
+    done: tasks.filter((t) => t.state.id == 3),
+    closed: tasks.filter((t) => t.state.id == 4),
+  };
+};
