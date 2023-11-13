@@ -78,6 +78,10 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({
               required: true,
               message: 'Please fill in title',
             },
+            {
+              max: 32,
+              message: 'Max length is 32 characters',
+            },
           ]}
         >
           <Input />

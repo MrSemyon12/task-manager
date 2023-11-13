@@ -6,7 +6,7 @@ export type Project = {
   id: number;
   title: string;
   description: string;
-  isPrivate: boolean;
+  is_private: boolean;
 };
 
 export type Task = {

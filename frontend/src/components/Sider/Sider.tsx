@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Layout, Card } from 'antd';
+import { Layout, Card, Row, Col } from 'antd';
+import { LockOutlined } from '@ant-design/icons';
 import { PlusOutlined } from '@ant-design/icons';
 
 import { useApiPrivate, useProject } from '../../hooks';
@@ -49,7 +50,20 @@ export const Sider: React.FC = () => {
             style={curProject?.id === project.id ? pickedStyle : gridStyle}
             hoverable={curProject?.id !== project.id}
           >
-            <h3>{project.title}</h3>
+            <Row justify='space-between'>
+              <div
+                style={{
+                  width: 260,
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  fontWeight: 'var(--font-weight)',
+                }}
+              >
+                {project.title}
+              </div>
+              {project.is_private && <LockOutlined />}
+            </Row>
           </Card.Grid>
         ))}
       </Card>
@@ -65,14 +79,15 @@ export const Sider: React.FC = () => {
 
 const gridStyle: React.CSSProperties = {
   width: '100%',
-  textAlign: 'center',
-  padding: 10,
-  backgroundColor: 'var(--color-main)',
+  padding: '10px 10px',
+  backgroundColor: 'var(--color-accent)',
+  boxShadow: 'var(--shadow)',
+  borderBottom: '1px solid rgba(0, 0, 0, 0.1)',
 };
 
 const pickedStyle: React.CSSProperties = {
   width: '100%',
-  textAlign: 'center',
+  padding: '20px 10px',
   backgroundColor: 'var(--color-background)',
   boxShadow: 'inset 5px 5px 5px 0 rgba(0, 0, 0, 0.12)',
 };
@@ -83,4 +98,5 @@ const buttonStyle: React.CSSProperties = {
   backgroundColor: 'var(--color-accent)',
   padding: 10,
   color: 'var(--color-main)',
+  boxShadow: 'var(--shadow)',
 };
