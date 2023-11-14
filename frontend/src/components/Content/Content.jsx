@@ -13,16 +13,16 @@ const { Content: AntdContent } = Layout;
 
 export const Content = () => {
   const api = useApiPrivate();
-  const { project, setProject } = useProject();
+  const { curProject, setCurProject, projects, setProjects } = useProject();
   const [boards, setBoards] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (!project) return;
+    if (!curProject) return;
 
     setIsLoading(true);
     api
-      .get(BASE_TASKS_URL.replace(':id', project.id))
+      .get(BASE_TASKS_URL.replace(':id', curProject.id))
       .then((response) => {
         setBoards(makeBoards(response.data));
       })
@@ -30,7 +30,7 @@ export const Content = () => {
         message.error('Service is not available', 5);
       })
       .finally(() => setIsLoading(false));
-  }, [project]);
+  }, [curProject]);
 
   function handleDragEnd(result) {
     const src = result.source;
@@ -71,17 +71,18 @@ export const Content = () => {
   }
 
   const handleDelete = async () => {
-    setProject(null);
+    setCurProject(null);
 
     try {
-      await api.delete(DELETE_PROJECT_URL.replace(':id', project.id));
+      await api.delete(DELETE_PROJECT_URL.replace(':id', curProject.id));
+      setProjects(projects.filter((p) => p.id != curProject.id));
       message.success('Project deleted', 5);
     } catch (error) {
       message.error('Service is not available', 5);
     }
   };
 
-  if (!project)
+  if (!curProject)
     return (
       <AntdContent style={styleTemplate}>
         <Result
@@ -101,7 +102,7 @@ export const Content = () => {
       <Card
         title={
           <>
-            {project.title}
+            {curProject.title}
             <Button
               type='text'
               style={{ marginLeft: 5 }}
@@ -130,7 +131,7 @@ export const Content = () => {
         }
         style={styleDescription}
       >
-        {project?.description}
+        {curProject?.description}
       </Card>
       {isLoading ? (
         <Spinner />

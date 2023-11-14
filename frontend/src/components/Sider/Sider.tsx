@@ -5,13 +5,11 @@ import { PlusOutlined, CloseOutlined } from '@ant-design/icons';
 import { useApiPrivate, useProject } from '../../hooks';
 import { USER_PROJECTS_URL } from '../../api/urls';
 import { ProjectForm } from './ProjectForm';
-import { Project } from '../../types';
 
 const { Sider: AntdSider } = Layout;
 
 export const Sider: React.FC = () => {
-  const { project: curProject, setProject } = useProject();
-  const [projects, setProjects] = useState<Project[]>([]);
+  const { curProject, setCurProject, projects, setProjects } = useProject();
   const [isFormOpen, setIsFormOpen] = useState(false);
   const apiPrivate = useApiPrivate();
 
@@ -46,7 +44,7 @@ export const Sider: React.FC = () => {
           <Card.Grid
             key={project.id}
             onClick={() => {
-              if (curProject?.id != project.id) setProject(project);
+              if (curProject?.id != project.id) setCurProject(project);
             }}
             style={curProject?.id === project.id ? pickedStyle : gridStyle}
             hoverable={curProject?.id !== project.id}
@@ -67,7 +65,7 @@ export const Sider: React.FC = () => {
                 <Button
                   type='text'
                   icon={<CloseOutlined />}
-                  onClick={() => setProject(null)}
+                  onClick={() => setCurProject(null)}
                 />
               )}
             </Row>
