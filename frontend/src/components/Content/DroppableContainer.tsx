@@ -1,6 +1,7 @@
 import React from 'react';
-import { Card } from 'antd';
+import { Button, Card } from 'antd';
 import { StrictModeDroppable } from './StrictModeDroppable';
+import { PlusOutlined } from '@ant-design/icons';
 
 import { Task } from '../../types';
 import { TaskCard } from '../TaskCard';
@@ -15,6 +16,15 @@ export const DroppableContainer: React.FC<DroppableContainerProps> = ({
   return (
     <Card
       title={header}
+      extra={
+        <Button
+          icon={
+            <PlusOutlined
+              style={{ fontSize: 22, color: 'var(--color-secondary)' }}
+            />
+          }
+        />
+      }
       style={style}
       headStyle={{ fontSize: 20 }}
       bodyStyle={{ padding: 5 }}

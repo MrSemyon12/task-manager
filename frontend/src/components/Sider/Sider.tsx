@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Layout, Card, Row, Col } from 'antd';
-import { LockOutlined } from '@ant-design/icons';
-import { PlusOutlined } from '@ant-design/icons';
+import { Layout, Card, Row } from 'antd';
+import { PlusOutlined, LockOutlined } from '@ant-design/icons';
 
 import { useApiPrivate, useProject } from '../../hooks';
 import { USER_PROJECTS_URL } from '../../api/urls';
