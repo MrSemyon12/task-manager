@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Layout, Card, Row } from 'antd';
-import { PlusOutlined, LockOutlined } from '@ant-design/icons';
+import { Layout, Card, Row, Button } from 'antd';
+import { PlusOutlined, CloseOutlined } from '@ant-design/icons';
 
 import { useApiPrivate, useProject } from '../../hooks';
 import { USER_PROJECTS_URL } from '../../api/urls';
@@ -45,14 +45,16 @@ export const Sider: React.FC = () => {
         {projects.map((project) => (
           <Card.Grid
             key={project.id}
-            onClick={() => setProject(project)}
+            onClick={() => {
+              if (curProject?.id != project.id) setProject(project);
+            }}
             style={curProject?.id === project.id ? pickedStyle : gridStyle}
             hoverable={curProject?.id !== project.id}
           >
-            <Row justify='space-between'>
+            <Row justify='space-between' align='middle'>
               <div
                 style={{
-                  width: 260,
+                  width: 240,
                   whiteSpace: 'nowrap',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
@@ -61,7 +63,13 @@ export const Sider: React.FC = () => {
               >
                 {project.title}
               </div>
-              {project.is_private && <LockOutlined />}
+              {curProject?.id === project.id && (
+                <Button
+                  type='text'
+                  icon={<CloseOutlined />}
+                  onClick={() => setProject(null)}
+                />
+              )}
             </Row>
           </Card.Grid>
         ))}

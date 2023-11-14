@@ -25,7 +25,7 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({
   setProjects,
 }) => {
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const apiPrivate = useApiPrivate();
+  const api = useApiPrivate();
   const [form] = Form.useForm();
 
   const handleOk = () => {
@@ -40,7 +40,7 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({
     setConfirmLoading(true);
 
     try {
-      const response = await apiPrivate.post(BASE_PROJECTS_URL, data);
+      const response = await api.post(BASE_PROJECTS_URL, data);
       setProjects([response.data, ...projects]);
       message.success('Project created', 5);
       closeForm();

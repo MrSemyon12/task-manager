@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Layout, Card, Flex, message, Result } from 'antd';
-import { PushpinFilled } from '@ant-design/icons';
+import { Layout, Button, Card, Flex, message, Result, Modal } from 'antd';
+import { PushpinFilled, DeleteOutlined, EditFilled } from '@ant-design/icons';
 import { DragDropContext } from 'react-beautiful-dnd';
 
 import { useApiPrivate, useProject } from '../../hooks';
-import { BASE_TASKS_URL } from '../../api/urls';
+import { BASE_TASKS_URL, DELETE_PROJECT_URL } from '../../api/urls';
 import { DroppableContainer } from './DroppableContainer';
 import { reorder, remove, appendAt, makeBoards } from './utils';
 import { Spinner } from '../Spinner';
@@ -13,7 +13,7 @@ const { Content: AntdContent } = Layout;
 
 export const Content = () => {
   const api = useApiPrivate();
-  const { project } = useProject();
+  const { project, setProject } = useProject();
   const [boards, setBoards] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
@@ -70,6 +70,17 @@ export const Content = () => {
     }
   }
 
+  const handleDelete = async () => {
+    setProject(null);
+
+    try {
+      await api.delete(DELETE_PROJECT_URL.replace(':id', project.id));
+      message.success('Project deleted', 5);
+    } catch (error) {
+      message.error('Service is not available', 5);
+    }
+  };
+
   if (!project)
     return (
       <AntdContent style={styleTemplate}>
@@ -87,7 +98,40 @@ export const Content = () => {
 
   return (
     <AntdContent style={styleContent}>
-      <Card style={styleDescription}>{project?.description}</Card>
+      <Card
+        title={
+          <>
+            {project.title}
+            <Button
+              type='text'
+              style={{ marginLeft: 5 }}
+              icon={<EditFilled style={{ color: 'var(--color-secondary)' }} />}
+            />
+          </>
+        }
+        extra={
+          <Button
+            danger
+            icon={<DeleteOutlined style={{ color: '#ff4d4f' }} />}
+            onClick={() => {
+              Modal.confirm({
+                title: 'Delete project?',
+                content: 'All tasks will be permanently deleted',
+                footer: (_, { OkBtn, CancelBtn }) => (
+                  <>
+                    <CancelBtn />
+                    <OkBtn />
+                  </>
+                ),
+                onOk: handleDelete,
+              });
+            }}
+          />
+        }
+        style={styleDescription}
+      >
+        {project?.description}
+      </Card>
       {isLoading ? (
         <Spinner />
       ) : (
