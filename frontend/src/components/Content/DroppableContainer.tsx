@@ -1,21 +1,32 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import { Button, Card } from 'antd';
-import { StrictModeDroppable } from './StrictModeDroppable';
+import { Draggable } from 'react-beautiful-dnd';
 import { PlusOutlined } from '@ant-design/icons';
 
 import { Task } from '../../types';
+import { StrictModeDroppable } from './StrictModeDroppable';
 import { TaskCard } from '../TaskCard';
-import { Draggable } from 'react-beautiful-dnd';
+import { TaskForm } from './TaskForm';
 
-type DroppableContainerProps = { header: string; tasks: Task[] };
+type DroppableContainerProps = {
+  state: {
+    id: number;
+    title: string;
+  };
+  setBoards: Dispatch<SetStateAction<any>>;
+  tasks: Task[];
+};
 
 export const DroppableContainer: React.FC<DroppableContainerProps> = ({
-  header,
+  state,
+  setBoards,
   tasks,
 }) => {
+  const [isFormOpen, setIsFormOpen] = useState(false);
+
   return (
     <Card
-      title={header}
+      title={state.title}
       extra={
         <Button
           icon={
@@ -23,13 +34,14 @@ export const DroppableContainer: React.FC<DroppableContainerProps> = ({
               style={{ fontSize: 22, color: 'var(--color-secondary)' }}
             />
           }
+          onClick={() => setIsFormOpen(true)}
         />
       }
       style={style}
       headStyle={{ fontSize: 20 }}
       bodyStyle={{ padding: 5 }}
     >
-      <StrictModeDroppable droppableId={header.toLowerCase()}>
+      <StrictModeDroppable droppableId={state.title.toLowerCase()}>
         {(provided) => (
           <div ref={provided.innerRef} {...provided.droppableProps}>
             {tasks.map((task, index) => (
@@ -50,6 +62,12 @@ export const DroppableContainer: React.FC<DroppableContainerProps> = ({
           </div>
         )}
       </StrictModeDroppable>
+      <TaskForm
+        open={isFormOpen}
+        closeForm={() => setIsFormOpen(false)}
+        state={state}
+        setBoards={setBoards}
+      />
     </Card>
   );
 };

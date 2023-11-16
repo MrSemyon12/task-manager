@@ -30,7 +30,7 @@ export const Content = () => {
         message.error('Service is not available', 5);
       })
       .finally(() => setIsLoading(false));
-  }, [curProject]);
+  }, [curProject, api]);
 
   function handleDragEnd(result) {
     const src = result.source;
@@ -75,7 +75,7 @@ export const Content = () => {
 
     try {
       await api.delete(DELETE_PROJECT_URL.replace(':id', curProject.id));
-      setProjects(projects.filter((p) => p.id != curProject.id));
+      setProjects(projects.filter((p) => p.id !== curProject.id));
       message.success('Project deleted', 5);
     } catch (error) {
       message.error('Service is not available', 5);
@@ -138,10 +138,26 @@ export const Content = () => {
       ) : (
         <DragDropContext onDragEnd={handleDragEnd}>
           <Flex style={styleDroppable}>
-            <DroppableContainer header='Open' tasks={boards.open} />
-            <DroppableContainer header='Progress' tasks={boards.progress} />
-            <DroppableContainer header='Done' tasks={boards.done} />
-            <DroppableContainer header='Closed' tasks={boards.closed} />
+            <DroppableContainer
+              state={{ id: 1, title: 'Open' }}
+              tasks={boards.open}
+              setBoards={setBoards}
+            />
+            <DroppableContainer
+              state={{ id: 2, title: 'Progress' }}
+              tasks={boards.progress}
+              setBoards={setBoards}
+            />
+            <DroppableContainer
+              state={{ id: 3, title: 'Done' }}
+              tasks={boards.done}
+              setBoards={setBoards}
+            />
+            <DroppableContainer
+              state={{ id: 4, title: 'Closed' }}
+              tasks={boards.closed}
+              setBoards={setBoards}
+            />
           </Flex>
         </DragDropContext>
       )}

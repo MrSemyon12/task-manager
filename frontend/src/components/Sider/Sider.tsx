@@ -18,7 +18,7 @@ export const Sider: React.FC = () => {
       .get(USER_PROJECTS_URL)
       .then((response) => setProjects(response.data))
       .catch((error) => console.log(error));
-  }, [apiPrivate]);
+  }, [apiPrivate, setProjects]);
 
   return (
     <AntdSider
@@ -44,7 +44,7 @@ export const Sider: React.FC = () => {
           <Card.Grid
             key={project.id}
             onClick={() => {
-              if (curProject?.id != project.id) setCurProject(project);
+              if (curProject?.id !== project.id) setCurProject(project);
             }}
             style={curProject?.id === project.id ? pickedStyle : gridStyle}
             hoverable={curProject?.id !== project.id}
@@ -72,12 +72,7 @@ export const Sider: React.FC = () => {
           </Card.Grid>
         ))}
       </Card>
-      <ProjectForm
-        open={isFormOpen}
-        closeForm={() => setIsFormOpen(false)}
-        projects={projects}
-        setProjects={setProjects}
-      />
+      <ProjectForm open={isFormOpen} closeForm={() => setIsFormOpen(false)} />
     </AntdSider>
   );
 };
