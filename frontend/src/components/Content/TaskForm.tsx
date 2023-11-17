@@ -57,7 +57,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({
 
     try {
       const response = await api.post(
-        BASE_TASKS_URL.replace(':id', curProject.id.toString()),
+        BASE_TASKS_URL.replace(':projectId', curProject.id.toString()),
         newData
       );
       setBoards((prev: any) => {
@@ -105,8 +105,8 @@ export const TaskForm: React.FC<TaskFormProps> = ({
               message: 'Please fill in title',
             },
             {
-              max: 32,
-              message: 'Max length is 32 characters',
+              max: 24,
+              message: 'Max length is 24 characters',
             },
           ]}
         >

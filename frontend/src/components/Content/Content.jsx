@@ -22,7 +22,7 @@ export const Content = () => {
 
     setIsLoading(true);
     api
-      .get(BASE_TASKS_URL.replace(':id', curProject.id))
+      .get(BASE_TASKS_URL.replace(':projectId', curProject.id))
       .then((response) => {
         setBoards(makeBoards(response.data));
       })
@@ -74,7 +74,7 @@ export const Content = () => {
     setCurProject(null);
 
     try {
-      await api.delete(DELETE_PROJECT_URL.replace(':id', curProject.id));
+      await api.delete(DELETE_PROJECT_URL.replace(':projectId', curProject.id));
       setProjects(projects.filter((p) => p.id !== curProject.id));
       message.success('Project deleted', 5);
     } catch (error) {
@@ -106,7 +106,7 @@ export const Content = () => {
             <Button
               type='text'
               style={{ marginLeft: 5 }}
-              icon={<EditFilled style={{ color: 'var(--color-secondary)' }} />}
+              icon={<EditFilled />}
             />
           </>
         }

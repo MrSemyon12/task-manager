@@ -1,6 +1,9 @@
 import React from 'react';
-import { Card } from 'antd';
+import { Button, Card, Modal, message } from 'antd';
+import { EditFilled, CloseOutlined } from '@ant-design/icons';
 
+import { DELETE_TASKS_URL } from '../../api/urls';
+import { useProject, useApiPrivate } from '../../hooks';
 import { Task } from '../../types';
 
 type TaskProps = { task: Task };
@@ -8,13 +11,61 @@ type TaskProps = { task: Task };
 const COLORS = ['', '#f78888', '#F3D250', '#90CCF4'];
 
 export const TaskCard: React.FC<TaskProps> = ({ task }) => {
+  const { curProject } = useProject();
+  const api = useApiPrivate();
+
   const style: React.CSSProperties = {
     backgroundColor: COLORS[task.priority.id],
     wordWrap: 'break-word',
   };
 
+  const handleDelete = async () => {
+    if (!curProject) return;
+
+    try {
+      await api.delete(
+        DELETE_TASKS_URL.replace(
+          ':projectId',
+          curProject.id.toString()
+        ).replace(':taskId', task.id.toString())
+      );
+      // setProjects(projects.filter((p) => p.id !== curProject.id));
+      message.success('Task deleted', 5);
+    } catch (error) {
+      message.error('Service is not available', 5);
+    }
+  };
+
   return (
-    <Card title={task.title} style={style} size='small'>
+    <Card
+      title={
+        <>
+          {task.title}
+          <Button type='text' icon={<EditFilled />} />
+        </>
+      }
+      style={style}
+      size='small'
+      extra={
+        <Button
+          type='text'
+          icon={<CloseOutlined />}
+          onClick={() => {
+            Modal.confirm({
+              title: 'Delete task?',
+              content: 'Progress will be permanently deleted',
+              footer: (_, { OkBtn, CancelBtn }) => (
+                <>
+                  <CancelBtn />
+                  <OkBtn />
+                </>
+              ),
+              onOk: handleDelete,
+            });
+          }}
+        />
+      }
+    >
       {task.description}
     </Card>
   );
