@@ -136,7 +136,11 @@ export const TaskForm: React.FC<TaskFormProps> = ({
             },
           ]}
         >
-          <DatePicker />
+          <DatePicker
+            disabledDate={(current) =>
+              current && current.valueOf() < Date.now()
+            }
+          />
         </Form.Item>
 
         <Form.Item label='Priority'>

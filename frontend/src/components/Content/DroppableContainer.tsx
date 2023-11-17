@@ -45,7 +45,11 @@ export const DroppableContainer: React.FC<DroppableContainerProps> = ({
         {(provided) => (
           <div ref={provided.innerRef} {...provided.droppableProps}>
             {tasks.map((task, index) => (
-              <Draggable key={task.id} draggableId={task.title} index={index}>
+              <Draggable
+                key={task.id}
+                draggableId={task.id.toString()}
+                index={index}
+              >
                 {(provided) => (
                   <div
                     ref={provided.innerRef}
