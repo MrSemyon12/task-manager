@@ -148,9 +148,9 @@ export const TaskForm: React.FC<TaskFormProps> = ({
             defaultValue='low'
             style={{ width: 100 }}
             options={[
-              { value: 1, label: 'high' },
-              { value: 2, label: 'medium' },
               { value: 3, label: 'low' },
+              { value: 2, label: 'medium' },
+              { value: 1, label: 'high' },
             ]}
             onChange={(value) => setPriorityId(+value)}
           />
