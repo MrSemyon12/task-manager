@@ -27,3 +27,10 @@ export type Priority = {
   id: number;
   title: string;
 };
+
+export type Board = {
+  open: Task[];
+  progress: Task[];
+  done: Task[];
+  closed: Task[];
+};

@@ -3,7 +3,7 @@ import { Layout, Button, Card, Flex, message, Result, Modal } from 'antd';
 import { PushpinFilled, DeleteOutlined, EditFilled } from '@ant-design/icons';
 import { DragDropContext } from 'react-beautiful-dnd';
 
-import { useApiPrivate, useProject } from '../../hooks';
+import { useApiPrivate, useProject, useBoard } from '../../hooks';
 import { BASE_TASKS_URL, DELETE_PROJECT_URL } from '../../api/urls';
 import { DroppableContainer } from './DroppableContainer';
 import { reorder, remove, appendAt, makeBoards } from './utils';
@@ -14,7 +14,7 @@ const { Content: AntdContent } = Layout;
 export const Content = () => {
   const api = useApiPrivate();
   const { curProject, setCurProject, projects, setProjects } = useProject();
-  const [boards, setBoards] = useState();
+  const { board, setBoard } = useBoard();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -24,7 +24,7 @@ export const Content = () => {
     api
       .get(BASE_TASKS_URL.replace(':projectId', curProject.id))
       .then((response) => {
-        setBoards(makeBoards(response.data));
+        setBoard(makeBoards(response.data));
       })
       .catch(() => {
         message.error('Service is not available', 5);
@@ -43,30 +43,26 @@ export const Content = () => {
       // --- SAME CONTAINER ---
       // If same container, just reorder
 
-      const items = reorder(
-        [...boards[src.droppableId]],
-        src.index,
-        dest.index
-      );
+      const items = reorder([...board[src.droppableId]], src.index, dest.index);
 
-      const tempBoards = { ...boards };
+      const tempBoards = { ...board };
       tempBoards[src.droppableId] = items;
-      setBoards({ ...tempBoards });
+      setBoard({ ...tempBoards });
     } else {
       // --- DIFFERENT CONTAINER ---
 
-      const srcItems = remove(boards[src.droppableId], src.index);
+      const srcItems = remove(board[src.droppableId], src.index);
 
       const destItems = appendAt(
-        boards[dest.droppableId],
+        board[dest.droppableId],
         dest.index,
-        boards[src.droppableId][src.index]
+        board[src.droppableId][src.index]
       );
 
-      const tempBoards = { ...boards };
+      const tempBoards = { ...board };
       tempBoards[src.droppableId] = srcItems;
       tempBoards[dest.droppableId] = destItems;
-      setBoards({ ...tempBoards });
+      setBoard({ ...tempBoards });
     }
   }
 
@@ -138,26 +134,10 @@ export const Content = () => {
       ) : (
         <DragDropContext onDragEnd={handleDragEnd}>
           <Flex style={styleDroppable}>
-            <DroppableContainer
-              state={{ id: 1, title: 'Open' }}
-              tasks={boards.open}
-              setBoards={setBoards}
-            />
-            <DroppableContainer
-              state={{ id: 2, title: 'Progress' }}
-              tasks={boards.progress}
-              setBoards={setBoards}
-            />
-            <DroppableContainer
-              state={{ id: 3, title: 'Done' }}
-              tasks={boards.done}
-              setBoards={setBoards}
-            />
-            <DroppableContainer
-              state={{ id: 4, title: 'Closed' }}
-              tasks={boards.closed}
-              setBoards={setBoards}
-            />
+            <DroppableContainer state={{ id: 1, title: 'Open' }} />
+            <DroppableContainer state={{ id: 2, title: 'Progress' }} />
+            <DroppableContainer state={{ id: 3, title: 'Done' }} />
+            <DroppableContainer state={{ id: 4, title: 'Closed' }} />
           </Flex>
         </DragDropContext>
       )}

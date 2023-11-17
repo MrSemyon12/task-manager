@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
-import { AuthProvider, ProjectProvider } from './contexts';
+import { AuthProvider, ProjectProvider, BoardProvider } from './contexts';
 import App from './App';
 import './index.css';
 
@@ -13,7 +13,9 @@ root.render(
   <React.StrictMode>
     <AuthProvider>
       <ProjectProvider>
-        <App />
+        <BoardProvider>
+          <App />
+        </BoardProvider>
       </ProjectProvider>
     </AuthProvider>
   </React.StrictMode>

@@ -3,7 +3,7 @@ import { Button, Card, Modal, message } from 'antd';
 import { EditFilled, CloseOutlined } from '@ant-design/icons';
 
 import { DELETE_TASKS_URL } from '../../api/urls';
-import { useProject, useApiPrivate } from '../../hooks';
+import { useApiPrivate, useProject, useBoard } from '../../hooks';
 import { Task } from '../../types';
 
 type TaskProps = { task: Task };
@@ -12,6 +12,7 @@ const COLORS = ['', '#f78888', '#F3D250', '#90CCF4'];
 
 export const TaskCard: React.FC<TaskProps> = ({ task }) => {
   const { curProject } = useProject();
+  const { setBoard } = useBoard();
   const api = useApiPrivate();
 
   const style: React.CSSProperties = {
@@ -29,7 +30,14 @@ export const TaskCard: React.FC<TaskProps> = ({ task }) => {
           curProject.id.toString()
         ).replace(':taskId', task.id.toString())
       );
-      // setProjects(projects.filter((p) => p.id !== curProject.id));
+      setBoard((prev: any) => {
+        const newBoard = { ...prev };
+        const newTasks = newBoard[task.state.title].filter(
+          (t: Task) => t.id != task.id
+        );
+        newBoard[task.state.title] = newTasks;
+        return newBoard;
+      });
       message.success('Task deleted', 5);
     } catch (error) {
       message.error('Service is not available', 5);

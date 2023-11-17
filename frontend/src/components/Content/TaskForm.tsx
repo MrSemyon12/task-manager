@@ -1,8 +1,8 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { useState } from 'react';
 import { Modal, Form, Input, message, DatePicker, Select } from 'antd';
 
 import { BASE_TASKS_URL } from '../../api/urls';
-import { useApiPrivate, useProject } from '../../hooks';
+import { useApiPrivate, useProject, useBoard } from '../../hooks';
 
 type TaskFormProps = {
   open: boolean;
@@ -11,7 +11,6 @@ type TaskFormProps = {
     id: number;
     title: string;
   };
-  setBoards: Dispatch<SetStateAction<any>>;
 };
 
 type TaskCreate = {
@@ -24,11 +23,11 @@ export const TaskForm: React.FC<TaskFormProps> = ({
   open,
   closeForm,
   state,
-  setBoards,
 }) => {
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [priorityId, setPriorityId] = useState(3);
   const { curProject } = useProject();
+  const { setBoard } = useBoard();
   const api = useApiPrivate();
   const [form] = Form.useForm();
 
@@ -60,10 +59,10 @@ export const TaskForm: React.FC<TaskFormProps> = ({
         BASE_TASKS_URL.replace(':projectId', curProject.id.toString()),
         newData
       );
-      setBoards((prev: any) => {
-        const newBorads = { ...prev };
-        newBorads[state.title.toLowerCase()].push(response.data);
-        return newBorads;
+      setBoard((prev: any) => {
+        const newBorad = { ...prev };
+        newBorad[state.title.toLowerCase()].push(response.data);
+        return newBorad;
       });
       message.success('Task created', 5);
       closeForm();

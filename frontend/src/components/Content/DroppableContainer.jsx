@@ -1,28 +1,18 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { useState } from 'react';
 import { Button, Card } from 'antd';
 import { Draggable } from 'react-beautiful-dnd';
 import { PlusOutlined } from '@ant-design/icons';
 
-import { Task } from '../../types';
+import { useBoard } from '../../hooks';
 import { StrictModeDroppable } from './StrictModeDroppable';
 import { TaskCard } from '../TaskCard';
 import { TaskForm } from './TaskForm';
 
-type DroppableContainerProps = {
-  state: {
-    id: number;
-    title: string;
-  };
-  setBoards: Dispatch<SetStateAction<any>>;
-  tasks: Task[];
-};
-
-export const DroppableContainer: React.FC<DroppableContainerProps> = ({
-  state,
-  setBoards,
-  tasks,
-}) => {
+export const DroppableContainer = ({ state }) => {
+  const { board } = useBoard();
   const [isFormOpen, setIsFormOpen] = useState(false);
+
+  const tasks = board[state.title.toLowerCase()];
 
   return (
     <Card
@@ -70,7 +60,6 @@ export const DroppableContainer: React.FC<DroppableContainerProps> = ({
         open={isFormOpen}
         closeForm={() => setIsFormOpen(false)}
         state={state}
-        setBoards={setBoards}
       />
     </Card>
   );
@@ -80,7 +69,7 @@ const Placeholder = () => {
   return <div style={{ height: '200px' }}></div>;
 };
 
-const style: React.CSSProperties = {
+const style = {
   width: 'calc((100vw - var(--sider-width) - 50px) / 4)',
   backgroundColor: 'var(--color-main)',
   boxShadow: 'var(--shadow)',
