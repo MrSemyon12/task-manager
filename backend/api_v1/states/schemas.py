@@ -5,9 +5,9 @@ from pydantic import BaseModel, ConfigDict
 
 class StateEnum(Enum):
     OPEN = "open"
-    IN_PROGRESS = "in progress"
+    PROGRESS = "progress"
     DONE = "done"
-    CANCELLED = "cancelled"
+    CLOSED = "closed"
 
 
 class StateBase(BaseModel):
