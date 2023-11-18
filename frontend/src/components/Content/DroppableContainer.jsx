@@ -31,12 +31,15 @@ export const DroppableContainer = ({ state }) => {
       headStyle={{ fontSize: 20 }}
       bodyStyle={{ padding: 5 }}
     >
-      <StrictModeDroppable droppableId={state.title.toLowerCase()}>
+      <StrictModeDroppable
+        droppableId={state.title.toLowerCase()}
+        key={state.title.toLowerCase()}
+      >
         {(provided) => (
           <div ref={provided.innerRef} {...provided.droppableProps}>
             {tasks.map((task, index) => (
               <Draggable
-                key={task.id}
+                key={task.id.toString()}
                 draggableId={task.id.toString()}
                 index={index}
               >
