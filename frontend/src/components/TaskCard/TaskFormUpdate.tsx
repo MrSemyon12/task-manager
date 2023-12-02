@@ -81,7 +81,6 @@ export const TaskFormUpdate: React.FC<TaskFormProps> = ({
       onOk={handleOk}
       confirmLoading={confirmLoading}
       onCancel={handleCancel}
-      afterClose={() => form.resetFields()}
     >
       <Form
         labelCol={{ span: 5 }}
