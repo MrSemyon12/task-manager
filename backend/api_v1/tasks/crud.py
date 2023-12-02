@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
 from core.models import Task, Project, Priority, State
-from .schemas import TaskCreate, TaskUpdate, TaskUpdatePartial
+from .schemas import TaskCreate, TaskUpdatePartial
 
 
 async def create_task(
@@ -58,11 +58,12 @@ async def get_tasks(
 async def update_task_info(
     session: AsyncSession,
     task: Task,
-    task_update: TaskUpdate | TaskUpdatePartial,
-    partial: bool = False,
+    task_update: TaskUpdatePartial,
+    priority: Priority,
 ) -> Task:
-    for name, value in task_update.model_dump(exclude_unset=partial).items():
+    for name, value in task_update.model_dump(exclude_unset=True).items():
         setattr(task, name, value)
+    task.priority = priority
     await session.commit()
     return task
 
@@ -73,16 +74,6 @@ async def update_task_state(
     state: State,
 ) -> Task:
     task.state = state
-    await session.commit()
-    return task
-
-
-async def update_task_priority(
-    session: AsyncSession,
-    task: Task,
-    priority: Priority,
-) -> Task:
-    task.priority = priority
     await session.commit()
     return task
 

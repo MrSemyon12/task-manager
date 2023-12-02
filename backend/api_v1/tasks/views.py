@@ -8,7 +8,6 @@ from .dependencies import (
     get_tasks,
     update_task_info,
     update_task_state,
-    update_task_priority,
     delete_task,
 )
 from .schemas import Task
@@ -37,11 +36,6 @@ async def update_task_info(task=Depends(update_task_info)):
 
 @router.patch("/{task_id}/state", response_model=Task)
 async def update_task_state(task=Depends(update_task_state)):
-    return task
-
-
-@router.patch("/{task_id}/priority", response_model=Task)
-async def update_task_priority(task=Depends(update_task_priority)):
     return task
 
 

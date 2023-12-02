@@ -24,7 +24,7 @@ export const TaskFormUpdate: React.FC<TaskFormProps> = ({
   task,
 }) => {
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const [priorityId, setPriorityId] = useState(3);
+  const [priorityId, setPriorityId] = useState(task.priority.id);
   const { curProject } = useProject();
   const { setBoard } = useBoard();
   const api = useApiPrivate();
@@ -39,34 +39,39 @@ export const TaskFormUpdate: React.FC<TaskFormProps> = ({
   };
 
   const handleSubmit = async (data: TaskCreate) => {
-    // if (!curProject) return;
-    // const newData = {
-    //   task_create: {
-    //     title: data.title,
-    //     description: data.description,
-    //     deadline: data.deadline,
-    //   },
-    //   priority_id: priorityId,
-    //   state_id: state.id,
-    // };
-    // setConfirmLoading(true);
-    // try {
-    //   const response = await api.post(
-    //     BASE_TASKS_URL.replace(':projectId', curProject.id.toString()),
-    //     newData
-    //   );
-    //   setBoard((prev: any) => {
-    //     const newBorad = { ...prev };
-    //     newBorad[state.title.toLowerCase()].push(response.data);
-    //     return newBorad;
-    //   });
-    //   message.success('Task created', 5);
-    //   closeForm();
-    // } catch (error) {
-    //   message.error('Service is not available', 5);
-    // } finally {
-    //   setConfirmLoading(false);
-    // }
+    if (!curProject) return;
+    const newData = {
+      task_update: {
+        title: data.title,
+        description: data.description,
+        deadline: data.deadline,
+      },
+      priority_id: priorityId,
+    };
+    setConfirmLoading(true);
+    try {
+      const response = await api.patch(
+        UPDATE_TASKS_INFO_URL.replace(
+          ':projectId',
+          curProject.id.toString()
+        ).replace(':taskId', task.id.toString()),
+        newData
+      );
+      setBoard((prev: any) => {
+        const newBorad = { ...prev };
+        const idx = newBorad[task.state.title].findIndex(
+          (el: Task) => el.id == task.id
+        );
+        newBorad[task.state.title][idx] = response.data;
+        return newBorad;
+      });
+      message.success('Successful update', 2);
+      closeForm();
+    } catch (error) {
+      message.error('Service is not available', 5);
+    } finally {
+      setConfirmLoading(false);
+    }
   };
 
   return (

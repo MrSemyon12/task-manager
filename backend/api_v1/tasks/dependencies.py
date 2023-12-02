@@ -61,6 +61,7 @@ async def get_tasks(
 
 async def update_task_info(
     task_update: TaskUpdatePartial,
+    priority: Priority = Depends(priority_by_id),
     task: Task = Depends(task_by_id),
     _=Depends(manager_access_required),
     session: AsyncSession = Depends(db_helper.scoped_session_dependency),
@@ -69,7 +70,7 @@ async def update_task_info(
         session=session,
         task=task,
         task_update=task_update,
-        partial=True,
+        priority=priority,
     )
 
 
@@ -83,19 +84,6 @@ async def update_task_state(
         session=session,
         task=task,
         state=state,
-    )
-
-
-async def update_task_priority(
-    priority: Priority = Depends(priority_by_id),
-    task: Task = Depends(task_by_id),
-    _=Depends(manager_access_required),
-    session: AsyncSession = Depends(db_helper.scoped_session_dependency),
-):
-    return await crud.update_task_priority(
-        session=session,
-        task=task,
-        priority=priority,
     )
 
 
