@@ -11,3 +11,4 @@ export const DELETE_PROJECT_URL = `${BASE_PROJECTS_URL}:projectId/`;
 export const BASE_TASKS_URL = `${BASE_PROJECTS_URL}:projectId/tasks/`;
 export const DELETE_TASKS_URL = `${BASE_TASKS_URL}:taskId/`;
 export const UPDATE_TASKS_STATE_URL = `${BASE_TASKS_URL}:taskId/state`;
+export const UPDATE_TASKS_INFO_URL = `${BASE_TASKS_URL}:taskId/info`;

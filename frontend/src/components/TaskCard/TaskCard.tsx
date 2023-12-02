@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, Card, Modal, message } from 'antd';
 import { EditFilled, CloseOutlined } from '@ant-design/icons';
 
+import { TaskFormUpdate } from './TaskFormUpdate';
 import { DELETE_TASKS_URL } from '../../api/urls';
 import { useApiPrivate, useProject, useBoard } from '../../hooks';
 import { Task } from '../../types';
@@ -13,6 +14,7 @@ const COLORS = ['', '#f78888', '#F3D250', '#90CCF4'];
 export const TaskCard: React.FC<TaskProps> = ({ task }) => {
   const { curProject } = useProject();
   const { setBoard } = useBoard();
+  const [isFormOpen, setIsFormOpen] = useState(false);
   const api = useApiPrivate();
 
   const style: React.CSSProperties = {
@@ -49,7 +51,11 @@ export const TaskCard: React.FC<TaskProps> = ({ task }) => {
       title={
         <>
           {task.title}
-          <Button type='text' icon={<EditFilled />} />
+          <Button
+            type='text'
+            icon={<EditFilled />}
+            onClick={() => setIsFormOpen(true)}
+          />
         </>
       }
       style={style}
@@ -75,6 +81,11 @@ export const TaskCard: React.FC<TaskProps> = ({ task }) => {
       }
     >
       {task.description}
+      <TaskFormUpdate
+        open={isFormOpen}
+        closeForm={() => setIsFormOpen(false)}
+        task={task}
+      />
     </Card>
   );
 };
