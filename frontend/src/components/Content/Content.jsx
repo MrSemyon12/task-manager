@@ -4,12 +4,23 @@ import { PushpinFilled, DeleteOutlined, EditFilled } from '@ant-design/icons';
 import { DragDropContext } from 'react-beautiful-dnd';
 
 import { useApiPrivate, useProject, useBoard } from '../../hooks';
-import { BASE_TASKS_URL, DELETE_PROJECT_URL } from '../../api/urls';
+import {
+  BASE_TASKS_URL,
+  DELETE_PROJECT_URL,
+  UPDATE_TASKS_STATE_URL,
+} from '../../api/urls';
 import { DroppableContainer } from './DroppableContainer';
 import { reorder, remove, appendAt, makeBoards } from './utils';
 import { Spinner } from '../Spinner';
 
 const { Content: AntdContent } = Layout;
+
+const STATES = {
+  open: 1,
+  progress: 2,
+  done: 3,
+  closed: 4,
+};
 
 export const Content = () => {
   const api = useApiPrivate();
@@ -30,7 +41,24 @@ export const Content = () => {
         message.error('Service is not available', 5);
       })
       .finally(() => setIsLoading(false));
-  }, [curProject, api]);
+  }, [curProject, setBoard, api]);
+
+  const handleUpdateState = async (taskId, state, prevBoard) => {
+    try {
+      await api.patch(
+        UPDATE_TASKS_STATE_URL.replace(
+          ':projectId',
+          curProject.id.toString()
+        ).replace(':taskId', taskId.toString()),
+        STATES[state]
+      );
+
+      message.success('Successful update', 2);
+    } catch (error) {
+      setBoard(prevBoard);
+      message.error('Service is not available', 5);
+    }
+  };
 
   function handleDragEnd(result) {
     const src = result.source;
@@ -51,6 +79,11 @@ export const Content = () => {
     } else {
       // --- DIFFERENT CONTAINER ---
 
+      handleUpdateState(
+        board[src.droppableId][src.index].id,
+        dest.droppableId,
+        { ...board }
+      );
       const srcItems = remove(board[src.droppableId], src.index);
 
       const destItems = appendAt(
