@@ -35,7 +35,7 @@ export const TaskCard: React.FC<TaskProps> = ({ task }) => {
       setBoard((prev: any) => {
         const newBoard = { ...prev };
         const newTasks = newBoard[task.state.title].filter(
-          (t: Task) => t.id != task.id
+          (t: Task) => t.id !== task.id
         );
         newBoard[task.state.title] = newTasks;
         return newBoard;

@@ -61,7 +61,7 @@ async def get_user_projects(
         .options(
             selectinload(Project.users_details).joinedload(UserProjectAssociation.user),
         )
-        .where(User.id == user_id)
+        .where(UserProjectAssociation.user_id == user_id)
         .order_by(Project.created_at.desc())
     )
     result: Result = await session.execute(stmt)

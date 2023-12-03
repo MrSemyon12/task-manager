@@ -60,7 +60,7 @@ export const TaskFormUpdate: React.FC<TaskFormProps> = ({
       setBoard((prev: any) => {
         const newBorad = { ...prev };
         const idx = newBorad[task.state.title].findIndex(
-          (el: Task) => el.id == task.id
+          (el: Task) => el.id === task.id
         );
         newBorad[task.state.title][idx] = response.data;
         return newBorad;

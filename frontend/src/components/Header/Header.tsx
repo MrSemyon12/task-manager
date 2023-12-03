@@ -1,14 +1,18 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Layout, Avatar, Popover } from 'antd';
+import { jwtDecode } from 'jwt-decode';
 
-import { useLogout } from '../../hooks';
+import { useLogout, useAuth } from '../../hooks';
 
 const { Header: AntdHeader } = Layout;
 
 export const Header: React.FC = () => {
   const navigate = useNavigate();
   const logout = useLogout();
+
+  const { auth } = useAuth();
+  const username = auth ? jwtDecode(auth.access_token).sub : null;
 
   const handleLogout = async () => {
     await logout();
@@ -37,9 +41,17 @@ export const Header: React.FC = () => {
       <Popover
         trigger='hover'
         content={
-          <Button type='primary' danger onClick={handleLogout}>
-            Logout
-          </Button>
+          <>
+            {username}
+            <Button
+              type='link'
+              danger
+              onClick={handleLogout}
+              style={{ margin: 0, padding: 0, marginLeft: 5 }}
+            >
+              Logout
+            </Button>
+          </>
         }
       >
         <Avatar
@@ -49,7 +61,7 @@ export const Header: React.FC = () => {
             cursor: 'pointer',
           }}
         >
-          W
+          {username ? username[0].toUpperCase() : <>&#128540;</>}
         </Avatar>
       </Popover>
     </AntdHeader>
