@@ -69,6 +69,21 @@ async def get_user_projects(
     return list(projects)
 
 
+async def get_project_users(
+    session: AsyncSession,
+    project: Project,
+):
+    stmt = (
+        select(UserProjectAssociation)
+        .options(selectinload(UserProjectAssociation.user))
+        .options(selectinload(UserProjectAssociation.role))
+        .where(UserProjectAssociation.project_id == project.id)
+    )
+    result: Result = await session.execute(stmt)
+    users = result.scalars().all()
+    return list(users)
+
+
 async def delete_project(
     session: AsyncSession,
     project: Project,

@@ -13,8 +13,9 @@ from .dependencies import (
     add_user_to_project,
     delete_user_from_project,
     update_user_role,
+    project_by_id,
 )
-from .schemas import Project
+from .schemas import Project, ProjectUser
 from . import crud
 
 
@@ -54,6 +55,14 @@ async def get_current_user_projects(
 @router.delete("/{project_id}/", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_project(_=Depends(delete_project)) -> None:
     pass
+
+
+@router.get("/{project_id}/users", response_model=list[ProjectUser])
+async def get_project_users(
+    project: Project = Depends(project_by_id),
+    session: AsyncSession = Depends(db_helper.scoped_session_dependency),
+):
+    return await crud.get_project_users(session=session, project=project)
 
 
 @router.post("/{project_id}/users", status_code=status.HTTP_201_CREATED)
