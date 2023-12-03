@@ -59,7 +59,7 @@ async def get_user_projects(
     stmt = (
         select(Project)
         .options(
-            selectinload(Project.users_details).joinedload(UserProjectAssociation.user),
+            selectinload(Project.users_details),
         )
         .where(UserProjectAssociation.user_id == user_id)
         .order_by(Project.created_at.desc())
