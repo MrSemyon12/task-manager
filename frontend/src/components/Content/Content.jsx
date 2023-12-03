@@ -132,11 +132,7 @@ export const Content = () => {
         title={
           <>
             {curProject.title}
-            <Button
-              type='text'
-              style={{ marginLeft: 5 }}
-              icon={<EditFilled />}
-            />
+            <Button type='text' icon={<EditFilled />} />
           </>
         }
         extra={
