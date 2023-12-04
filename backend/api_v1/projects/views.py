@@ -14,6 +14,7 @@ from .dependencies import (
     delete_user_from_project,
     update_user_role,
     project_by_id,
+    update_project,
 )
 from .schemas import Project, ProjectUser, ProjectRole
 from . import crud
@@ -50,6 +51,11 @@ async def get_current_user_projects(
         session=session,
         user_id=current_user.id,
     )
+
+
+@router.put("/{project_id}/", response_model=Project)
+async def update_project(project: Project = Depends(update_project)):
+    return project
 
 
 @router.delete("/{project_id}/", status_code=status.HTTP_204_NO_CONTENT)

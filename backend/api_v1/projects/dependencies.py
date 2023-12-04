@@ -8,7 +8,7 @@ from api_v1.auth.dependencies import get_current_user, user_by_id
 from api_v1.roles.dependencies import role_by_id
 from core.config import settings
 from core.models import User, Project, UserProjectAssociation, Role, db_helper
-from .schemas import ProjectCreate
+from .schemas import ProjectCreate, ProjectRole, ProjectUpdate
 from . import crud
 
 
@@ -16,8 +16,8 @@ async def create_project(
     project_create: ProjectCreate,
     current_user: User = Depends(get_current_user),
     session: AsyncSession = Depends(db_helper.scoped_session_dependency),
-) -> Project:
-    project: Project = await crud.create_project(
+) -> ProjectRole:
+    project: ProjectRole = await crud.create_project(
         session=session,
         project_create=project_create,
         user=current_user,
@@ -80,6 +80,19 @@ async def worker_access_required(
             detail=f"Access denied",
         )
     return role
+
+
+async def update_project(
+    project_update: ProjectUpdate,
+    project: Project = Depends(project_by_id),
+    _=Depends(manager_access_required),
+    session: AsyncSession = Depends(db_helper.scoped_session_dependency),
+) -> Project:
+    return await crud.update_project(
+        session=session,
+        project=project,
+        project_update=project_update,
+    )
 
 
 async def delete_project(

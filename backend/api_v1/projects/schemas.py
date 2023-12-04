@@ -14,6 +14,10 @@ class ProjectCreate(ProjectBase):
     pass
 
 
+class ProjectUpdate(ProjectBase):
+    pass
+
+
 class Project(ProjectBase):
     model_config = ConfigDict(from_attributes=True)
 

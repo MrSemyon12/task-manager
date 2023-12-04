@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.models import Project, User, UserProjectAssociation, Role
 from api_v1.roles.crud import get_role
-from .schemas import ProjectCreate, ProjectRole
+from .schemas import ProjectCreate, ProjectRole, ProjectUpdate
 
 
 async def get_projects(session: AsyncSession) -> list[Project]:
@@ -33,6 +33,17 @@ async def create_project(
     session.add(project)
     await session.commit()
     return ProjectRole(project=project, role=role)
+
+
+async def update_project(
+    session: AsyncSession,
+    project: Project,
+    project_update: ProjectUpdate,
+) -> Project:
+    for name, value in project_update.model_dump().items():
+        setattr(project, name, value)
+    await session.commit()
+    return project
 
 
 async def get_project(
