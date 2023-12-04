@@ -3,10 +3,13 @@ export type Auth = {
 };
 
 export type Project = {
-  id: number;
-  title: string;
-  description: string;
-  is_private: boolean;
+  project: {
+    id: number;
+    title: string;
+    description: string;
+    is_private: boolean;
+  };
+  role: Role;
 };
 
 export type Task = {
@@ -19,6 +22,11 @@ export type Task = {
 };
 
 export type State = {
+  id: number;
+  title: string;
+};
+
+export type Role = {
   id: number;
   title: string;
 };
@@ -41,8 +49,5 @@ export type User = {
     username: string;
     email: string;
   };
-  role: {
-    id: number;
-    title: string;
-  };
+  role: Role;
 };

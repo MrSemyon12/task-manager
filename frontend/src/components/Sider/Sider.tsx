@@ -42,12 +42,17 @@ export const Sider: React.FC = () => {
         </Card.Grid>
         {projects.map((project) => (
           <Card.Grid
-            key={project.id}
+            key={project.project.id}
             onClick={() => {
-              if (curProject?.id !== project.id) setCurProject(project);
+              if (curProject?.project.id !== project.project.id)
+                setCurProject(project);
             }}
-            style={curProject?.id === project.id ? pickedStyle : gridStyle}
-            hoverable={curProject?.id !== project.id}
+            style={
+              curProject?.project.id === project.project.id
+                ? pickedStyle
+                : gridStyle
+            }
+            hoverable={curProject?.project.id !== project.project.id}
           >
             <Row justify='space-between' align='middle'>
               <div
@@ -59,9 +64,9 @@ export const Sider: React.FC = () => {
                   fontWeight: 'var(--font-weight)',
                 }}
               >
-                {project.title}
+                {project.project.title}
               </div>
-              {curProject?.id === project.id && (
+              {curProject?.project.id === project.project.id && (
                 <Button
                   type='text'
                   icon={<CloseOutlined />}

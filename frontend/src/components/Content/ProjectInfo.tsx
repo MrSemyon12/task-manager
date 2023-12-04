@@ -37,7 +37,12 @@ export const ProjectInfo: React.FC = () => {
     if (!curProject) return;
     setUsers([]);
     api
-      .get(PROJECT_USERS_URL.replace(':projectId', curProject.id.toString()))
+      .get(
+        PROJECT_USERS_URL.replace(
+          ':projectId',
+          curProject.project.id.toString()
+        )
+      )
       .then((response) => setUsers(response.data))
       .catch(() => message.error('Service is not available', 5));
   }, [api, curProject]);
@@ -48,9 +53,14 @@ export const ProjectInfo: React.FC = () => {
 
     try {
       await api.delete(
-        DELETE_PROJECT_URL.replace(':projectId', curProject.id.toString())
+        DELETE_PROJECT_URL.replace(
+          ':projectId',
+          curProject.project.id.toString()
+        )
       );
-      setProjects(projects.filter((p) => p.id !== curProject.id));
+      setProjects(
+        projects.filter((p) => p.project.id !== curProject.project.id)
+      );
       message.success('Project deleted', 5);
     } catch (error) {
       message.error('Service is not available', 5);
@@ -62,7 +72,7 @@ export const ProjectInfo: React.FC = () => {
       title={
         <Row align='middle'>
           <Title level={4} style={{ margin: 0 }}>
-            {curProject?.title}
+            {curProject?.project.title}
           </Title>
           <Button type='text' icon={<EditFilled />} />
         </Row>
@@ -91,7 +101,7 @@ export const ProjectInfo: React.FC = () => {
     >
       <Row justify='space-between' align='middle'>
         <Text italic style={{ fontSize: 18 }}>
-          {curProject?.description}
+          {curProject?.project.description}
         </Text>
 
         {!users ? (

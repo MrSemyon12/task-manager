@@ -30,7 +30,9 @@ export const Content = () => {
 
     setIsLoading(true);
     api
-      .get(BASE_TASKS_URL.replace(':projectId', curProject.id.toString()))
+      .get(
+        BASE_TASKS_URL.replace(':projectId', curProject.project.id.toString())
+      )
       .then((response) => {
         setBoard(makeBoards(response.data));
       })
@@ -45,7 +47,7 @@ export const Content = () => {
       await api.patch(
         UPDATE_TASKS_STATE_URL.replace(
           ':projectId',
-          curProject.id.toString()
+          curProject.project.id.toString()
         ).replace(':taskId', taskId.toString()),
         STATES[state]
       );

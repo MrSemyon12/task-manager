@@ -56,7 +56,7 @@ export const TaskForm: React.FC<TaskFormProps> = ({
 
     try {
       const response = await api.post(
-        BASE_TASKS_URL.replace(':projectId', curProject.id.toString()),
+        BASE_TASKS_URL.replace(':projectId', curProject.project.id.toString()),
         newData
       );
       setBoard((prev: any) => {

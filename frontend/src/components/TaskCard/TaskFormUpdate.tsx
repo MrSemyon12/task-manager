@@ -53,7 +53,7 @@ export const TaskFormUpdate: React.FC<TaskFormProps> = ({
       const response = await api.patch(
         UPDATE_TASKS_INFO_URL.replace(
           ':projectId',
-          curProject.id.toString()
+          curProject.project.id.toString()
         ).replace(':taskId', task.id.toString()),
         newData
       );

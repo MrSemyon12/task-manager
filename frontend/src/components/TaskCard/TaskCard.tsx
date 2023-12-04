@@ -30,7 +30,7 @@ export const TaskCard: React.FC<TaskProps> = ({ task }) => {
       await api.delete(
         DELETE_TASKS_URL.replace(
           ':projectId',
-          curProject.id.toString()
+          curProject.project.id.toString()
         ).replace(':taskId', task.id.toString())
       );
       setBoard((prev: any) => {
