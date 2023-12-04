@@ -5,6 +5,7 @@ import { PlusOutlined, CloseOutlined } from '@ant-design/icons';
 import { useApiPrivate, useProject } from '../../hooks';
 import { USER_PROJECTS_URL } from '../../api/urls';
 import { ProjectForm } from './ProjectForm';
+import { RoleTag } from '../RoleTag';
 
 const { Sider: AntdSider } = Layout;
 
@@ -64,6 +65,7 @@ export const Sider: React.FC = () => {
                   fontWeight: 'var(--font-weight)',
                 }}
               >
+                <RoleTag role={project.role} size='sm' />
                 {project.project.title}
               </div>
               {curProject?.project.id === project.project.id && (
