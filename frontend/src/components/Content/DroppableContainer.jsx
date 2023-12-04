@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Button, Card } from 'antd';
 import { Draggable } from 'react-beautiful-dnd';
 import { PlusOutlined } from '@ant-design/icons';

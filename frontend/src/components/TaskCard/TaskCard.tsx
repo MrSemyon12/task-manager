@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Card, Modal, message } from 'antd';
+import { Button, Card, Modal, message, Typography } from 'antd';
 import { EditFilled, CloseOutlined } from '@ant-design/icons';
 
 import { TaskFormUpdate } from './TaskFormUpdate';
@@ -9,6 +9,7 @@ import { Task } from '../../types';
 
 type TaskProps = { task: Task };
 
+const { Text } = Typography;
 const COLORS = ['', '#f78888', '#F3D250', '#90CCF4'];
 
 export const TaskCard: React.FC<TaskProps> = ({ task }) => {
@@ -80,7 +81,7 @@ export const TaskCard: React.FC<TaskProps> = ({ task }) => {
         />
       }
     >
-      {task.description}
+      <Text italic>{task.description}</Text>
       <TaskFormUpdate
         open={isFormOpen}
         closeForm={() => setIsFormOpen(false)}
