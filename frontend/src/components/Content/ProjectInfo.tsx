@@ -18,6 +18,16 @@ import { User } from '../../types';
 
 const { Text, Title } = Typography;
 
+const COLORS = [
+  '#f56a00',
+  '#fdd654',
+  '#87d068',
+  '#1677ff',
+  '#974bd1',
+  '#4bd1c8',
+  '#f211e3',
+];
+
 export const ProjectInfo: React.FC = () => {
   const api = useApiPrivate();
   const { curProject, setCurProject, projects, setProjects } = useProject();
@@ -98,7 +108,7 @@ export const ProjectInfo: React.FC = () => {
               cursor: 'pointer',
             }}
           >
-            {users.map((user: User) => (
+            {users.map((user: User, idx) => (
               <Tooltip
                 title={user.user.username}
                 placement='top'
@@ -106,8 +116,7 @@ export const ProjectInfo: React.FC = () => {
               >
                 <Avatar
                   style={{
-                    backgroundColor:
-                      '#' + Math.floor(Math.random() * 16777215).toString(16),
+                    backgroundColor: COLORS[idx % COLORS.length],
                   }}
                 >
                   {user.user.username[0].toUpperCase()}
