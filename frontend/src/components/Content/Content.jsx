@@ -53,7 +53,10 @@ export const Content = () => {
       message.success('Successful update', 2);
     } catch (error) {
       setBoard(prevBoard);
-      message.error('Service is not available', 5);
+
+      error.response.status === 403
+        ? message.warning('Access denied', 5)
+        : message.error('Service is not available', 5);
     }
   };
 
