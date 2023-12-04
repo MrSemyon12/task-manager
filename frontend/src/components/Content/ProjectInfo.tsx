@@ -75,35 +75,39 @@ export const ProjectInfo: React.FC = () => {
           <Title level={4} style={{ margin: '0 10px 0 0' }}>
             {curProject?.project.title}
           </Title>
-          {curProject?.role.id === 1 && (
-            <Button
-              type='text'
-              icon={<EditFilled />}
-              style={{ marginLeft: -10 }}
-            />
-          )}
           {curProject && <RoleTag role={curProject.role} size='lg' />}
         </Row>
       }
       extra={
         curProject?.role.id === 1 && (
-          <Button
-            danger
-            icon={<DeleteOutlined style={{ color: '#ff4d4f' }} />}
-            onClick={() => {
-              Modal.confirm({
-                title: 'Delete project?',
-                content: 'All tasks will be permanently deleted',
-                footer: (_, { OkBtn, CancelBtn }) => (
-                  <>
-                    <CancelBtn />
-                    <OkBtn />
-                  </>
-                ),
-                onOk: handleDelete,
-              });
-            }}
-          />
+          <>
+            <Button
+              icon={<EditFilled />}
+              style={{
+                marginRight: 10,
+                color: 'var(--color-secondary)',
+              }}
+              size='large'
+            />
+            <Button
+              danger
+              icon={<DeleteOutlined style={{ color: '#ff4d4f' }} />}
+              size='large'
+              onClick={() => {
+                Modal.confirm({
+                  title: 'Delete project?',
+                  content: 'All tasks will be permanently deleted',
+                  footer: (_, { OkBtn, CancelBtn }) => (
+                    <>
+                      <CancelBtn />
+                      <OkBtn />
+                    </>
+                  ),
+                  onOk: handleDelete,
+                });
+              }}
+            />
+          </>
         )
       }
       style={styleDescription}

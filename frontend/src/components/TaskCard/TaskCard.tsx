@@ -49,39 +49,35 @@ export const TaskCard: React.FC<TaskProps> = ({ task }) => {
 
   return (
     <Card
-      title={
-        <>
-          {task.title}
-          {curProject?.role.id === 1 && (
+      title={<>{task.title}</>}
+      style={style}
+      size='small'
+      extra={
+        curProject?.role.id === 1 && (
+          <>
             <Button
               type='text'
               icon={<EditFilled />}
               onClick={() => setIsFormOpen(true)}
             />
-          )}
-        </>
-      }
-      style={style}
-      size='small'
-      extra={
-        curProject?.role.id === 1 && (
-          <Button
-            type='text'
-            icon={<CloseOutlined />}
-            onClick={() => {
-              Modal.confirm({
-                title: 'Delete task?',
-                content: 'Progress will be permanently deleted',
-                footer: (_, { OkBtn, CancelBtn }) => (
-                  <>
-                    <CancelBtn />
-                    <OkBtn />
-                  </>
-                ),
-                onOk: handleDelete,
-              });
-            }}
-          />
+            <Button
+              type='text'
+              icon={<CloseOutlined />}
+              onClick={() => {
+                Modal.confirm({
+                  title: 'Delete task?',
+                  content: 'Progress will be permanently deleted',
+                  footer: (_, { OkBtn, CancelBtn }) => (
+                    <>
+                      <CancelBtn />
+                      <OkBtn />
+                    </>
+                  ),
+                  onOk: handleDelete,
+                });
+              }}
+            />
+          </>
         )
       }
     >
