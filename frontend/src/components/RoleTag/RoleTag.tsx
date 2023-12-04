@@ -7,7 +7,7 @@ type RoleTagProps = {
   size: 'sm' | 'lg';
 };
 
-const COLORS = ['', '#974bd1', '#fdd654', '#1677ff'];
+const COLORS = ['', '#f211e3', '#87d068', '#1677ff'];
 
 export const RoleTag: React.FC<RoleTagProps> = ({ role, size }) => {
   return (

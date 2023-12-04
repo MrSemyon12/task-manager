@@ -14,6 +14,7 @@ import { DeleteOutlined, EditFilled } from '@ant-design/icons';
 
 import { DELETE_PROJECT_URL, PROJECT_USERS_URL } from '../../api/urls';
 import { useProject, useApiPrivate } from '../../hooks';
+import { RoleTag } from '../RoleTag';
 import { User } from '../../types';
 
 const { Text, Title } = Typography;
@@ -71,30 +72,39 @@ export const ProjectInfo: React.FC = () => {
     <Card
       title={
         <Row align='middle'>
-          <Title level={4} style={{ margin: 0 }}>
+          <Title level={4} style={{ margin: '0 10px 0 0' }}>
             {curProject?.project.title}
           </Title>
-          <Button type='text' icon={<EditFilled />} />
+          {curProject?.role.id === 1 && (
+            <Button
+              type='text'
+              icon={<EditFilled />}
+              style={{ marginLeft: -10 }}
+            />
+          )}
+          {curProject && <RoleTag role={curProject.role} size='lg' />}
         </Row>
       }
       extra={
-        <Button
-          danger
-          icon={<DeleteOutlined style={{ color: '#ff4d4f' }} />}
-          onClick={() => {
-            Modal.confirm({
-              title: 'Delete project?',
-              content: 'All tasks will be permanently deleted',
-              footer: (_, { OkBtn, CancelBtn }) => (
-                <>
-                  <CancelBtn />
-                  <OkBtn />
-                </>
-              ),
-              onOk: handleDelete,
-            });
-          }}
-        />
+        curProject?.role.id === 1 && (
+          <Button
+            danger
+            icon={<DeleteOutlined style={{ color: '#ff4d4f' }} />}
+            onClick={() => {
+              Modal.confirm({
+                title: 'Delete project?',
+                content: 'All tasks will be permanently deleted',
+                footer: (_, { OkBtn, CancelBtn }) => (
+                  <>
+                    <CancelBtn />
+                    <OkBtn />
+                  </>
+                ),
+                onOk: handleDelete,
+              });
+            }}
+          />
+        )
       }
       style={styleDescription}
       bodyStyle={{ padding: '10px 24px' }}
