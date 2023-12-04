@@ -34,3 +34,15 @@ export type Board = {
   done: Task[];
   closed: Task[];
 };
+
+export type User = {
+  user: {
+    id: number;
+    username: string;
+    email: string;
+  };
+  role: {
+    id: number;
+    title: string;
+  };
+};

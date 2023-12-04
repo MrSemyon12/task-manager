@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   Card,
@@ -8,17 +8,29 @@ import {
   message,
   Row,
   Typography,
+  Spin,
 } from 'antd';
 import { DeleteOutlined, EditFilled } from '@ant-design/icons';
 
+import { DELETE_PROJECT_URL, PROJECT_USERS_URL } from '../../api/urls';
 import { useProject, useApiPrivate } from '../../hooks';
-import { DELETE_PROJECT_URL } from '../../api/urls';
+import { User } from '../../types';
 
 const { Text, Title } = Typography;
 
 export const ProjectInfo: React.FC = () => {
   const api = useApiPrivate();
   const { curProject, setCurProject, projects, setProjects } = useProject();
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    if (!curProject) return;
+    setUsers([]);
+    api
+      .get(PROJECT_USERS_URL.replace(':projectId', curProject.id.toString()))
+      .then((response) => setUsers(response.data))
+      .catch(() => message.error('Service is not available', 5));
+  }, [api, curProject]);
 
   const handleDelete = async () => {
     if (!curProject) return;
@@ -72,34 +84,38 @@ export const ProjectInfo: React.FC = () => {
           {curProject?.description}
         </Text>
 
-        <Avatar.Group
-          shape='square'
-          maxCount={7}
-          maxPopoverTrigger='click'
-          size='large'
-          maxStyle={{
-            color: '#f56a00',
-            backgroundColor: '#fde3cf',
-            cursor: 'pointer',
-          }}
-        >
-          <Tooltip title='Ant User' placement='top'>
-            <Avatar style={{ backgroundColor: '#87d068' }}>A</Avatar>
-          </Tooltip>
-          <Avatar style={{ backgroundColor: '#f56a00' }}>K</Avatar>
-          <Avatar style={{ backgroundColor: '#87d068' }}>И</Avatar>
-          <Avatar style={{ backgroundColor: '#1677ff' }}>R</Avatar>
-          <Avatar style={{ backgroundColor: '#fde3cf' }}>A</Avatar>
-          <Avatar style={{ backgroundColor: '#f56a00' }}>K</Avatar>
-          <Avatar style={{ backgroundColor: '#87d068' }}>И</Avatar>
-          <Avatar style={{ backgroundColor: '#1677ff' }}>R</Avatar>
-          <Avatar style={{ backgroundColor: '#fde3cf' }}>A</Avatar>
-          <Avatar style={{ backgroundColor: '#f56a00' }}>K</Avatar>
-          <Avatar style={{ backgroundColor: '#87d068' }}>И</Avatar>
-          <Tooltip title='Ant User' placement='top'>
-            <Avatar style={{ backgroundColor: '#87d068' }}>A</Avatar>
-          </Tooltip>
-        </Avatar.Group>
+        {!users ? (
+          <Spin style={{ marginRight: 6 }} />
+        ) : (
+          <Avatar.Group
+            shape='square'
+            maxCount={7}
+            maxPopoverTrigger='click'
+            size='large'
+            maxStyle={{
+              color: '#f56a00',
+              backgroundColor: '#fde3cf',
+              cursor: 'pointer',
+            }}
+          >
+            {users.map((user: User) => (
+              <Tooltip
+                title={user.user.username}
+                placement='top'
+                key={user.user.id}
+              >
+                <Avatar
+                  style={{
+                    backgroundColor:
+                      '#' + Math.floor(Math.random() * 16777215).toString(16),
+                  }}
+                >
+                  {user.user.username[0].toUpperCase()}
+                </Avatar>
+              </Tooltip>
+            ))}
+          </Avatar.Group>
+        )}
       </Row>
     </Card>
   );
