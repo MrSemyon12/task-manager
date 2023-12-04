@@ -20,6 +20,11 @@ class Project(ProjectBase):
     id: int
 
 
+class ProjectRole(BaseModel):
+    project: Project
+    role: Role
+
+
 class ProjectUser(BaseModel):
     user: User
     role: Role

@@ -15,7 +15,7 @@ from .dependencies import (
     update_user_role,
     project_by_id,
 )
-from .schemas import Project, ProjectUser
+from .schemas import Project, ProjectUser, ProjectRole
 from . import crud
 
 
@@ -41,7 +41,7 @@ async def create_project(project: Project = Depends(create_project)):
     return project
 
 
-@router.get("/my", response_model=list[Project])
+@router.get("/my", response_model=list[ProjectRole])
 async def get_current_user_projects(
     current_user: User = Depends(get_current_user),
     session: AsyncSession = Depends(db_helper.scoped_session_dependency),

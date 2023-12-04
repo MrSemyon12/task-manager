@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.models import Project, User, UserProjectAssociation, Role
 from api_v1.roles.crud import get_role
-from .schemas import ProjectCreate
+from .schemas import ProjectCreate, ProjectRole
 
 
 async def get_projects(session: AsyncSession) -> list[Project]:
@@ -55,14 +55,14 @@ async def get_project(
 async def get_user_projects(
     session: AsyncSession,
     user_id: int,
-) -> list[Project]:
+) -> list[ProjectRole]:
     stmt = (
-        select(Project)
+        select(UserProjectAssociation)
         .options(
-            selectinload(Project.users_details),
+            selectinload(UserProjectAssociation.project),
         )
-        .where(User.id == user_id)
-        .order_by(Project.created_at.desc())
+        .options(selectinload(UserProjectAssociation.role))
+        .where(UserProjectAssociation.user_id == user_id)
     )
     result: Result = await session.execute(stmt)
     projects = result.scalars().all()
