@@ -34,7 +34,7 @@ async def get_projects(
 
 @router.post(
     "/",
-    response_model=Project,
+    response_model=ProjectRole,
     status_code=status.HTTP_201_CREATED,
 )
 async def create_project(project: Project = Depends(create_project)):

@@ -19,7 +19,7 @@ async def create_project(
     session: AsyncSession,
     project_create: ProjectCreate,
     user: User,
-) -> Project:
+) -> ProjectRole:
     project = Project(**project_create.model_dump())
     role = await get_role(session=session, role_id=1)
 
@@ -32,7 +32,7 @@ async def create_project(
 
     session.add(project)
     await session.commit()
-    return project
+    return ProjectRole(project=project, role=role)
 
 
 async def get_project(
