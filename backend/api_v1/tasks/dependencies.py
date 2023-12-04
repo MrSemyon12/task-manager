@@ -23,7 +23,7 @@ async def create_task(
     project: Project = Depends(project_by_id),
     priority: Priority = Depends(priority_by_id),
     state: State = Depends(state_by_id),
-    _=Depends(manager_access_required),
+    _=Depends(worker_access_required),
     session: AsyncSession = Depends(db_helper.scoped_session_dependency),
 ) -> Task:
     return await crud.create_task(

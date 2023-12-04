@@ -3,12 +3,13 @@ import { Button, Card } from 'antd';
 import { Draggable } from 'react-beautiful-dnd';
 import { PlusOutlined } from '@ant-design/icons';
 
-import { useBoard } from '../../hooks';
+import { useProject, useBoard } from '../../hooks';
 import { StrictModeDroppable } from './StrictModeDroppable';
 import { TaskCard } from '../TaskCard';
 import { TaskForm } from './TaskForm';
 
 export const DroppableContainer = ({ state }) => {
+  const { curProject } = useProject();
   const { board } = useBoard();
   const [isFormOpen, setIsFormOpen] = useState(false);
 
@@ -18,14 +19,16 @@ export const DroppableContainer = ({ state }) => {
     <Card
       title={state.title}
       extra={
-        <Button
-          icon={
-            <PlusOutlined
-              style={{ fontSize: 22, color: 'var(--color-secondary)' }}
-            />
-          }
-          onClick={() => setIsFormOpen(true)}
-        />
+        curProject?.role.id !== 3 && (
+          <Button
+            icon={
+              <PlusOutlined
+                style={{ fontSize: 22, color: 'var(--color-secondary)' }}
+              />
+            }
+            onClick={() => setIsFormOpen(true)}
+          />
+        )
       }
       style={style}
       headStyle={{ fontSize: 20 }}
