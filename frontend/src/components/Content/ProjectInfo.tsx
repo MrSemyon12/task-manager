@@ -14,6 +14,7 @@ import { DeleteOutlined, EditFilled } from '@ant-design/icons';
 
 import { DELETE_PROJECT_URL, PROJECT_USERS_URL } from '../../api/urls';
 import { useProject, useApiPrivate } from '../../hooks';
+import { ProjectFormUpdate } from './ProjectFormUpdate';
 import { RoleTag } from '../RoleTag';
 import { User } from '../../types';
 
@@ -33,6 +34,7 @@ export const ProjectInfo: React.FC = () => {
   const api = useApiPrivate();
   const { curProject, setCurProject, projects, setProjects } = useProject();
   const [users, setUsers] = useState([]);
+  const [isFormOpen, setIsFormOpen] = useState(false);
 
   useEffect(() => {
     if (!curProject) return;
@@ -88,6 +90,7 @@ export const ProjectInfo: React.FC = () => {
                 color: 'var(--color-secondary)',
               }}
               size='large'
+              onClick={() => setIsFormOpen(true)}
             />
             <Button
               danger
@@ -150,6 +153,10 @@ export const ProjectInfo: React.FC = () => {
           </Avatar.Group>
         )}
       </Row>
+      <ProjectFormUpdate
+        open={isFormOpen}
+        closeForm={() => setIsFormOpen(false)}
+      />
     </Card>
   );
 };
