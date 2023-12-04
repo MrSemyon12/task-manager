@@ -153,6 +153,7 @@ export const ProjectInfo: React.FC = () => {
           </Avatar.Group>
         )}
       </Row>
+
       <ProjectFormUpdate
         open={isFormOpen}
         closeForm={() => setIsFormOpen(false)}

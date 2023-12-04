@@ -68,7 +68,7 @@ export const ProjectFormUpdate: React.FC<ProjectFormUpdateProps> = ({
       onOk={handleOk}
       confirmLoading={confirmLoading}
       onCancel={handleCancel}
-      afterClose={() => form.resetFields()}
+      afterOpenChange={() => form.resetFields()}
     >
       <Form
         labelCol={{ span: 5 }}
