@@ -11,14 +11,14 @@ const { Sider: AntdSider } = Layout;
 export const Sider: React.FC = () => {
   const { curProject, setCurProject, projects, setProjects } = useProject();
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const apiPrivate = useApiPrivate();
+  const api = useApiPrivate();
 
   useEffect(() => {
-    apiPrivate
+    api
       .get(USER_PROJECTS_URL)
       .then((response) => setProjects(response.data))
       .catch((error) => console.log(error));
-  }, [apiPrivate, setProjects]);
+  }, [api, setProjects]);
 
   return (
     <AntdSider
