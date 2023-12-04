@@ -10,7 +10,7 @@ import { Task } from '../../types';
 type TaskProps = { task: Task };
 
 const { Text } = Typography;
-const COLORS = ['', '#f78888', '#F3D250', '#90CCF4'];
+const COLORS = ['', '#f78888', '#fdd654', '#87d068'];
 
 export const TaskCard: React.FC<TaskProps> = ({ task }) => {
   const { curProject } = useProject();
