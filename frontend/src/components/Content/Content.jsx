@@ -1,17 +1,14 @@
 import { useState, useEffect } from 'react';
-import { Layout, Button, Card, Flex, message, Result, Modal } from 'antd';
-import { PushpinFilled, DeleteOutlined, EditFilled } from '@ant-design/icons';
+import { Layout, Flex, message, Result } from 'antd';
+import { PushpinFilled } from '@ant-design/icons';
 import { DragDropContext } from 'react-beautiful-dnd';
 
 import { useApiPrivate, useProject, useBoard } from '../../hooks';
-import {
-  BASE_TASKS_URL,
-  DELETE_PROJECT_URL,
-  UPDATE_TASKS_STATE_URL,
-} from '../../api/urls';
+import { BASE_TASKS_URL, UPDATE_TASKS_STATE_URL } from '../../api/urls';
 import { DroppableContainer } from './DroppableContainer';
 import { reorder, remove, appendAt, makeBoards } from './utils';
 import { Spinner } from '../Spinner';
+import { ProjectInfo } from './ProjectInfo';
 
 const { Content: AntdContent } = Layout;
 
@@ -24,7 +21,7 @@ const STATES = {
 
 export const Content = () => {
   const api = useApiPrivate();
-  const { curProject, setCurProject, projects, setProjects } = useProject();
+  const { curProject } = useProject();
   const { board, setBoard } = useBoard();
   const [isLoading, setIsLoading] = useState(true);
 
@@ -33,7 +30,7 @@ export const Content = () => {
 
     setIsLoading(true);
     api
-      .get(BASE_TASKS_URL.replace(':projectId', curProject.id))
+      .get(BASE_TASKS_URL.replace(':projectId', curProject.id.toString()))
       .then((response) => {
         setBoard(makeBoards(response.data));
       })
@@ -99,18 +96,6 @@ export const Content = () => {
     }
   }
 
-  const handleDelete = async () => {
-    setCurProject(null);
-
-    try {
-      await api.delete(DELETE_PROJECT_URL.replace(':projectId', curProject.id));
-      setProjects(projects.filter((p) => p.id !== curProject.id));
-      message.success('Project deleted', 5);
-    } catch (error) {
-      message.error('Service is not available', 5);
-    }
-  };
-
   if (!curProject)
     return (
       <AntdContent style={styleTemplate}>
@@ -128,36 +113,7 @@ export const Content = () => {
 
   return (
     <AntdContent style={styleContent}>
-      <Card
-        title={
-          <>
-            {curProject.title}
-            <Button type='text' icon={<EditFilled />} />
-          </>
-        }
-        extra={
-          <Button
-            danger
-            icon={<DeleteOutlined style={{ color: '#ff4d4f' }} />}
-            onClick={() => {
-              Modal.confirm({
-                title: 'Delete project?',
-                content: 'All tasks will be permanently deleted',
-                footer: (_, { OkBtn, CancelBtn }) => (
-                  <>
-                    <CancelBtn />
-                    <OkBtn />
-                  </>
-                ),
-                onOk: handleDelete,
-              });
-            }}
-          />
-        }
-        style={styleDescription}
-      >
-        {curProject?.description}
-      </Card>
+      <ProjectInfo />
       {isLoading ? (
         <Spinner />
       ) : (
@@ -182,11 +138,6 @@ const styleContent = {
 
 const styleTemplate = {
   backgroundColor: 'var(--color-background)',
-};
-
-const styleDescription = {
-  backgroundColor: 'var(--color-main)',
-  boxShadow: 'var(--shadow)',
 };
 
 const styleDroppable = {
