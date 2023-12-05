@@ -15,6 +15,7 @@ import { DeleteOutlined, EditFilled } from '@ant-design/icons';
 import { DELETE_PROJECT_URL, PROJECT_USERS_URL } from '../../api/urls';
 import { useProject, useApiPrivate } from '../../hooks';
 import { ProjectFormUpdate } from './ProjectFormUpdate';
+import { UsersForm } from './UsersForm';
 import { RoleTag } from '../RoleTag';
 import { User } from '../../types';
 
@@ -35,6 +36,7 @@ export const ProjectInfo: React.FC = () => {
   const { curProject, setCurProject, projects, setProjects } = useProject();
   const [users, setUsers] = useState([]);
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [isUsersFormOpen, setIsUsersFormOpen] = useState(false);
 
   useEffect(() => {
     if (!curProject) return;
@@ -145,6 +147,7 @@ export const ProjectInfo: React.FC = () => {
                   style={{
                     backgroundColor: COLORS[idx % COLORS.length],
                   }}
+                  onClick={() => setIsUsersFormOpen(true)}
                 >
                   {user.user.username[0].toUpperCase()}
                 </Avatar>
@@ -157,6 +160,13 @@ export const ProjectInfo: React.FC = () => {
       <ProjectFormUpdate
         open={isFormOpen}
         closeForm={() => setIsFormOpen(false)}
+      />
+
+      <UsersForm
+        open={isUsersFormOpen}
+        closeForm={() => setIsUsersFormOpen(false)}
+        colors={COLORS}
+        users={users}
       />
     </Card>
   );
