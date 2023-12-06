@@ -53,8 +53,27 @@ export const UsersForm: React.FC<UsersFormProps> = ({
     }
   };
 
-  const handleChange = (value: string) => {
-    console.log(value);
+  const handleChange = async (roleId: string, userId: number) => {
+    if (!curProject) return;
+
+    try {
+      const response = await api.patch(
+        PROJECT_USERS_URL.replace(
+          ':projectId',
+          curProject.project.id.toString()
+        ),
+        { role_id: roleId, user_id: userId }
+      );
+      setUsers((prev) =>
+        prev.map((user: User) => {
+          if (user.user.id === userId) return response.data;
+          return user;
+        })
+      );
+      message.success('Role updated', 5);
+    } catch (error) {
+      message.error('Service is not available', 5);
+    }
   };
 
   return (
@@ -83,30 +102,33 @@ export const UsersForm: React.FC<UsersFormProps> = ({
               title={item.user.username}
               description={<RoleTag role={item.role} size='lg' />}
             />
-            <Select
-              defaultValue={item.role.title}
-              style={{ width: 100, marginRight: 10 }}
-              options={ROLES}
-              onChange={handleChange}
-              loading
-            />
-            <Button
-              danger
-              icon={<DeleteOutlined style={{ color: '#ff4d4f' }} />}
-              onClick={() => {
-                Modal.confirm({
-                  title: 'Delete user?',
-                  content: 'User will no longer have access to the project',
-                  footer: (_, { OkBtn, CancelBtn }) => (
-                    <>
-                      <CancelBtn />
-                      <OkBtn />
-                    </>
-                  ),
-                  onOk: () => handleDelete(item.user.id),
-                });
-              }}
-            />
+            {curProject?.role.id === 1 && (
+              <>
+                <Select
+                  defaultValue={item.role.title}
+                  style={{ width: 100, marginRight: 10 }}
+                  options={ROLES}
+                  onChange={(value) => handleChange(value, item.user.id)}
+                />
+                <Button
+                  danger
+                  icon={<DeleteOutlined style={{ color: '#ff4d4f' }} />}
+                  onClick={() => {
+                    Modal.confirm({
+                      title: 'Delete user?',
+                      content: 'User will no longer have access to the project',
+                      footer: (_, { OkBtn, CancelBtn }) => (
+                        <>
+                          <CancelBtn />
+                          <OkBtn />
+                        </>
+                      ),
+                      onOk: () => handleDelete(item.user.id),
+                    });
+                  }}
+                />
+              </>
+            )}
           </List.Item>
         )}
       />
