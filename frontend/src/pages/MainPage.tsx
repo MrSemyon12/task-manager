@@ -2,7 +2,7 @@ import React from 'react';
 import { Layout } from 'antd';
 
 import { ProjectProvider, BoardProvider } from '../contexts';
-import { Header, Sider, Content, Footer } from '../components';
+import { Header, Sider, Content } from '../components';
 
 export const MainPage: React.FC = () => {
   return (
@@ -14,7 +14,6 @@ export const MainPage: React.FC = () => {
             <Sider />
             <Content />
           </Layout>
-          <Footer />
         </Layout>
       </BoardProvider>
     </ProjectProvider>
