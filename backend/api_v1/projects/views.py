@@ -6,6 +6,7 @@ from core.models import db_helper
 
 from api_v1.auth.dependencies import get_current_user
 from api_v1.auth.schemas import User
+from api_v1.projects.schemas import ProjectUser
 
 from .dependencies import (
     create_project,
@@ -81,6 +82,6 @@ async def delete_user_from_project(_=Depends(delete_user_from_project)) -> None:
     pass
 
 
-@router.patch("/{project_id}/users")
-async def update_user_role(_=Depends(update_user_role)) -> None:
-    pass
+@router.patch("/{project_id}/users", response_model=ProjectUser)
+async def update_user_role(user_project=Depends(update_user_role)) -> None:
+    return user_project

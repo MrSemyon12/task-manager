@@ -8,7 +8,7 @@ from api_v1.auth.dependencies import get_current_user, user_by_id
 from api_v1.roles.dependencies import role_by_id
 from core.config import settings
 from core.models import User, Project, UserProjectAssociation, Role, db_helper
-from .schemas import ProjectCreate, ProjectRole, ProjectUpdate
+from .schemas import ProjectCreate, ProjectRole, ProjectUpdate, ProjectUser
 from . import crud
 
 
@@ -147,7 +147,7 @@ async def update_user_role(
     role: Role = Depends(role_by_id),
     _=Depends(manager_access_required),
     session: AsyncSession = Depends(db_helper.scoped_session_dependency),
-) -> None:
+) -> ProjectUser:
     user_project_association: UserProjectAssociation | None = (
         await crud.get_user_project_association(
             session=session,
@@ -160,7 +160,7 @@ async def update_user_role(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"User {user.id} not in project {project.id}",
         )
-    await crud.update_user_role(
+    return await crud.update_user_role(
         session=session,
         user_project_association=user_project_association,
         role=role,

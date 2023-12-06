@@ -131,9 +131,10 @@ async def update_user_role(
     session: AsyncSession,
     user_project_association: UserProjectAssociation,
     role: Role,
-) -> None:
+):
     user_project_association.role = role
     await session.commit()
+    return user_project_association
 
 
 async def get_user_role(
