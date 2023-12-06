@@ -34,7 +34,7 @@ const COLORS = [
 export const ProjectInfo: React.FC = () => {
   const api = useApiPrivate();
   const { curProject, setCurProject, projects, setProjects } = useProject();
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<User[]>([]);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isUsersFormOpen, setIsUsersFormOpen] = useState(false);
 
@@ -167,6 +167,7 @@ export const ProjectInfo: React.FC = () => {
         closeForm={() => setIsUsersFormOpen(false)}
         colors={COLORS}
         users={users}
+        setUsers={setUsers}
       />
     </Card>
   );
