@@ -23,10 +23,10 @@ export const Sider: React.FC = () => {
 
   return (
     <AntdSider
-      width='var(--sider-width)'
+      width="var(--sider-width)"
       style={{
         overflow: 'auto',
-        background: 'var(--color-accent)',
+        background: 'var(--color-secondary)',
         direction: 'rtl',
       }}
     >
@@ -55,22 +55,22 @@ export const Sider: React.FC = () => {
             }
             hoverable={curProject?.project.id !== project.project.id}
           >
-            <Row justify='space-between' align='middle'>
+            <Row justify="space-between" align="middle">
               <div
                 style={{
-                  width: 240,
+                  width: 230,
                   whiteSpace: 'nowrap',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
                   fontWeight: 'var(--font-weight)',
                 }}
               >
-                <RoleTag role={project.role} size='sm' />
+                <RoleTag role={project.role} size="sm" />
                 {project.project.title}
               </div>
               {curProject?.project.id === project.project.id && (
                 <Button
-                  type='text'
+                  type="text"
                   icon={<CloseOutlined />}
                   onClick={() => setCurProject(null)}
                 />
@@ -87,7 +87,7 @@ export const Sider: React.FC = () => {
 const gridStyle: React.CSSProperties = {
   width: '100%',
   padding: '10px 10px',
-  backgroundColor: 'var(--color-accent)',
+  backgroundColor: 'var(--color-secondary)',
   boxShadow: 'var(--shadow)',
   borderBottom: '1px solid rgba(0, 0, 0, 0.1)',
 };
