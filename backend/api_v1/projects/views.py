@@ -6,7 +6,6 @@ from core.models import db_helper
 
 from api_v1.auth.dependencies import get_current_user
 from api_v1.auth.schemas import User
-from api_v1.projects.schemas import ProjectUser
 
 from .dependencies import (
     create_project,
@@ -16,6 +15,7 @@ from .dependencies import (
     update_user_role,
     project_by_id,
     update_project,
+    get_outside_users,
 )
 from .schemas import Project, ProjectUser, ProjectRole
 from . import crud
@@ -77,7 +77,7 @@ async def get_project_users(
     status_code=status.HTTP_201_CREATED,
     response_model=ProjectUser,
 )
-async def add_user_to_project(user_project=Depends(add_user_to_project)) -> None:
+async def add_user_to_project(user_project=Depends(add_user_to_project)):
     return user_project
 
 
@@ -87,5 +87,10 @@ async def delete_user_from_project(_=Depends(delete_user_from_project)) -> None:
 
 
 @router.patch("/{project_id}/users", response_model=ProjectUser)
-async def update_user_role(user_project=Depends(update_user_role)) -> None:
+async def update_user_role(user_project=Depends(update_user_role)):
     return user_project
+
+
+@router.get("/{project_id}/outside", response_model=list[User])
+async def get_outside_users(outside_users=Depends(get_outside_users)):
+    return outside_users

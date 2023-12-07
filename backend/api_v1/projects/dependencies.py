@@ -177,3 +177,13 @@ async def update_user_role(
         user_project_association=user_project_association,
         role=role,
     )
+
+
+async def get_outside_users(
+    project: Project = Depends(project_by_id),
+    session: AsyncSession = Depends(db_helper.scoped_session_dependency),
+) -> list[User]:
+    users = await crud.get_users(session=session)
+    project_users = await crud.get_project_users(session=session, project=project)
+    project_users_ids = set(map(lambda x: x.user.id, project_users))
+    return list(filter(lambda x: x.id not in project_users_ids, users))

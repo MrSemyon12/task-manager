@@ -162,3 +162,10 @@ async def get_user_project_association(
     result: Result = await session.execute(stmt)
     user_project_association = result.scalar_one_or_none()
     return user_project_association
+
+
+async def get_users(session: AsyncSession) -> list[User]:
+    stmt = select(User).order_by(User.id)
+    result: Result = await session.execute(stmt)
+    users = result.scalars().all()
+    return list(users)
