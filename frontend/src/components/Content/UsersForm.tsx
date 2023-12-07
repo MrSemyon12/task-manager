@@ -1,9 +1,10 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { Modal, List, Avatar, Select, Button, message } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
+import { jwtDecode } from 'jwt-decode';
 
 import { PROJECT_USERS_URL } from '../../api/urls';
-import { useApiPrivate, useProject } from '../../hooks';
+import { useApiPrivate, useProject, useAuth } from '../../hooks';
 import { RoleTag } from '../RoleTag';
 import { User } from '../../types';
 
@@ -30,6 +31,9 @@ export const UsersForm: React.FC<UsersFormProps> = ({
 }) => {
   const api = useApiPrivate();
   const { curProject } = useProject();
+
+  const { auth } = useAuth();
+  const username = auth ? jwtDecode(auth.access_token).sub : null;
 
   const handleOk = () => closeForm();
 
@@ -102,7 +106,7 @@ export const UsersForm: React.FC<UsersFormProps> = ({
               title={item.user.username}
               description={<RoleTag role={item.role} size='lg' />}
             />
-            {curProject?.role.id === 1 && (
+            {curProject?.role.id === 1 && item.user.username !== username && (
               <>
                 <Select
                   defaultValue={item.role.title}
