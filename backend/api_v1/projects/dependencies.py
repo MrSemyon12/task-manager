@@ -108,8 +108,20 @@ async def add_user_to_project(
     role: Role = Depends(role_by_id),
     project: Project = Depends(project_by_id),
     session: AsyncSession = Depends(db_helper.scoped_session_dependency),
-) -> None:
-    await crud.add_user_to_project(
+) -> ProjectUser:
+    user_project_association: UserProjectAssociation | None = (
+        await crud.get_user_project_association(
+            session=session,
+            project_id=project.id,
+            user_id=user.id,
+        )
+    )
+    if user_project_association is not None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"User {user.id} already in project {project.id}",
+        )
+    return await crud.add_user_to_project(
         session=session,
         project=project,
         user=user,

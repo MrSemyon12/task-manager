@@ -108,15 +108,14 @@ async def add_user_to_project(
     project: Project,
     user: User,
     role: Role,
-) -> Project:
-    user.projects_details.append(
-        UserProjectAssociation(
-            project=project,
-            role=role,
-        )
+):
+    user_project = UserProjectAssociation(
+        project=project,
+        role=role,
     )
+    user.projects_details.append(user_project)
     await session.commit()
-    return project
+    return user_project
 
 
 async def delete_user_from_project(

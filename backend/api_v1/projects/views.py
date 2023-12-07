@@ -72,9 +72,13 @@ async def get_project_users(
     return await crud.get_project_users(session=session, project=project)
 
 
-@router.post("/{project_id}/users", status_code=status.HTTP_201_CREATED)
-async def add_user_to_project(_=Depends(add_user_to_project)) -> None:
-    pass
+@router.post(
+    "/{project_id}/users",
+    status_code=status.HTTP_201_CREATED,
+    response_model=ProjectUser,
+)
+async def add_user_to_project(user_project=Depends(add_user_to_project)) -> None:
+    return user_project
 
 
 @router.delete("/{project_id}/users", status_code=status.HTTP_204_NO_CONTENT)
