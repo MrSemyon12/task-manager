@@ -48,7 +48,7 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "@types/react-beautiful-dnd": "^13.1.6",
+    "@types/react-beautiful-dnd": "^13.1.7",
     "typescript-plugin-css-modules": "^5.0.2"
   }
 }
