@@ -1,21 +1,27 @@
-FROM python:3.11 as requirements-stage
+FROM python:3.11-alpine
 
-WORKDIR /tmp
+ENV POETRY_HOME=/opt/poetry
+ENV POETRY_VENV=/opt/poetry-venv
+ENV POETRY_CACHE_DIR=/opt/.cache
 
-RUN pip install poetry
+RUN pip install --upgrade pip
 
-COPY ./pyproject.toml ./poetry.lock* /tmp/
+RUN python3 -m venv $POETRY_VENV \
+	&& $POETRY_VENV/bin/pip install -U pip setuptools \
+	&& $POETRY_VENV/bin/pip install poetry
 
-RUN poetry export -f requirements.txt --output requirements.txt --without-hashes
+ENV PATH="${PATH}:${POETRY_VENV}/bin"
 
-FROM python:3.11
+WORKDIR /app
 
-WORKDIR /code
+COPY poetry.lock pyproject.toml ./
 
-COPY --from=requirements-stage /tmp/requirements.txt /code/requirements.txt
+RUN poetry install
 
-RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
+COPY . .
 
-COPY ./app /code/app
+RUN poetry run alembic upgrade head
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+EXPOSE 8000
+
+CMD ["poetry", "run", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
