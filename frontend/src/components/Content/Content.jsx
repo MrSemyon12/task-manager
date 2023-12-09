@@ -44,13 +44,21 @@ export const Content = () => {
 
   const handleUpdateState = async (taskId, state, prevBoard) => {
     try {
-      await api.patch(
+      const response = await api.patch(
         UPDATE_TASKS_STATE_URL.replace(
           ':projectId',
           curProject.project.id.toString()
         ).replace(':taskId', taskId.toString()),
         STATES[state]
       );
+
+      setBoard((prev) => {
+        prev[state] = prev[state].map((item) => {
+          if (item.id === taskId) return response.data;
+          return item;
+        });
+        return prev;
+      });
 
       message.success('Successful update', 2);
     } catch (error) {
@@ -62,7 +70,7 @@ export const Content = () => {
     }
   };
 
-  function handleDragEnd(result) {
+  async function handleDragEnd(result) {
     const src = result.source;
     const dest = result.destination;
 
@@ -81,11 +89,8 @@ export const Content = () => {
     } else {
       // --- DIFFERENT CONTAINER ---
 
-      handleUpdateState(
-        board[src.droppableId][src.index].id,
-        dest.droppableId,
-        { ...board }
-      );
+      const prevBoard = { ...board };
+
       const srcItems = remove(board[src.droppableId], src.index);
 
       const destItems = appendAt(
@@ -97,7 +102,13 @@ export const Content = () => {
       const tempBoards = { ...board };
       tempBoards[src.droppableId] = srcItems;
       tempBoards[dest.droppableId] = destItems;
-      setBoard({ ...tempBoards });
+      setBoard(tempBoards);
+
+      await handleUpdateState(
+        tempBoards[dest.droppableId][dest.index].id,
+        dest.droppableId,
+        prevBoard
+      );
     }
   }
 
